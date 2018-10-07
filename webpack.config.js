@@ -4,11 +4,11 @@ var BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
     context: __dirname,
-
-    entry: './LocationFinder/static/js/index',
+    mode: 'development',
+    entry: {'main': ['@babel/polyfill', './Core/static/js/index']},
 
     output: {
-        path: path.resolve('./LocationFinder/static/bundles/'),
+        path: path.resolve('./Core/static/bundles/'),
         filename: "[name]-[hash].js",
     },
 
@@ -18,17 +18,12 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            "presets": ["@babel/preset-env", "@babel/preset-react"]
-                        }
-                    }
-                ]
-            }
+                use: {
+                  loader: "babel-loader"
+                }
+            },
         ]
     },
     resolve: {
