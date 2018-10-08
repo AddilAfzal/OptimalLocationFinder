@@ -79,3 +79,7 @@ def update_postcodes():
             i += 1
 
         print(i)
+
+
+def import_ofsted_data(csv_path="Schools/data/england_ofsted-schools.csv"):
+    pass
