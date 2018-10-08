@@ -7,13 +7,14 @@ import {
   Menu,
 } from 'semantic-ui-react'
 import Footer from './components/footer'
+import Map from "./components/map";
 
 const FixedMenuLayout = () => (
   <div>
     <Menu fixed='top' inverted>
       <Container>
         <Menu.Item as='a' header>
-          <Image size='mini' src='/logo.png' style={{ marginRight: '1.5em' }} />
+          <Image size='mini' src='' style={{ marginRight: '1.5em' }} />
           Project Name
         </Menu.Item>
         <Menu.Item as='a'>Home</Menu.Item>
@@ -44,14 +45,7 @@ const FixedMenuLayout = () => (
       <p>
         A text container is used for the main container, which is useful for single column layouts.
       </p>
-
-      <Image src='/images/wireframe/media-paragraph.png' style={{ marginTop: '2em' }} />
-      <Image src='/images/wireframe/paragraph.png' style={{ marginTop: '2em' }} />
-      <Image src='/images/wireframe/paragraph.png' style={{ marginTop: '2em' }} />
-      <Image src='/images/wireframe/paragraph.png' style={{ marginTop: '2em' }} />
-      <Image src='/images/wireframe/paragraph.png' style={{ marginTop: '2em' }} />
-      <Image src='/images/wireframe/paragraph.png' style={{ marginTop: '2em' }} />
-      <Image src='/images/wireframe/paragraph.png' style={{ marginTop: '2em' }} />
+      <Map/>
     </Container>
 
     <Footer/>
