@@ -54,7 +54,7 @@ export default class Footer extends Component {
                             <Grid.Column width={3}>
                                 <Header inverted as='h4' content='Footer Header'/>
                                 <p>
-                                    Extra space for a call to action inside the footer that could help re-engage users.
+                                    This system was designed by Addil Afzal as part of their final year project.
                                 </p>
                             </Grid.Column>
                         </Grid.Row>

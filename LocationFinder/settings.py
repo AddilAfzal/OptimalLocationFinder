@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     'Core',
     'Schools',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,16 @@ WEBPACK_LOADER = {
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
     }
 }
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100
+}
+
+HERE_MAPS_APP_ID = "vtHijdI94WzWFph3OASO"
+HERE_MAPS_APP_CODE = "3ViBdfQh00uW03S2gnk5CQ"
