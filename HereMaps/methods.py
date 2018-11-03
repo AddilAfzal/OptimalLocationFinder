@@ -18,6 +18,7 @@ def get_routes(start_geo, des_geo, mode="car"):
     Given a matrix of lng, lat calculate the travel time via a chosen mode of travel.
     :return:
     """
+    # TODO: Optimise
 
     start_joined = ""
     for index, (lng, lat) in enumerate(start_geo):
@@ -51,7 +52,7 @@ def get_routes(start_geo, des_geo, mode="car"):
 
     # connections = sorted(connections, key=lambda k: k['duration'])
 
-    return connections
+    return connections['response']['matrixEntry']
 
 
 # def get_quickest_transit_route(aX=None, aY=None, bX=None, bY=None):
