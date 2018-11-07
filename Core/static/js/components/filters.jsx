@@ -37,9 +37,16 @@ export default class filters extends Component {
         this.setState({ data });
     };
 
-    handleChangePrice = (event) => {
-        event.preventDefault()
+    handleChangePriceMin = (event, { value }) => {
+        event.preventDefault();
         console.log(event);
+        console.log(value);
+    };
+
+    handleChangePriceMax = (event, { value }) => {
+        event.preventDefault();
+        console.log(event);
+        console.log(value);
     };
 
     render() {
@@ -53,12 +60,10 @@ export default class filters extends Component {
                         <br/>
                         <br/>
                         <hr/>
-                        {/*<Header as='h1'>Are you looking for a home for Sale or to Rent?</Header>*/}
-                        {/*<Button>Sale</Button> <Button><i className="far fa-calendar-alt"/> Rent</Button>*/}
                         <Segment>
                             <Form loading={false}>
                                 <Header as='h2'>Property basics</Header>
-                                <Divider/>
+                                {/*<Divider/>*/}
                                 <Header size='small'>What type of property are you looking for?</Header>
                                 <Form.Group inline>
                                     {/*<label>What type of property are you looking for?</label>*/}
@@ -76,9 +81,11 @@ export default class filters extends Component {
                                     />
                                 </Form.Group>
 
-                                <Divider horizontal>
-                                    Area
-                                </Divider>
+                                {/*<Divider horizontal>*/}
+                                    {/*Area*/}
+                                {/*</Divider>*/}
+
+                                <Header size='small'>Area</Header>
 
 
                                 <Form.Group inline>
@@ -102,10 +109,11 @@ export default class filters extends Component {
                                     </Form.Input>
                                 </Form.Group>
 
-                                <Divider horizontal>
-                                    Rooms
-                                </Divider>
+                                {/*<Divider horizontal>*/}
+                                    {/*Rooms*/}
+                                {/*</Divider>*/}
 
+                                <Header size='small'>Rooms</Header>
 
                                 <Form.Group inline widths='equal'>
                                     <Form.Input
@@ -131,11 +139,11 @@ export default class filters extends Component {
                                     />
                                 </Form.Group>
 
-                                <Divider horizontal>
-                                    Price
-                                </Divider>
+                                {/*<Divider horizontal>*/}
+                                    {/*Price*/}
+                                {/*</Divider>*/}
 
-                                {/*<Header size='small'>Price</Header>*/}
+                                <Header size='small'>Price</Header>
 
                                 <Form.Group inline widths='equal'>
                                     <Form.Input
@@ -144,7 +152,7 @@ export default class filters extends Component {
                                         label='Min'
                                         type='number'
                                         min={0}
-                                        onChange={this.handleChangePrice}
+                                        onChange={this.handleChangePriceMin}
                                     />
                                     <Form.Input
                                         fluid
@@ -152,11 +160,10 @@ export default class filters extends Component {
                                         label='Max'
                                         type='number'
                                         min={0}
+                                        onChange={this.handleChangePriceMax}
                                     />
                                 </Form.Group>
-                                <Divider/>
-
-                                <Form.Checkbox label='I agree to the Terms and Conditions'/>
+                                <br/>
                                 <Form.Button>Submit</Form.Button>
                             </Form>
                         </Segment>

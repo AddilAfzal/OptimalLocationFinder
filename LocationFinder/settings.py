@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'webpack_loader',
     'Core',
     'Schools',
+    'Zoopla',
+    'HereMaps',
     'rest_framework',
 ]
 
@@ -150,3 +152,4 @@ REST_FRAMEWORK = {
 
 HERE_MAPS_APP_ID = "vtHijdI94WzWFph3OASO"
 HERE_MAPS_APP_CODE = "3ViBdfQh00uW03S2gnk5CQ"
+ZOOPLA_API_KEY = "4zd7kgvjktq4p464btnk9g58"
