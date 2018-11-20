@@ -5,6 +5,7 @@ import xmltodict
 from dateutil.relativedelta import relativedelta
 from django.db.models import Q
 from django.utils import timezone
+from datetime import datetime
 
 from LocationFinder.settings import ZOOPLA_API_KEY
 from Zoopla.models import ZooplaQuery, Property
@@ -69,19 +70,28 @@ def search_properties(area, listing_status, radius=1, min_price=None, max_price=
             number_of_results=response_dict['response']['result_count'],
         )
 
-        listing_ids = [(val['listing_id'], val['last_published_date']) for val in response_dict['response']['listing']]
+        listing_id_timestamps = [(val['listing_id'], val['last_published_date']) for val in
+                                 response_dict['response']['listing']]
 
+        condition = Q()
 
-        existing_listing_ids = list(Property.objects.filter(listing_id__in=listing_ids).values_list('listing_id', flat=True))
+        for (id, timestamp) in listing_id_timestamps:
+            condition |= Q(listing__id=id) & Q(last_published=datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S"))
+
+        listing_ids, a = zip(*listing_id_timestamps)
+        existing_listing_ids = list(
+            Property.objects.filter(condition).values_list('listing_id', flat=True))
         new_listing_ids = set(listing_ids) - set(existing_listing_ids)
         print(new_listing_ids)
 
-        # for p in response_dict['response']['listing']:
-        #     property_instance, updated = Property.objects.update_or_create(
-        #
-        #     )
+        for p in response_dict['response']['listing']:
+            if p['listing_id'] in new_listing_ids:
+                property_instance, updated = Property.objects.update_or_create(
+
+                )
 
         return zoopla_query
 
     else:
         return query.first()
+
