@@ -19,9 +19,9 @@ class ZooplaQuery(TimeStampedModel):
 
 class Agent(models.Model):
     agent_address = models.CharField(max_length=200)
-    agent_logo = models.URLField()
-    agent_name = models.CharField(max_length=200)
-    agent_phone = models.CharField(max_length=20)
+    agent_logo = models.URLField(null=True)
+    agent_name = models.CharField(max_length=200, null=True)
+    agent_phone = models.CharField(max_length=20, null=True)
 
 
 class Property(models.Model):
@@ -41,7 +41,7 @@ class Property(models.Model):
     category = models.CharField(max_length=30)
     county = models.CharField(max_length=30, null=True)
     description = models.TextField(null=True)
-    details_url = models.URLField()
+    details_url = models.URLField(null=True)
     # floor_area = models.CharField()
     furnished_state = models.CharField(max_length=100)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
@@ -52,6 +52,14 @@ class Property(models.Model):
     short_description = models.TextField(null=True)
     street_name = models.CharField(max_length=100, null=True)
     thumbnail_url = models.URLField(null=True)
+
+
+class RentalPrice(models.Model):
+    accurate = models.CharField(max_length=30, null=True)
+    per_month = models.FloatField()
+    per_week = models.FloatField()
+    shared_occupancy = models.CharField(max_length=30) # TODO: Change once values have been established
+    zoopla_property = models.ForeignKey(Property, on_delete=models.CASCADE, null=True)
 
 
 class PriceHistory(models.Model):
