@@ -97,11 +97,167 @@ def search_properties(area, listing_status, radius=1, min_price=None, max_price=
     else:
         return query.first()
 
+london_postcode_districts = [
+    'UB',
+    'CR',
+    'EN',
+    'EC',
+    'BR',
+    'DA',
+    'KT',
+    'TW',
+    'TN',
+    'WD',
+    'RM',
+    'HA',
+    'SM',
+    'SE',
+
+    'E1',
+    'E2',
+    'E3',
+    'E4',
+    'E5',
+    'E6',
+    'E7',
+    'E8',
+    'E9',
+    'E10',
+    'E11',
+    'E12',
+    'E13',
+    'E14',
+    'E15',
+    'E16',
+    'E17',
+    'E18',
+    'E19',
+    'E20',
+
+    'N1',
+    'N2',
+    'N3',
+    'N4',
+    'N5',
+    'N6',
+    'N7',
+    'N8',
+    'N9',
+    'N10',
+    'N11',
+    'N12',
+    'N13',
+    'N14',
+    'N15',
+    'N16',
+    'N17',
+    'N18',
+    'N19',
+    'N20',
+    'N21',
+    'N22',
+
+    'W1',
+    'W2',
+    'W3',
+    'W4',
+    'W5',
+    'W6',
+    'W7',
+    'W8',
+    'W9',
+    'W10',
+    'W11',
+    'W12',
+    'W13',
+    'W14',
+
+    'NW1',
+    'NW2',
+    'NW3',
+    'NW4',
+    'NW5',
+    'NW6',
+    'NW7',
+    'NW8',
+    'NW9',
+    'NW10',
+    'NW11',
+
+    'SW1',
+    'SW2',
+    'SW3',
+    'SW4',
+    'SW5',
+    'SW6',
+    'SW7',
+    'SW8',
+    'SW9',
+    'SW10',
+    'SW11',
+    'SW12',
+    'SW13',
+    'SW14',
+    'SW15',
+    'SW16',
+    'SW17',
+    'SW18',
+    'SW19',
+    'SW20',
+
+    'SE1',
+    'SE2',
+    'SE3',
+    'SE4',
+    'SE5',
+    'SE6',
+    'SE7',
+    'SE8',
+    'SE9',
+    'SE10',
+    'SE11',
+    'SE12',
+    'SE13',
+    'SE14',
+    'SE15',
+    'SE16',
+    'SE17',
+    'SE18',
+    'SE19',
+    'SE20',
+    'SE21',
+    'SE22',
+    'SE23',
+    'SE24',
+    'SE25',
+    'SE26',
+    'SE27',
+    'SE28',
+
+]
+
+
+def results_counter():
+    base_page_url = "https://api.zoopla.co.uk/api/v1/property_listings?&api_key=e9gkxstnn2jq4d7njqz2mnw4&page_size=100&order_by=age&ordering=ascending&area="
+    i = 0
+
+    for p in london_postcode_districts:
+        try:
+            api_url = base_page_url + p
+            r = requests.get(api_url)
+            response_dict = xmltodict.parse(r.content)
+
+            i += int(response_dict['response']['result_count'])
+            print("total: %s, %s: %s  " % (i, p, response_dict['response']['result_count']))
+        except Exception as e:
+            print(e)
+            continue
+
 
 def data_grabber():
-    base_page_url = "https://api.zoopla.co.uk/api/v1/property_listings?area=london&api_key=sq3hgvxq9tf3fqyu8mgypnx7&page_size=100&order_by=age&ordering=ascending"
+    base_page_url = "https://api.zoopla.co.uk/api/v1/property_listings?area=london&api_key=e9gkxstnn2jq4d7njqz2mnw4&page_size=100&order_by=age&ordering=ascending"
 
-    page = 22
+    page = 100
 
     while True:
         page_url = base_page_url + ("&page_number=%s" % page)
@@ -109,6 +265,7 @@ def data_grabber():
 
         if not r.status_code == 200:
             print("Over rate...")
+            print()
             break
 
         try:

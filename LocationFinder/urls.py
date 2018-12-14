@@ -24,4 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Core.urls')),
     path('', include('Schools.urls')),
+    path('', include('Zoopla.urls')),
 ]
