@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 from rest_framework import routers
 
-from Zoopla.views.rest import PropertiesList
+from Zoopla.views.api import PropertiesList
 
 router = routers.DefaultRouter()
 

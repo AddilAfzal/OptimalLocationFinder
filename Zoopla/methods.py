@@ -98,12 +98,12 @@ def search_properties(area, listing_status, radius=1, min_price=None, max_price=
         return query.first()
 
 london_postcode_districts = [
-    'UB',
-    'CR',
-    'EN',
-    'EC',
-    'BR',
-    'DA',
+    # 'UB',
+    # 'CR',
+    # 'EN',
+    # 'EC',
+    # 'BR',
+    # 'DA',
     'KT',
     'TW',
     'TN',
@@ -255,123 +255,148 @@ def results_counter():
 
 
 def data_grabber():
-    base_page_url = "https://api.zoopla.co.uk/api/v1/property_listings?area=london&api_key=e9gkxstnn2jq4d7njqz2mnw4&page_size=100&order_by=age&ordering=ascending"
+    base_page_url = "https://api.zoopla.co.uk/api/v1/property_listings?api_key=wkq3yqmcsj45kfmpat4mwepr&page_size=100&order_by=age&ordering=ascending"
 
-    page = 100
+    page = 44
 
-    while True:
-        page_url = base_page_url + ("&page_number=%s" % page)
-        r = requests.get(page_url)
+    api_keys = ['89uuaawpyfug8cfhykvgzdbu', 'wkq3yqmcsj45kfmpat4mwepr']
 
-        if not r.status_code == 200:
-            print("Over rate...")
-            print()
-            break
+    limitted = False
+    try:
+        for postcode in london_postcode_districts:
+            while True:
+                page_url = base_page_url + ("&page_number=%s&area=%s" % (page, postcode))
+                r = requests.get(page_url)
+                print(page_url)
 
-        try:
-            response_dict = xmltodict.parse(r.content)
-        except Exception as e:
-            print("Parse error on page %s" % page)
-            page += 1
-            continue
+                if not r.status_code == 200:
+                    print("Over rate...")
+                    print(page_url)
+                    print('Postcode: %s  I: %s' % (postcode, page) )
+                    limitted = True
+                    break
+                    # raise Exception('Postcode: %s  I: %s' % (postcode, page) )
 
-        response_json = json.dumps(response_dict)
+                try:
+                    response_dict = xmltodict.parse(r.content)
+                except Exception as e:
+                    print("Parse error on page %s" % page)
+                    page += 1
+                    continue
 
-        zoopla_query = ZooplaQuery.objects.create(
-            minimum_price=0,
-            maximum_price=0,
-            area="london",
-            listing_status="-",
-            radius=0,
-            results=response_json,
-            # number_of_results=response_dict['response']['listing'].__len__()
-            number_of_results=response_dict['response']['result_count'],
-        )
+                response_json = json.dumps(response_dict)
 
-        x = 0
-        for p in response_dict['response']['listing']:
-
-            try:
-                agent, created = Agent.objects.get_or_create(
-                    agent_address__iexact=p['agent_address'],
-                    defaults={
-                        'agent_logo': p['agent_logo'],
-                        'agent_name': p['agent_name'],
-                        'agent_phone': p['agent_phone'],
-                    }
+                zoopla_query = ZooplaQuery.objects.create(
+                    minimum_price=0,
+                    maximum_price=0,
+                    area="london",
+                    listing_status="-",
+                    radius=0,
+                    results=response_json,
+                    # number_of_results=response_dict['response']['listing'].__len__()
+                    number_of_results=response_dict['response']['result_count'],
                 )
 
-                property_instance, property_created = Property.objects.update_or_create(
-                    listing_id=p['listing_id'],
-                    defaults={
-                        'category': p['category'],
-                        'county': p['county'],
-                        'description': p['description'],
-                        'details_url': p['details_url'],
-                        'first_published': timezone.datetime.fromtimestamp(
-                            timezone.datetime.strptime(p['first_published_date'], '%Y-%m-%d %H:%M:%S').timestamp(),
-                            tz=tz_london),
-                        'last_published': timezone.datetime.fromtimestamp(
-                            timezone.datetime.strptime(p['last_published_date'], '%Y-%m-%d %H:%M:%S').timestamp(),
-                            tz=tz_london),
-                        'furnished_state': "Unfurnished" if p['furnished_state'] == None else p['furnished_state'],
-                        'latitude': p['latitude'],
-                        'longitude': p['longitude'],
-                        'listing_status': p['listing_status'],
-                        'num_bathrooms': p['num_bathrooms'],
-                        'num_bedrooms': p['num_bedrooms'],
-                        'num_floors': p['num_floors'],
-                        'num_recepts': p['num_recepts'],
-                        'outcode': p['outcode'],
-                        'post_town': p['post_town'],
-                        'price': p['price'],
-                        'property_type': p['property_type'],
-                        'short_description': p['short_description'],
-                        'status': p['status'],
-                        'street_name': p['street_name'],
-                        'thumbnail_url': p['thumbnail_url'],
-                        'agent': agent,
-                    }
-                )
+                x = 0
+                try:
+                    for p in response_dict['response']['listing']:
 
-                property_instance.zoopla_query.add(zoopla_query)
-                p_dict = dict(p)
-
-                if 'rental_prices' in p_dict:
-                    rp = RentalPrice.objects.create(
-                        accurate=p_dict['rental_prices']['accurate'],
-                        per_month=p_dict['rental_prices']['per_month'],
-                        per_week=p_dict['rental_prices']['per_week'],
-                        shared_occupancy=p_dict['rental_prices']['shared_occupancy'],
-                        zoopla_property=property_instance,
-                    )
-
-                if 'price_change' in p_dict:
-                    for price_change in p_dict['price_change']:
                         try:
-                            ph = PriceHistory.objects.create(
-                                zoopla_property=property_instance,
-                                date_changed=timezone.datetime.fromtimestamp(
-                                    timezone.datetime.strptime(price_change['date'], '%Y-%m-%d %H:%M:%S').timestamp(),
-                                    tz=tz_london),
-                                price=price_change['price'],
-                                percent=price_change['percent'][:-1]
+                            agent, created = Agent.objects.get_or_create(
+                                agent_address__iexact=p['agent_address'],
+                                defaults={
+                                    'agent_logo': p['agent_logo'],
+                                    'agent_name': p['agent_name'],
+                                    'agent_phone': p['agent_phone'],
+                                }
                             )
-                        except TypeError as e:
-                            pass
 
-                if 'image_url' in p_dict and p_dict['image_url']:
-                    image, created = PropertyImage.objects.get_or_create(
-                        url=p['image_url'],
-                        zoopla_property=property_instance
-                    )
+                            property_instance, property_created = Property.objects.update_or_create(
+                                listing_id=p['listing_id'],
+                                defaults={
+                                    'category': p['category'],
+                                    'county': p['county'],
+                                    'description': p['description'],
+                                    'details_url': p['details_url'],
+                                    'first_published': timezone.datetime.fromtimestamp(
+                                        timezone.datetime.strptime(p['first_published_date'], '%Y-%m-%d %H:%M:%S').timestamp(),
+                                        tz=tz_london),
+                                    'last_published': timezone.datetime.fromtimestamp(
+                                        timezone.datetime.strptime(p['last_published_date'], '%Y-%m-%d %H:%M:%S').timestamp(),
+                                        tz=tz_london),
+                                    'furnished_state': "Unfurnished" if p['furnished_state'] == None else p['furnished_state'],
+                                    'latitude': p['latitude'],
+                                    'longitude': p['longitude'],
+                                    'listing_status': p['listing_status'],
+                                    'num_bathrooms': p['num_bathrooms'],
+                                    'num_bedrooms': p['num_bedrooms'],
+                                    'num_floors': p['num_floors'],
+                                    'num_recepts': p['num_recepts'],
+                                    'outcode': p['outcode'],
+                                    'post_town': p['post_town'],
+                                    'price': p['price'],
+                                    'property_type': p['property_type'],
+                                    'short_description': p['short_description'],
+                                    'status': p['status'],
+                                    'street_name': p['street_name'],
+                                    'thumbnail_url': p['thumbnail_url'],
+                                    'agent': agent,
+                                }
+                            )
 
-                x += 1
-                print(x)
-            except Exception as e:
-                print(e)
-                #print(p_dict)
+                            property_instance.zoopla_query.add(zoopla_query)
+                            p_dict = dict(p)
+
+                            if 'rental_prices' in p_dict:
+                                rp = RentalPrice.objects.create(
+                                    accurate=p_dict['rental_prices']['accurate'],
+                                    per_month=p_dict['rental_prices']['per_month'],
+                                    per_week=p_dict['rental_prices']['per_week'],
+                                    shared_occupancy=p_dict['rental_prices']['shared_occupancy'],
+                                    zoopla_property=property_instance,
+                                )
+
+                            if 'price_change' in p_dict:
+                                for price_change in p_dict['price_change']:
+                                    try:
+                                        ph = PriceHistory.objects.create(
+                                            zoopla_property=property_instance,
+                                            date_changed=timezone.datetime.fromtimestamp(
+                                                timezone.datetime.strptime(price_change['date'], '%Y-%m-%d %H:%M:%S').timestamp(),
+                                                tz=tz_london),
+                                            price=price_change['price'],
+                                            percent=price_change['percent'][:-1]
+                                        )
+                                    except TypeError as e:
+                                        pass
+
+                            if 'image_url' in p_dict and p_dict['image_url']:
+                                image, created = PropertyImage.objects.get_or_create(
+                                    url=p['image_url'],
+                                    zoopla_property=property_instance
+                                )
+
+                            x += 1
+                            print(x)
+                        except Exception as e:
+                            print(e)
+                            print(p)
+                            #print(p_dict)
+                            break
+
+                    print("Page %s complete" % page)
+                    page += 1
+                except KeyError:
+                    break
+
+            if limitted:
+                page = 1
                 break
 
-        print("Page %s complete" % page)
-        page += 1
+    except Exception as e:
+        print(e)
+
+
+def data_scrapper():
+    import re
+    location_regex = r'/<img data-src="https:\/\/maps\.google\.com\/maps\/api\/staticmap\?.*center&#x3D;((?:[-]*[0-9]|\.)*[0-9]*),[-]*((?:[0-9]|\.)*[0-9]*)/gm'

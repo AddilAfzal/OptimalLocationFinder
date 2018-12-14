@@ -24,7 +24,7 @@ class Agent(models.Model):
     agent_phone = models.CharField(max_length=20, null=True)
 
 
-class Property(models.Model):
+class Property(TimeStampedModel):
     zoopla_query = models.ManyToManyField(to=ZooplaQuery)
     listing_id = models.IntegerField(primary_key=True)
     displayable_address = models.CharField(max_length=200)
@@ -48,7 +48,7 @@ class Property(models.Model):
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
     outcode = models.CharField(max_length=5)
     post_town = models.CharField(max_length=30, null=True)
-    property_type = models.CharField(max_length=20, null=True)
+    property_type = models.CharField(max_length=50, null=True)
     short_description = models.TextField(null=True)
     street_name = models.CharField(max_length=100, null=True)
     thumbnail_url = models.URLField(null=True)
