@@ -5,6 +5,8 @@ from Zoopla.views.api import PropertiesList
 
 router = routers.DefaultRouter()
 
+app_name = 'zoopla'
+
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [

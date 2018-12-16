@@ -8,13 +8,11 @@ const defaults = [
 
 module.exports = {
     context: __dirname,
-    mode: 'production',
+    mode: 'development',
 
     entry: {
         'index': [...defaults, './react/Index'],
-        'servers': [...defaults, './react/Servers'],
-        'bans': [...defaults, './react/Bans'],
-        'admin_application': [...defaults, './react/AdminApplication'],
+        'map': [...defaults, './react/Map'],
     },
 
     output: {

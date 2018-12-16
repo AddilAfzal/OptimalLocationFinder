@@ -8,7 +8,6 @@ import {
 } from 'semantic-ui-react'
 import Footer from './../components/footer'
 import Navigation from './../components/navigation'
-import Map from "./../components/map";
 import Filters from "./../components/filters";
 
 
@@ -32,7 +31,7 @@ export default class indexContainer extends Component {
                         requirements.</p>
 
                     <Filters/>
-                    {/*<Map/>*/}
+                    <br/>
                 </Container>
 
                 <Footer/>

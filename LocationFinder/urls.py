@@ -22,7 +22,7 @@ import Core
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Core.urls')),
-    path('', include('Schools.urls')),
-    path('', include('Zoopla.urls')),
+    path('', include('Core.urls', namespace="Core")),
+    path('', include('Schools.urls', namespace="Schools")),
+    path('', include('Zoopla.urls', namespace="Zoopla")),
 ]

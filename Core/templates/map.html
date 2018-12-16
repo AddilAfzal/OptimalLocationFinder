@@ -19,6 +19,10 @@
 
 <body>
 <div id="react"></div>
-{% render_bundle 'IndexPage' %}
+<script>
+    let properties_api_url = "{%  url 'zoopla:api_properties' %}?limit=500";
+</script>
+{% render_bundle 'MapPage' %}
+
 </body>
 </html>

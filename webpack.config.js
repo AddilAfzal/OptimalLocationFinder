@@ -5,7 +5,10 @@ var BundleTracker = require('webpack-bundle-tracker');
 module.exports = {
     context: __dirname,
     mode: 'development',
-    entry: {'main': ['@babel/polyfill', './Core/static/js/index']},
+    entry: {
+        'IndexPage': ['@babel/polyfill', './Core/static/js/IndexPage'],
+        'MapPage': ['@babel/polyfill', './Core/static/js/MapPage'],
+    },
 
     output: {
         path: path.resolve('./Core/static/bundles/'),

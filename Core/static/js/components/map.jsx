@@ -2,20 +2,23 @@ import React, {Component, Fragment} from "react";
 import * as L from "leaflet";
 
 export default class Map extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
-        this.state = {};
+        this.state = {
+            properties: null,
+            map: null
+        };
     }
 
     mapRef = React.createRef();
 
     componentDidMount() {
         this.init()
-
     }
-    init() {
-        let map = L.map(this.mapRef.current).setView([51.505, -0.09], 13);
+
+    async init() {
+        let map = L.map(this.mapRef.current).setView([51.505, -0.09], 10);
 
         L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmaporg/copyright">OpenStreetMap</a> contributors'
@@ -24,12 +27,26 @@ export default class Map extends Component {
         L.marker([51.5, -0.09]).addTo(map)
             .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
             .openPopup();
+
+        let properties = await this.props.getData();
+        await this.setState({properties, map})
+        this.displayResults();
     };
+
+    displayResults() {
+        // console.log(this)
+        this.state.properties.results.forEach((l) => {
+            console.log(l)
+            L.marker([l.latitude, l.longitude])
+                .addTo(this.state.map)
+                .bindPopup(new Intl.NumberFormat('en-GB', {style: 'currency', currency: 'GBP'}).format(l.price));
+        })
+    }
 
     render() {
         return (
             <Fragment>
-                <div ref={this.mapRef} style={{width:'100%', height: '400px'}}/>
+                <div ref={this.mapRef} style={{width:'100%', height: '600px'}}/>
             </Fragment>
         )
     }
