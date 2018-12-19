@@ -25,4 +25,5 @@ urlpatterns = [
     path('', include('Core.urls', namespace="Core")),
     path('', include('Schools.urls', namespace="Schools")),
     path('', include('Zoopla.urls', namespace="Zoopla")),
+    path('', include('HereMaps.urls', namespace="HereMaps")),
 ]

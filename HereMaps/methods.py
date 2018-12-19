@@ -15,18 +15,18 @@ des = [(51.527678,-0.103682)]
 def get_routes(start_geo, des_geo, mode="car"):
     """
     https://developer.here.com/documentation/routing/topics/request-matrix-of-routes.html
-    Given a matrix of lng, lat calculate the travel time via a chosen mode of travel.
+    Given a matrix of lat, lng calculate the travel time via a chosen mode of travel.
     :return:
     """
     # TODO: Optimise
 
     start_joined = ""
-    for index, (lng, lat) in enumerate(start_geo):
-        start_joined += "&start%s=%s,%s" % (index, lng, lat)
+    for index, (lat, lng) in enumerate(start_geo):
+        start_joined += "&start%s=%s,%s" % (index, lat, lng)
 
     des_joined = ""
-    for index, (lng, lat) in enumerate(des_geo):
-        des_joined += "&destination%s=%s,%s" % (index, lng, lat)
+    for index, (lat, lng) in enumerate(des_geo):
+        des_joined += "&destination%s=%s,%s" % (index, lat, lng)
 
     timezone.activate(pytz.timezone("Europe/London"))
 
@@ -46,6 +46,7 @@ def get_routes(start_geo, des_geo, mode="car"):
         pass
 
     connections = r.json()
+    print(connections)
     # connections = r.json()['Res']['Connections']['Connection']
     # for c in connections:
     #     c['duration'] = extract_duration(c['duration'])
