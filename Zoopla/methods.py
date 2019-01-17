@@ -52,7 +52,7 @@ def search_properties(area, listing_status, radius=1, min_price=None, max_price=
 
         url += "&minimum_price=%s" % min_price if min_price else ''
         url += "&maximum_price=%s" % max_price if max_price else ''
-        # url += "&furnished=%s" % furnished if furnished else '' // TODO: finish -- only applies to rental
+        # url += "&furnished=%s" % furnished if furnished else '' // only applies to rental
         url += "&property_type=%s" % property_type if property_type else ''
 
         r = requests.get(url)
@@ -107,8 +107,8 @@ london_postcode_districts = [
     # 'KT',
     # 'TW',
     # 'TN',
-    'WD',
-    'RM',
+    # 'WD',
+    # 'RM',
     # 'HA', # Re-do everything above
     # 'SM',
     #
@@ -397,3 +397,13 @@ def data_grabber():
 def data_scrapper():
     import re
     location_regex = r'/<img data-src="https:\/\/maps\.google\.com\/maps\/api\/staticmap\?.*center&#x3D;((?:[-]*[0-9]|\.)*[0-9]*),[-]*((?:[0-9]|\.)*[0-9]*)/gm'
+
+
+def price_range_frequency():
+    p = Property.objects.filter(listing_status="sale").exclude(price=0).order_by('price')
+    values = []
+
+    for a in p:
+        values.append({
+
+        })

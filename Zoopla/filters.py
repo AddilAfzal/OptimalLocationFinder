@@ -11,19 +11,7 @@ class PropertyBasicFilter(django_filters.FilterSet):
     num_bedrooms = django_filters.RangeFilter()
     num_floors = django_filters.RangeFilter()
     num_recepts	= django_filters.RangeFilter()
-    # by_distance = django_filters.CharFilter(method='filter_by_distance')
-
-    #
-    # def filter_price(self, qs, field, value):
-    #     return qs.filter()
-
-    # def filter_by_distance(self, qs, field, value):
-    #     print(self.request.data)
-    #
-    #     for a in self.request.data['by_distance']:
-    #         print(a['lat'])
-    #
-    #     return qs
+    listing_status = django_filters.CharFilter()
 
     def filter_area(self, qs, field, value):
         return qs.filter(Q(outcode__istartswith=value) | Q(post_town__iexact=value))
