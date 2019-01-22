@@ -39,7 +39,7 @@ def search_properties(area, listing_status, radius=1, min_price=None, max_price=
         price_filters,
         area=area,
         listing_status=listing_status,
-        radius=radius, created__gte=timezone.now() - relativedelta(days=1))
+        radius=radius, created__gte=timezone.now() - relativedelta(days=2))
 
     if not query:
         url = "https://api.zoopla.co.uk/api/v1/property_listings?" \
