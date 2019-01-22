@@ -5,6 +5,9 @@ import {
 
 import {Divider, Segment} from 'semantic-ui-react'
 import Slider, {Range} from 'rc-slider';
+import PropertyTypeFilter from "./filters/PropertyTypeFilter";
+import AreaFilter from "./filters/AreaFilter";
+import RoomsFilter from "./filters/RoomsFilter";
 
 
 const options = [
@@ -16,15 +19,6 @@ function formatCurrency(i) {
     return new Intl.NumberFormat('en-GB', {style: 'currency', currency: 'GBP'}).format((i))
 }
 
-function bedroomsRange() {
-    let values = {};
-
-    for (let i = 1; i <= 10; i += 1) {
-        values[i] = (i == 10) ? i + "+" : i;
-    }
-
-    return values;
-}
 
 function salesPriceRange() {
     let values = {};
@@ -59,11 +53,8 @@ export default class filters extends Component {
         };
     }
 
-    handleChangeListingStatus = (e, {value}) => {
-        console.log(e, value);
-        let data = this.state.data;
-        data['listing_status'] = value;
-        this.setState({data});
+    updateState = (state) => {
+        this.setState(state);
     };
 
     render() {
@@ -79,93 +70,11 @@ export default class filters extends Component {
                     <br/>
                     <hr/>
                     {/*Property type*/}
-                    <Segment>
-                        <h3>Property type</h3>
-                        <Header style={{marginTop: 0}} size='small'>What type of property are you looking for?</Header>
-                        <Form.Group inline>
-                            <Form.Radio
-                                label='Rent'
-                                value='rent'
-                                checked={data['listing_status'] === 'rent'}
-                                onChange={this.handleChangeListingStatus}
-                            />
-                            <Form.Radio
-                                label='Sale'
-                                value='sale'
-                                checked={data['listing_status'] === 'sale'}
-                                onChange={this.handleChangeListingStatus}
-                            />
-                        </Form.Group>
-                        <div style={{textAlign: 'right'}}>
-                            <Button primary disabled>Next</Button>
-                        </div>
-                    </Segment>
+                    <PropertyTypeFilter updateState={this.updateState}/>
                     {/*Area*/}
-                    <Segment>
-                        <h3>Area</h3>
-                        <Form.Group inline>
-                            {/*<label>Where should the property be situated?</label>*/}
-                            <Header size='small'>Where should the property be located?</Header>
-                            <Form.Input
-                                width={7}
-                                fluid
-                                placeholder='London, West Midlands EC1 V,'
-                                onChange={(a, b) => this.setState({data: {...this.state.data, area: b.value}})}
-                            />
-
-                            <Form.Input
-                                width={4}
-                                fluid
-                                labelPosition='right'
-                                placeholder='1'
-                                label='Radius'>
-                                <input/>
-                                <Label>Miles</Label>
-                            </Form.Input>
-                        </Form.Group>
-                    </Segment>
+                    <AreaFilter updateState={this.updateState}/>
                     {/*Rooms*/}
-                    <Segment>
-                        <h3>Rooms</h3>
-                        <Header style={{marginTop: 0}} size='small'><i className="fas fa-bed"/> How many bedrooms do you
-                            need?</Header>
-                        <Range
-                            defaultValue={[1, 10]}
-                            step={1}
-                            min={1}
-                            max={10}
-                            marks={bedroomsRange()}
-                            onChange={(a) => this.setState({data: {...this.state.data, num_bedrooms_min: a}})}
-                        />
-
-                        <br/>
-                        <Divider/>
-                        <Header style={{marginTop: 0}} size='small'><i className="fas fa-toilet"/> How many bathrooms do
-                            you need?</Header>
-                        <Range
-                            defaultValue={[1, 10]}
-                            step={1}
-                            min={1}
-                            max={10}
-                            marks={bedroomsRange()}
-                            onChange={(a) => this.setState({data: {...this.state.data, num_bedrooms_min: a}})}
-                        />
-
-                        <br/>
-                        <Divider/>
-                        <Header style={{marginTop: 0}} size='small'><i className="fas fa-couch"/> How many reception
-                            areas do you need?</Header>
-                        <Range
-                            defaultValue={[1, 10]}
-                            step={1}
-                            min={1}
-                            max={10}
-                            marks={bedroomsRange()}
-                            onChange={(a) => this.setState({data: {...this.state.data, num_bedrooms_min: a}})}
-                        />
-                        <br/>
-
-                    </Segment>
+                    <RoomsFilter updateState={this.updateState}/>
                     {/*Price*/}
                     <Segment>
                         <h3>Price</h3>
