@@ -8,16 +8,15 @@ import BaseFilter from "./BaseFilter";
 
 
 export default class PropertyTypeFilter extends BaseFilter {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
-        this.state = {
-            listing_status: null,
-        };
+        this.state.listing_status = null;
+
     }
 
     getCollapsedText = () => {
-        return "Listing Status: " + this.state.listing_status;
+        return "Listing Type: " + this.state.listing_status;
     };
 
     handleChangeListingStatus = (e, {value}) => {

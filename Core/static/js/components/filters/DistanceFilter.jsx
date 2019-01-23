@@ -18,7 +18,7 @@ export default class AreaFilter extends BaseFilter {
     };
 
     getCollapsedText = () => {
-        return "Area: " + this.state.area;
+        return "Distance: " + this.state.area;
     };
 
 
@@ -27,7 +27,7 @@ export default class AreaFilter extends BaseFilter {
 
         return (
             <Fragment>
-                <h3>Area</h3>
+                <h3>Distance</h3>
                 <Form.Group inline>
                     {/*<label>Where should the property be situated?</label>*/}
                     <Header size='small'>Where should the property be located?</Header>

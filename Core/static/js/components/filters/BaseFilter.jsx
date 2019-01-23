@@ -5,11 +5,17 @@ import {
 import Segment from "semantic-ui-react/dist/commonjs/elements/Segment";
 
 export default class BaseFilter extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
+        this.state = {};
 
         if (new.target === BaseFilter) {
             throw new TypeError("Cannot construct BaseFilter instances directly");
+        }
+
+        if(Object.keys(props.show).indexOf(new.target.name) > -1 && props.show[new.target.name] === true ) {
+            this.state.show = true;
         }
     }
 

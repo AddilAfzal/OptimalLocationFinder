@@ -8,6 +8,8 @@ import Slider, {Range} from 'rc-slider';
 import PropertyTypeFilter from "./filters/PropertyTypeFilter";
 import AreaFilter from "./filters/AreaFilter";
 import RoomsFilter from "./filters/RoomsFilter";
+import DistanceFilter from "./filters/DistanceFilter";
+import PriceFilter from "./filters/PriceFilter";
 
 
 const options = [
@@ -39,11 +41,12 @@ export default class filters extends Component {
         super();
 
         this.state = {
-            show: true,
-            showFilters: {
+            show: {
                 PropertyTypeFilter: true,
-                AreaFilter: false,
+                AreaFilter: true,
                 RoomsFilter: false,
+                PriceFilter: false,
+                DistanceFilter: false,
             },
             data: {
                 'listing_status': null,
@@ -52,8 +55,7 @@ export default class filters extends Component {
                 'num_bedrooms': null,
                 'num_bathrooms': null,
                 'num_floors': null,
-                'num_recepts': null,
-                'costFactor': {},
+                'num_recepts': null, 'costFactor': {},
             }
         };
     }
@@ -67,31 +69,20 @@ export default class filters extends Component {
 
         return (
             <div>
-                <Button primary size="large" onClick={() => this.setState({show: true})}
-                        disabled={this.state.show}>Start</Button>
-                {this.state.show &&
+                <Button primary size="large" onClick={() => this.setState({show: true})}>
+                    Start
+                </Button>
                 <Fragment>
                     <br/>
                     <br/>
                     <hr/>
-                    <PropertyTypeFilter updateState={this.updateState}/>
-                    <AreaFilter updateState={this.updateState}/>
-                    <RoomsFilter updateState={this.updateState}/>
-                    <Segment>
-                        <h3>Price</h3>
-                        <Header style={{marginTop: 0}} size='small'>What is you price range?</Header>
-                        <Divider horizontal/>
-                        <Range
-                            defaultValue={[0, 10]}
-                            step={1}
-                            max={9}
-                            marks={salesPriceRange()}
-                        />
-                        <Divider horizontal/>
-                    </Segment>
+                    <PropertyTypeFilter updateState={this.updateState} show={this.state.show}/>
+                    <AreaFilter updateState={this.updateState} show={this.state.show}/>
+                    <RoomsFilter updateState={this.updateState} show={this.state.show}/>
+                    <PriceFilter updateState={this.updateState} show={this.state.show}/>
+                    <DistanceFilter updateStatus={this.updateState} show={this.state.show}/>
                     <Form.Button size={'large'}>Submit</Form.Button>
                 </Fragment>
-                }
 
             </div>
         )

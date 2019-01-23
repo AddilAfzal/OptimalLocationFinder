@@ -17,14 +17,12 @@ function bedroomsRange() {
 }
 
 export default class RoomsFilter extends BaseFilter {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
-        this.state = {
-            bedrooms: null,
-            bathrooms: null,
-            receptions: null,
-        };
+        this.state.bedrooms = null;
+        this.state.bathrooms = null;
+        this.state.receptions = null;
     }
 
     getCollapsedText = () => {
