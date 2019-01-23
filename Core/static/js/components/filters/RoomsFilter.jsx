@@ -21,16 +21,11 @@ export default class RoomsFilter extends BaseFilter {
         super();
 
         this.state = {
-            show: true,
             bedrooms: null,
             bathrooms: null,
             receptions: null,
         };
     }
-
-    handleChangeArea = (a,b) => {
-        this.setState({area: b.value});
-    };
 
     getCollapsedText = () => {
         return "Rooms: " + this.state.area;

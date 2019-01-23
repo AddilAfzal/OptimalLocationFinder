@@ -11,7 +11,6 @@ export default class AreaFilter extends BaseFilter {
         super();
 
         this.state = {
-            show: false,
             area: null
         };
     }

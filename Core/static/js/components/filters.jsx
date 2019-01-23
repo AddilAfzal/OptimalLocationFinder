@@ -40,6 +40,11 @@ export default class filters extends Component {
 
         this.state = {
             show: true,
+            showFilters: {
+                PropertyTypeFilter: true,
+                AreaFilter: false,
+                RoomsFilter: false,
+            },
             data: {
                 'listing_status': null,
                 'area': null,
@@ -69,13 +74,9 @@ export default class filters extends Component {
                     <br/>
                     <br/>
                     <hr/>
-                    {/*Property type*/}
                     <PropertyTypeFilter updateState={this.updateState}/>
-                    {/*Area*/}
                     <AreaFilter updateState={this.updateState}/>
-                    {/*Rooms*/}
                     <RoomsFilter updateState={this.updateState}/>
-                    {/*Price*/}
                     <Segment>
                         <h3>Price</h3>
                         <Header style={{marginTop: 0}} size='small'>What is you price range?</Header>
@@ -87,14 +88,9 @@ export default class filters extends Component {
                             marks={salesPriceRange()}
                         />
                         <Divider horizontal/>
-
-
                     </Segment>
-
-                    <Form.Button>Submit</Form.Button>
+                    <Form.Button size={'large'}>Submit</Form.Button>
                 </Fragment>
-
-
                 }
 
             </div>

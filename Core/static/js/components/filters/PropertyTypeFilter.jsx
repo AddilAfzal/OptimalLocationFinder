@@ -12,7 +12,6 @@ export default class PropertyTypeFilter extends BaseFilter {
         super();
 
         this.state = {
-            show: false,
             listing_status: null,
         };
     }
