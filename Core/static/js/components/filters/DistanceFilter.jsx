@@ -6,19 +6,47 @@ import {
 import BaseFilter from "./BaseFilter";
 
 
-export default class AreaFilter extends BaseFilter {
+export default class DistanceFilter extends BaseFilter {
     constructor(props) {
         super(props);
 
-        this.state.area = null;
+        this.state.distance = [];
     }
+
+    static description = "Filter for homes that are within a defined radius from a location.";
 
     handleChangeArea = (a,b) => {
         this.setState({area: b.value});
     };
 
     getCollapsedText = () => {
-        return "Distance: " + this.state.area;
+        return [
+            <h3>Distance</h3>,
+            <table className="ui celled table">
+                <thead>
+                <tr>
+                    <th>Location</th>
+                    <th>Max distance</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td data-label="Location">Work</td>
+                    <td data-label="Age">12KM</td>
+                </tr>
+                <tr>
+                    <td data-label="Location">University</td>
+                    <td data-label="Age">11KM</td>
+                </tr>
+                <tr>
+                    <td data-label="Location">Airport</td>
+                    <td data-label="Age">25.2KM</td>
+                </tr>
+                </tbody>
+            </table>
+        ];
+
+        // return "Distance: " + this.state.area;
     };
 
 

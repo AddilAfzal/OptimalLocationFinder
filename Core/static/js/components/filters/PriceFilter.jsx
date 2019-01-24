@@ -14,6 +14,8 @@ export default class PriceFilter extends BaseFilter {
         this.state.area = null;
     }
 
+    static description = "price...";
+
     getCollapsedText = () => {
         return "Price: " + this.state.area;
     };

@@ -14,9 +14,11 @@ export default class BaseFilter extends Component {
             throw new TypeError("Cannot construct BaseFilter instances directly");
         }
 
-        if(Object.keys(props.show).indexOf(new.target.name) > -1 && props.show[new.target.name] === true ) {
-            this.state.show = true;
-        }
+        // if(Object.keys(props.show).indexOf(new.target.name) > -1 && props.show[new.target.name] === true ) {
+        //     this.state.show = true;
+        // }
+
+        console.log("testing");
     }
 
     renderCollapsed() {
@@ -26,10 +28,15 @@ export default class BaseFilter extends Component {
     }
 
     render() {
-        return (<Segment>
-            {this.state.show ? [this.renderBody(), this.renderNext()] : this.renderCollapsed()}
-            <a>Change</a>
-        </Segment>)
+        return (
+            <div className="ui segments">
+                <div className="ui segment">
+                    {this.state.show ? [this.renderBody(), this.renderNext()] : this.renderCollapsed()}
+                </div>
+                <div className="ui segment">
+                    <p><a>Change</a></p>
+                </div>
+            </div>)
     }
 
     renderNext() {

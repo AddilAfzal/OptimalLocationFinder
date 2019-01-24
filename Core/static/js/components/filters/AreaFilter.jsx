@@ -13,6 +13,8 @@ export default class AreaFilter extends BaseFilter {
         this.state.area = null;
     }
 
+    static description = "Filter the list of homes to be located within a specific area.";
+
     handleChangeArea = (a,b) => {
         this.setState({area: b.value});
     };

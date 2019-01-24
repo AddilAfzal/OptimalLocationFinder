@@ -15,6 +15,8 @@ export default class PropertyTypeFilter extends BaseFilter {
 
     }
 
+    static description = "Type of listing...";
+
     getCollapsedText = () => {
         return "Listing Type: " + this.state.listing_status;
     };

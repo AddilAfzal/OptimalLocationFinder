@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {
-    Button, Container, Header, Form, Label
+    Button, Container, Header, Form, Label, Modal, Image
 } from 'semantic-ui-react'
 
 import {Divider, Segment} from 'semantic-ui-react'
@@ -10,6 +10,7 @@ import AreaFilter from "./filters/AreaFilter";
 import RoomsFilter from "./filters/RoomsFilter";
 import DistanceFilter from "./filters/DistanceFilter";
 import PriceFilter from "./filters/PriceFilter";
+import AddFilterModal from "./AddFIlterModal";
 
 
 const options = [
@@ -48,6 +49,7 @@ export default class filters extends Component {
                 PriceFilter: false,
                 DistanceFilter: false,
             },
+            filters: [],
             data: {
                 'listing_status': null,
                 'area': null,
@@ -76,14 +78,21 @@ export default class filters extends Component {
                     <br/>
                     <br/>
                     <hr/>
-                    <PropertyTypeFilter updateState={this.updateState} show={this.state.show}/>
-                    <AreaFilter updateState={this.updateState} show={this.state.show}/>
-                    <RoomsFilter updateState={this.updateState} show={this.state.show}/>
-                    <PriceFilter updateState={this.updateState} show={this.state.show}/>
-                    <DistanceFilter updateStatus={this.updateState} show={this.state.show}/>
-                    <Form.Button size={'large'}>Submit</Form.Button>
-                </Fragment>
+                    {this.state.filters}
+                    <p>
+                        Please select at least one filter to apply.
+                    </p>
+                    {/*<PropertyTypeFilter updateState={this.updateState} show={this.state.show}/>*/}
+                    {/*<AreaFilter updateState={this.updateState} show={this.state.show}/>*/}
+                    {/*<RoomsFilter updateState={this.updateState} show={this.state.show}/>*/}
+                    {/*<PriceFilter updateState={this.updateState} show={this.state.show}/>*/}
+                    {/*<DistanceFilter updateStatus={this.updateState} show={this.state.show}/>*/}
 
+                    <AddFilterModal filters={this.state.filters} updateFilters={(filters) => this.setState({filters})}/>
+
+                    { this.state.filters.length > 0 && <Form.Button size={'large'} primary>Submit</Form.Button> }
+
+                </Fragment>
             </div>
         )
     }

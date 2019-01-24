@@ -25,6 +25,8 @@ export default class RoomsFilter extends BaseFilter {
         this.state.receptions = null;
     }
 
+    static description = "Select the number of each type of room needed.";
+
     getCollapsedText = () => {
         return "Rooms: " + this.state.area;
     };
