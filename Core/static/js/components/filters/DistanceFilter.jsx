@@ -10,44 +10,82 @@ export default class DistanceFilter extends BaseFilter {
     constructor(props) {
         super(props);
 
-        this.state.distance = [];
+        this.state.distance = [
+            {distance: "2", from: "City, University of London"}
+        ];
     }
 
     static description = "Filter for homes that are within a defined radius from a location.";
 
-    handleChangeArea = (a,b) => {
+    handleChangeDistance = (a,b) => {
         this.setState({area: b.value});
     };
 
     getCollapsedText = () => {
-        return [
-            <h3>Distance</h3>,
-            <table className="ui celled table">
-                <thead>
+        let table_rows = this.state.distance.map((item) => {
+            return (
                 <tr>
-                    <th>Location</th>
-                    <th>Max distance</th>
+                    <td>
+                        {item.from}
+                    </td>
+                    <td>
+                        {item.distance}KM
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td data-label="Location">Work</td>
-                    <td data-label="Age">12KM</td>
-                </tr>
-                <tr>
-                    <td data-label="Location">University</td>
-                    <td data-label="Age">11KM</td>
-                </tr>
-                <tr>
-                    <td data-label="Location">Airport</td>
-                    <td data-label="Age">25.2KM</td>
-                </tr>
-                </tbody>
-            </table>
-        ];
+            )
+        });
 
-        // return "Distance: " + this.state.area;
+        return (
+            <Fragment>
+                <h3>Distance</h3>
+                <table>
+                    {table_rows}
+                </table>
+                <table className="ui celled table">
+                    <thead>
+                    <tr>
+                        <th>Location</th>
+                        <th>Max distance</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {table_rows}
+                    </tbody>
+                </table>
+            </Fragment>
+        )
     };
+
+
+    // getCollapsedText = () => {
+    //     return [
+    //         <h3>Distance</h3>,
+    //         <table className="ui celled table">
+    //             <thead>
+    //             <tr>
+    //                 <th>Location</th>
+    //                 <th>Max distance</th>
+    //             </tr>
+    //             </thead>
+    //             <tbody>
+    //             <tr>
+    //                 <td data-label="Location">Work</td>
+    //                 <td data-label="Age">12KM</td>
+    //             </tr>
+    //             <tr>
+    //                 <td data-label="Location">University</td>
+    //                 <td data-label="Age">11KM</td>
+    //             </tr>
+    //             <tr>
+    //                 <td data-label="Location">Airport</td>
+    //                 <td data-label="Age">25.2KM</td>
+    //             </tr>
+    //             </tbody>
+    //         </table>
+    //     ];
+    //
+    //     // return "Distance: " + this.state.area;
+    // };
 
 
     renderBody() {

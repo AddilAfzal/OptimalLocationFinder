@@ -10,7 +10,7 @@ export default class AreaFilter extends BaseFilter {
     constructor(props) {
         super(props);
 
-        this.state.area = null;
+        this.state.area = "London, United Kingdom";
     }
 
     static description = "Filter the list of homes to be located within a specific area.";
@@ -20,7 +20,12 @@ export default class AreaFilter extends BaseFilter {
     };
 
     getCollapsedText = () => {
-        return "Area: " + this.state.area;
+        return (
+            <Fragment>
+                <h3>Area</h3>
+                <p>{this.state.area}</p>
+            </Fragment>
+        )
     };
 
 

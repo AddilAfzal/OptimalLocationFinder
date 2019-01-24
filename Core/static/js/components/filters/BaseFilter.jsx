@@ -1,8 +1,7 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import {
     Button
 } from 'semantic-ui-react'
-import Segment from "semantic-ui-react/dist/commonjs/elements/Segment";
 
 export default class BaseFilter extends Component {
     constructor(props) {
@@ -18,31 +17,38 @@ export default class BaseFilter extends Component {
         //     this.state.show = true;
         // }
 
-        console.log("testing");
+        this.state.collapse = true;
     }
 
     renderCollapsed() {
-        return (<div>
-            {this.getCollapsedText()}
-        </div>)
+        return (
+            <Fragment>
+                <div className="ui segment">
+                    {this.getCollapsedText()}
+                </div>
+                <div className="ui segment">
+                    <p><a href="javascript:void(0)" onClick={() => this.setState({collapse: false})}>Change</a></p>
+                </div>
+            </Fragment>)
     }
 
     render() {
         return (
             <div className="ui segments">
-                <div className="ui segment">
-                    {this.state.show ? [this.renderBody(), this.renderNext()] : this.renderCollapsed()}
-                </div>
-                <div className="ui segment">
-                    <p><a>Change</a></p>
-                </div>
+                {this.state.collapse ? this.renderCollapsed() :
+                    [<div className="ui segment"> {this.renderBody()}</div>,
+                    <div className="ui segment"> {this.renderSave()}</div>]}
             </div>)
     }
 
-    renderNext() {
+    save = () => {
+        this.setState({collapse: true})
+    };
+
+    renderSave() {
         return (
             <div style={{textAlign: 'right'}}>
-                <Button primary disabled={this.state.listing_status === null}>Next</Button>
+                <Button onClick={this.save} primary>Save</Button>
             </div>
         )
     }

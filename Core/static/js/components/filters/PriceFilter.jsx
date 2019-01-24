@@ -6,18 +6,41 @@ import {
 import BaseFilter from "./BaseFilter";
 import {Range} from "rc-slider";
 
+function formatCurrency(i) {
+    return new Intl.NumberFormat('en-GB', {style: 'currency', currency: 'GBP'}).format((i))
+}
+
+
+function salesPriceRange() {
+    let values = {};
+
+    for (let i = 0; i <= 9; i += 1) {
+        if ((i < 6)) {
+            let k = formatCurrency(i * 100000);
+            values[i] = k.substring(0, (k.length) - 3)
+        } else if (i in [7, 8]) {
+            values[i] = formatCurrency(i * 100000)
+        }
+    }
+    return values;
+}
 
 export default class PriceFilter extends BaseFilter {
     constructor(props) {
         super(props);
 
-        this.state.area = null;
+        this.state.price = "£120/week";
     }
 
     static description = "price...";
 
     getCollapsedText = () => {
-        return "Price: " + this.state.area;
+        return (
+            <Fragment>
+                <h3>Price</h3>
+                <p>{this.state.price}</p>
+            </Fragment>
+        )
     };
 
 

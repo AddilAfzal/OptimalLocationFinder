@@ -18,24 +18,6 @@ const options = [
     {key: 'f', text: 'Female', value: 'female'},
 ];
 
-function formatCurrency(i) {
-    return new Intl.NumberFormat('en-GB', {style: 'currency', currency: 'GBP'}).format((i))
-}
-
-
-function salesPriceRange() {
-    let values = {};
-
-    for (let i = 0; i <= 9; i += 1) {
-        if ((i < 6)) {
-            let k = formatCurrency(i * 100000);
-            values[i] = k.substring(0, (k.length) - 3)
-        } else if (i in [7, 8]) {
-            values[i] = formatCurrency(i * 100000)
-        }
-    }
-    return values;
-}
 
 export default class filters extends Component {
     constructor() {
@@ -90,7 +72,9 @@ export default class filters extends Component {
 
                     <AddFilterModal filters={this.state.filters} updateFilters={(filters) => this.setState({filters})}/>
 
-                    { this.state.filters.length > 0 && <Form.Button size={'large'} primary>Submit</Form.Button> }
+                    <div style={{textAlign: 'right'}}>
+                        { this.state.filters.length > 0 && <Button size={'large'} primary>Submit</Button> }
+                    </div>
 
                 </Fragment>
             </div>

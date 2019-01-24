@@ -34,14 +34,14 @@ export default class AddFilterModal extends Component {
     onSelect = (F) => {
         let {filters} = this.props;
 
-        this.props.updateFilters([...filters, <F/>]);
+        this.props.updateFilters([...filters, <F key={filters.length+1}/>]);
     };
 
     render() {
         const { open } = this.state;
 
-        let table_body = this.state.filterMethods.map((cls) => {
-            return (<tr>
+        let table_body = this.state.filterMethods.map((cls, i) => {
+            return (<tr key={i}>
                 <td>
                     {cls.name}
                 </td>
@@ -49,7 +49,7 @@ export default class AddFilterModal extends Component {
                     {cls.description}
                 </td>
                 <td>
-                    <Button secondary size="small" onClick={() => this.onSelect(cls) }>Select</Button>
+                    <Button secondary size="small" onClick={() => { this.onSelect(cls); this.close()} }>Select</Button>
                 </td>
             </tr>)
         });
