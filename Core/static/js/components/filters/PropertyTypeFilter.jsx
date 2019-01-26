@@ -18,11 +18,20 @@ export default class PropertyTypeFilter extends BaseFilter {
     static description = "Type of listing...";
 
     getCollapsedText = () => {
-        return "Listing Type: " + this.state.listing_status;
+        return (
+            <Fragment>
+                <h3>Property type</h3>
+                <p>{this.state.area}</p>
+            </Fragment>
+        )
     };
 
     handleChangeListingStatus = (e, {value}) => {
         this.setState({listing_status: value});
+    };
+
+    getData = () => {
+        return {'property_type': this.state.listing_status};
     };
 
     renderBody() {

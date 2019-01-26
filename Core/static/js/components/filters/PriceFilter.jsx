@@ -29,16 +29,31 @@ export default class PriceFilter extends BaseFilter {
     constructor(props) {
         super(props);
 
-        this.state.price = "£120/week";
+        this.state.min_price = 100;
+        this.state.max_price = 200;
+        this.state.term = "weekly"; // Weekly/Monthly
     }
 
     static description = "price...";
 
+    getData = () => {
+        let { max_price, term, min_price } = this.state;
+        return {
+            'price': {
+                min_price,
+                max_price,
+                term,
+            }
+        };
+    };
+
     getCollapsedText = () => {
+        let { max_price, term, min_price } = this.state;
+
         return (
             <Fragment>
                 <h3>Price</h3>
-                <p>{this.state.price}</p>
+                <p>{formatCurrency(min_price)} - {formatCurrency(max_price)}/{term}</p>
             </Fragment>
         )
     };

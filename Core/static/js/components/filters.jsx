@@ -48,6 +48,19 @@ export default class filters extends Component {
         this.setState(state);
     };
 
+    printData = () => {
+        console.log(
+            this.state.filters
+                .map(f => f.ref.current.getData())
+                .reduce((obj, item) => {
+                    let key = Object.keys(item)[0];
+                    obj[key] = item[key];
+                    return obj;
+                })
+        );
+    };
+
+
     render() {
         const {data} = this.state;
 
@@ -75,7 +88,7 @@ export default class filters extends Component {
                     <div style={{textAlign: 'right'}}>
                         { this.state.filters.length > 0 && <Button size={'large'} primary>Submit</Button> }
                     </div>
-
+                    <Button onClick={this.printData}>Print data</Button>
                 </Fragment>
             </div>
         )

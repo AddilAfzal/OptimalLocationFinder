@@ -17,41 +17,57 @@ export default class DistanceFilter extends BaseFilter {
 
     static description = "Filter for homes that are within a defined radius from a location.";
 
+    getData = () => {
+        return {'distance': this.state.distance};
+    };
+
     handleChangeDistance = (a,b) => {
         this.setState({area: b.value});
     };
 
+    // getCollapsedText = () => {
+    //     let table_rows = this.state.distance.map((item) => {
+    //         return (
+    //             <tr>
+    //                 <td>
+    //                     {item.from}
+    //                 </td>
+    //                 <td>
+    //                     {item.distance}KM
+    //                 </td>
+    //             </tr>
+    //         )
+    //     });
+    //
+    //     return (
+    //         <Fragment>
+    //             <h3>Distance</h3>
+    //             <table className="ui celled table">
+    //                 <thead>
+    //                 <tr>
+    //                     <th>Location</th>
+    //                     <th>Max distance</th>
+    //                 </tr>
+    //                 </thead>
+    //                 <tbody>
+    //                 {table_rows}
+    //                 </tbody>
+    //             </table>
+    //         </Fragment>
+    //     )
+    // };
     getCollapsedText = () => {
         let table_rows = this.state.distance.map((item) => {
             return (
-                <tr>
-                    <td>
-                        {item.from}
-                    </td>
-                    <td>
-                        {item.distance}KM
-                    </td>
-                </tr>
+                <span>{item.from} {item.distance}KM</span>
             )
         });
 
         return (
             <Fragment>
                 <h3>Distance</h3>
-                <table>
-                    {table_rows}
-                </table>
-                <table className="ui celled table">
-                    <thead>
-                    <tr>
-                        <th>Location</th>
-                        <th>Max distance</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {table_rows}
-                    </tbody>
-                </table>
+                {table_rows}
+
             </Fragment>
         )
     };

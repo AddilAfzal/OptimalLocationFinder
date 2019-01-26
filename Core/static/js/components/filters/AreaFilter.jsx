@@ -11,26 +11,33 @@ export default class AreaFilter extends BaseFilter {
         super(props);
 
         this.state.area = "London, United Kingdom";
+        this.state.radius = 2; // in KM
     }
 
     static description = "Filter the list of homes to be located within a specific area.";
-
-    handleChangeArea = (a,b) => {
-        this.setState({area: b.value});
-    };
 
     getCollapsedText = () => {
         return (
             <Fragment>
                 <h3>Area</h3>
-                <p>{this.state.area}</p>
+                <p><i className="fas fa-map-marker-alt"/> {this.state.area}</p>
             </Fragment>
         )
     };
 
+    getData = () => {
+        let {area, radius} = this.state;
+        return {
+            'area': {
+                area,
+                radius
+            }
+        };
+    };
+
 
     renderBody() {
-        const {data} = this.state;
+        const {area, radius} = this.state;
 
         return (
             <Fragment>
@@ -42,7 +49,8 @@ export default class AreaFilter extends BaseFilter {
                         width={7}
                         fluid
                         placeholder='London, West Midlands EC1 V,'
-                        onChange={this.handleChangeArea}
+                        onChange={(a,b) => this.setState({area: b.value})}
+                        value={area}
                     />
 
                     <Form.Input
@@ -50,6 +58,8 @@ export default class AreaFilter extends BaseFilter {
                         fluid
                         labelPosition='right'
                         placeholder='1'
+                        value={radius}
+                        onChange={(a,b) => this.setState({radius: b.value})}
                         label='Radius'>
                         <input/>
                         <Label>Miles</Label>

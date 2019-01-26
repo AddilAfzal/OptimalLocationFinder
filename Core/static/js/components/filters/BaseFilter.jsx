@@ -42,7 +42,8 @@ export default class BaseFilter extends Component {
     }
 
     save = () => {
-        this.setState({collapse: true})
+        this.setState({collapse: true});
+
     };
 
     renderSave() {

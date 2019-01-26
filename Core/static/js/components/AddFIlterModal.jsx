@@ -23,6 +23,7 @@ export default class AddFilterModal extends Component {
                 RoomsFilter,
                 DistanceFilter,
                 PriceFilter,
+                PropertyTypeFilter,
             ],
             open: false,
         };
@@ -33,8 +34,8 @@ export default class AddFilterModal extends Component {
 
     onSelect = (F) => {
         let {filters} = this.props;
-
-        this.props.updateFilters([...filters, <F key={filters.length+1}/>]);
+        let ref = React.createRef();
+        this.props.updateFilters([...filters, <F ref={ref} key={filters.length+1}/>]);
     };
 
     render() {

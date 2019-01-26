@@ -20,17 +20,34 @@ export default class RoomsFilter extends BaseFilter {
     constructor(props) {
         super(props);
 
-        this.state.bedrooms = null;
-        this.state.bathrooms = null;
-        this.state.receptions = null;
+        this.state.bedrooms = 7;
+        this.state.bathrooms = 3;
+        this.state.receptions = 1;
     }
 
     static description = "Select the number of each type of room needed.";
 
-    getCollapsedText = () => {
-        return "Rooms: " + this.state.area;
+    getData = () => {
+        let { bedrooms, bathrooms, receptions} = this.state;
+        return {
+            'rooms': {
+                bathrooms,
+                receptions,
+                bedrooms,
+            }
+        };
     };
 
+    getCollapsedText = () => {
+        return (
+            <Fragment>
+                <h3>Rooms</h3>
+                <p><i className="fas fa-bed"/> Bedrooms {this.state.bedrooms}</p>
+                <p><i className="fas fa-toilet"/> Bathrooms {this.state.bathrooms}</p>
+                {this.state.receptions > 0 && <p><i className="fas fa-couch"/> Receptions {this.state.bathrooms}</p>}
+            </Fragment>
+        )
+    };
 
     renderBody() {
         const {bedrooms, bathrooms, receptions} = this.state;
