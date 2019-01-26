@@ -20,6 +20,10 @@ export default class BaseFilter extends Component {
         this.state.collapse = true;
     }
 
+    removeFilter = () => {
+        this.props.removeFilter(this);
+    };
+
     renderCollapsed() {
         return (
             <Fragment>
@@ -28,6 +32,7 @@ export default class BaseFilter extends Component {
                 </div>
                 <div className="ui segment">
                     <p><a href="javascript:void(0)" onClick={() => this.setState({collapse: false})}>Change</a></p>
+                    <p><a href="javascript:void(0)" onClick={this.removeFilter}>Remove</a></p>
                 </div>
             </Fragment>)
     }
@@ -49,7 +54,7 @@ export default class BaseFilter extends Component {
     renderSave() {
         return (
             <div style={{textAlign: 'right'}}>
-                <Button onClick={this.save} primary>Save</Button>
+                <Button onClick={this.save} primary>Done</Button>
             </div>
         )
     }

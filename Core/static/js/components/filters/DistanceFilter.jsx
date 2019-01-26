@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {
-    Header, Form, Label
+    Header, Form, Label, Button, Divider
 } from 'semantic-ui-react'
 
 import BaseFilter from "./BaseFilter";
@@ -66,8 +66,7 @@ export default class DistanceFilter extends BaseFilter {
         return (
             <Fragment>
                 <h3>Distance</h3>
-                {table_rows}
-
+                    {table_rows}
             </Fragment>
         )
     };
@@ -103,6 +102,10 @@ export default class DistanceFilter extends BaseFilter {
     //     // return "Distance: " + this.state.area;
     // };
 
+    addContraint = (obj) => {
+        return null;
+    };
+
 
     renderBody() {
         const {data} = this.state;
@@ -110,6 +113,21 @@ export default class DistanceFilter extends BaseFilter {
         return (
             <Fragment>
                 <h3>Distance</h3>
+                <table className="ui celled table">
+                     <thead>
+                     <tr>
+                         <th>Location</th>
+                         <th>Max distance</th>
+                     </tr>
+                     </thead>
+                     <tbody>
+                     <tr>
+                         <td data-label="Location">Work</td>
+                         <td data-label="Age">12KM</td>
+                     </tr>
+                    </tbody>
+                </table>
+                <Divider/>
                 <Form.Group inline>
                     {/*<label>Where should the property be situated?</label>*/}
                     <Header size='small'>Where should the property be located?</Header>
@@ -129,6 +147,8 @@ export default class DistanceFilter extends BaseFilter {
                         <input/>
                         <Label>Miles</Label>
                     </Form.Input>
+                    <br/>
+                    <Button onCLick={this.addContraint}>Save</Button>
                 </Form.Group>
             </Fragment>
         )

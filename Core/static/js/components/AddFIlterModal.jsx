@@ -33,9 +33,10 @@ export default class AddFilterModal extends Component {
     close = () => this.setState({open: false});
 
     onSelect = (F) => {
-        let {filters} = this.props;
+        let {filters, addFilter} = this.props;
         let ref = React.createRef();
-        this.props.updateFilters([...filters, <F ref={ref} key={filters.length+1}/>]);
+        let key = filters.length+1;
+        addFilter(<F ref={ref} key={key} data-key={key} {...this.props} />)
     };
 
     render() {

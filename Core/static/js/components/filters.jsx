@@ -44,10 +44,6 @@ export default class filters extends Component {
         };
     }
 
-    updateState = (state) => {
-        this.setState(state);
-    };
-
     printData = () => {
         console.log(
             this.state.filters
@@ -60,9 +56,15 @@ export default class filters extends Component {
         );
     };
 
+    removeFilter = (f) => {
+        let key = f.props["data-key"];
+        let filters = this.state.filters.filter((f) => parseInt(f.key) !== key);
+        this.setState({filters})
+    };
+
 
     render() {
-        const {data} = this.state;
+        const {filters} = this.state;
 
         return (
             <div>
@@ -73,17 +75,16 @@ export default class filters extends Component {
                     <br/>
                     <br/>
                     <hr/>
-                    {this.state.filters}
+                    {filters}
                     <p>
                         Please select at least one filter to apply.
                     </p>
-                    {/*<PropertyTypeFilter updateState={this.updateState} show={this.state.show}/>*/}
-                    {/*<AreaFilter updateState={this.updateState} show={this.state.show}/>*/}
-                    {/*<RoomsFilter updateState={this.updateState} show={this.state.show}/>*/}
-                    {/*<PriceFilter updateState={this.updateState} show={this.state.show}/>*/}
-                    {/*<DistanceFilter updateStatus={this.updateState} show={this.state.show}/>*/}
 
-                    <AddFilterModal filters={this.state.filters} updateFilters={(filters) => this.setState({filters})}/>
+                    <AddFilterModal
+                        filters={this.state.filters}
+                        addFilter={(f) => this.setState({filters: [...this.state.filters, f]})}
+                        removeFilter={this.removeFilter}
+                    />
 
                     <div style={{textAlign: 'right'}}>
                         { this.state.filters.length > 0 && <Button size={'large'} primary>Submit</Button> }
