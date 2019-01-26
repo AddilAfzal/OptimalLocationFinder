@@ -18,10 +18,11 @@ export default class PropertyTypeFilter extends BaseFilter {
     static description = "Type of listing...";
 
     getCollapsedText = () => {
+        let {listing_status} = this.state;
         return (
             <Fragment>
                 <h3>Property type</h3>
-                <p>{this.state.area}</p>
+                <p>{listing_status && (listing_status.charAt(0).toUpperCase() + listing_status.slice(1))}</p>
             </Fragment>
         )
     };
