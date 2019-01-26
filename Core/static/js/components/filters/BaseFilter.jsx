@@ -13,10 +13,6 @@ export default class BaseFilter extends Component {
             throw new TypeError("Cannot construct BaseFilter instances directly");
         }
 
-        // if(Object.keys(props.show).indexOf(new.target.name) > -1 && props.show[new.target.name] === true ) {
-        //     this.state.show = true;
-        // }
-
         this.state.collapse = true;
     }
 
