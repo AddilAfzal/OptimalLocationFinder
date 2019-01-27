@@ -13,11 +13,16 @@ export default class BaseFilter extends Component {
             throw new TypeError("Cannot construct BaseFilter instances directly");
         }
 
+        this.state.canRemove = true;
         this.state.collapse = false;
     }
 
     removeFilter = () => {
         this.props.removeFilter(this);
+    };
+
+    isValid = () => {
+        return true;
     };
 
     renderCollapsed() {
@@ -28,7 +33,7 @@ export default class BaseFilter extends Component {
                 </div>
                 <div className="ui segment">
                     <p><a href="javascript:void(0)" onClick={() => this.setState({collapse: false})}>Change</a></p>
-                    <p><a href="javascript:void(0)" onClick={this.removeFilter}>Remove</a></p>
+                    { this.state.canRemove && <p><a href="javascript:void(0)" onClick={this.removeFilter}>Remove</a></p> }
                 </div>
             </Fragment>)
     }
@@ -42,15 +47,23 @@ export default class BaseFilter extends Component {
             </div>)
     }
 
-    save = () => {
-        this.setState({collapse: true});
+    collapse = () => {
+        this.setState({collapse: true})
+    };
 
+    save = () => {
+        this.collapse();
+        this.props.reloadData();
+        if (this.props.hasOwnProperty("onFirstValid") && !this.hasOwnProperty('doneOnFirstValid')) {
+            this.props.onFirstValid();
+            this.doneOnFirstValid = true;
+        }
     };
 
     renderSave() {
         return (
             <div style={{textAlign: 'right'}}>
-                <Button onClick={this.save} primary>Done</Button>
+                <Button onClick={this.save} primary disabled={!this.isValid()}>Done</Button>
             </div>
         )
     }

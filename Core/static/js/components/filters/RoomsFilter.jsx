@@ -94,6 +94,7 @@ export default class RoomsFilter extends BaseFilter {
                 />
                 <br/>
             </Fragment>
+
         )
     }
 }

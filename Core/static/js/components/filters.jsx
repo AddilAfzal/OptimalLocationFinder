@@ -31,18 +31,42 @@ export default class filters extends Component {
                 PriceFilter: false,
                 DistanceFilter: false,
             },
-            filters: [<PropertyTypeFilter/>, <PriceFilter/>],
-            data: {
-                'listing_status': null,
-                'area': null,
-                'price': null,
-                'num_bedrooms': null,
-                'num_bathrooms': null,
-                'num_floors': null,
-                'num_recepts': null, 'costFactor': {},
-            }
+            data: {},
+            filters: [],
+            showPriceFilter: false,
         };
     }
+
+    // componentDidMount = () => {
+    //     this.setState({
+    //         filters: [
+    //             <PropertyTypeFilter key={Math.random()} ref={React.createRef()} reloadData={this.reloadData} onFirstValid={() => {
+    //                 this.reloadData(); this.addFilter(<PriceFilter key={Math.random()} ref={React.createRef()} reloadData={this.reloadData}
+    //                                             getFilter={this.getFilter} data={this.state.data}/>)
+    //             }}/>,
+    //         ]
+    //     });
+    // };
+
+
+    getFilter = (filterType) => {
+        return this.state.filters.filter(f => f.type.name === filterType)[0];
+    };
+
+    reloadData = async () => {
+        let data = this.state.filters.length > 0 ? this.state.filters
+            .map(f => f.ref.current.getData())
+            .reduce((obj, item) => {
+                let key = Object.keys(item)[0];
+                obj[key] = item[key];
+                return obj;
+            }) : [];
+        data = {...data, ...this.propertyFilterRef.current.getData()};
+        if (this.priceFilterRef.current) {
+            data = {...data, ...this.priceFilterRef.current.getData()};
+        }
+        await this.setState({data})
+    };
 
     printData = () => {
         console.log(
@@ -56,15 +80,28 @@ export default class filters extends Component {
         );
     };
 
-    removeFilter = (f) => {
+    addFilter = async (f) => {
+        await this.setState({filters: [...this.state.filters, f]})
+    };
+
+    removeFilter = async (f) => {
         let key = f.props["data-key"];
         let filters = this.state.filters.filter((f) => parseInt(f.key) !== key);
-        this.setState({filters})
+        await this.setState({filters})
+        this.reloadData();
     };
+
+    onFirstValid = async () => {
+        await this.reloadData();
+        this.setState({showPriceFilter: true});
+    };
+
+    propertyFilterRef = React.createRef();
+    priceFilterRef = React.createRef();
 
 
     render() {
-        const {filters} = this.state;
+        const {filters, showPriceFilter} = this.state;
 
         return (
             <div>
@@ -75,15 +112,23 @@ export default class filters extends Component {
                     <br/>
                     <br/>
                     <hr/>
+                    <PropertyTypeFilter ref={this.propertyFilterRef} reloadData={this.reloadData}
+                                        onFirstValid={this.onFirstValid}/>
+                    { this.state.showPriceFilter && <PriceFilter ref={this.priceFilterRef}
+                                 reloadData={this.reloadData}
+                                 getFilter={this.getFilter}
+                                 data={this.state.data}/> }
                     {filters}
+
                     <p>
                         Please select at least one filter to apply.
                     </p>
 
                     <AddFilterModal
                         filters={this.state.filters}
-                        addFilter={(f) => this.setState({filters: [...this.state.filters, f]})}
+                        addFilter={this.addFilter}
                         removeFilter={this.removeFilter}
+                        reloadData={this.reloadData}
                     />
 
                     <div style={{textAlign: 'right'}}>

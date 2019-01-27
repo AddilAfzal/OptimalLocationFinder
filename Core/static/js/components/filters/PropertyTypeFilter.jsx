@@ -11,8 +11,8 @@ export default class PropertyTypeFilter extends BaseFilter {
     constructor(props) {
         super(props);
 
+        this.state.canRemove = false;
         this.state.listing_status = null;
-
     }
 
     static description = "Type of listing...";
@@ -21,7 +21,7 @@ export default class PropertyTypeFilter extends BaseFilter {
         let {listing_status} = this.state;
         return (
             <Fragment>
-                <h3>Property type</h3>
+                <h3>Listing type</h3>
                 <p>{listing_status && (listing_status.charAt(0).toUpperCase() + listing_status.slice(1))}</p>
             </Fragment>
         )
@@ -40,8 +40,8 @@ export default class PropertyTypeFilter extends BaseFilter {
 
         return (
             <Fragment>
-                <h3>Property type</h3>
-                <Header style={{marginTop: 0}} size='small'>What type of property are you looking for?</Header>
+                <h3>Listing type</h3>
+                <Header style={{marginTop: 0}} size='small'>What type of listing are you interested in?</Header>
                 <Form.Group inline>
                     <Form.Radio
                         label='Rent'
@@ -60,4 +60,8 @@ export default class PropertyTypeFilter extends BaseFilter {
 
         )
     }
+
+    isValid = () => {
+        return !!(this.state.listing_status)
+    };
 }
