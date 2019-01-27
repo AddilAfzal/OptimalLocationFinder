@@ -13,7 +13,7 @@ export default class BaseFilter extends Component {
             throw new TypeError("Cannot construct BaseFilter instances directly");
         }
 
-        this.state.collapse = true;
+        this.state.collapse = false;
     }
 
     removeFilter = () => {

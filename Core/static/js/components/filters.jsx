@@ -31,7 +31,7 @@ export default class filters extends Component {
                 PriceFilter: false,
                 DistanceFilter: false,
             },
-            filters: [],
+            filters: [<PropertyTypeFilter/>, <PriceFilter/>],
             data: {
                 'listing_status': null,
                 'area': null,

@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {
-    Header, Form, Label, Divider, Segment
+    Header, Form, Label, Divider, Segment, Button
 } from 'semantic-ui-react'
 
 import BaseFilter from "./BaseFilter";
@@ -29,48 +29,65 @@ export default class PriceFilter extends BaseFilter {
     constructor(props) {
         super(props);
 
-        this.state.min_price = 100;
-        this.state.max_price = 200;
-        this.state.term = "weekly"; // Weekly/Monthly
+        this.state.price = [0,0];
+        this.state.term = null; // Weekly/Monthly
     }
 
     static description = "price...";
 
     getData = () => {
-        let { max_price, term, min_price } = this.state;
+        let { price, term } = this.state;
         return {
             'price': {
-                min_price,
-                max_price,
+                price: {min: price[0], max: price[1]},
                 term,
             }
         };
     };
 
     getCollapsedText = () => {
-        let { max_price, term, min_price } = this.state;
+        let { price, term } = this.state;
 
         return (
             <Fragment>
                 <h3>Price</h3>
-                <p>{formatCurrency(min_price)} - {formatCurrency(max_price)}/{term}</p>
+                <p>{formatCurrency(price[0])} - {formatCurrency(price[1])}/{term}</p>
             </Fragment>
         )
     };
 
+    handleChangePriceTerm = (elmm ,a ) => {
+        this.setState({term: a.value})
+    };
 
     renderBody() {
-        const {data} = this.state;
+        const {term} = this.state;
 
         return (
             <Fragment>
                 <h3>Price</h3>
-                <Header style={{marginTop: 0}} size='small'>What is you price range?</Header>
-                <Divider horizontal/>
+                <Form.Group inline>
+                    <Form.Radio
+                        label='Per Week'
+                        value='week'
+                        checked={term === 'week'}
+                        onChange={this.handleChangePriceTerm}
+                    />
+                    <Form.Radio
+                        label='Per Month'
+                        value='month'
+                        checked={term === 'month'}
+                        onChange={this.handleChangePriceTerm}
+                    />
+                </Form.Group>
+
+                <br/>
+                <Header style={{marginTop: 0}} size='small'>Range</Header>
                 <Range
                     defaultValue={[0, 10]}
                     step={1}
                     max={9}
+                    onChange={(price) => this.setState({price})}
                     marks={salesPriceRange()}
                 />
                 <Divider horizontal/>
