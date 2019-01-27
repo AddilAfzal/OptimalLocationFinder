@@ -32,7 +32,7 @@ export default class PropertyTypeFilter extends BaseFilter {
     };
 
     getData = () => {
-        return {'property_type': this.state.listing_status};
+        return {'listingType': this.state.listing_status};
     };
 
     renderBody() {

@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {
-    Button
+    Button, Message
 } from 'semantic-ui-react'
 
 export default class BaseFilter extends Component {
@@ -15,6 +15,7 @@ export default class BaseFilter extends Component {
 
         this.state.canRemove = true;
         this.state.collapse = false;
+        this.state.needsReview = false;
     }
 
     removeFilter = () => {
@@ -26,13 +27,21 @@ export default class BaseFilter extends Component {
     };
 
     renderCollapsed() {
+        let reviewMessage =
+          ( <Message>
+                <Message.Header>Requires updating</Message.Header>
+                <p>
+                    A change to another filter means this will need to be updated.
+                </p>
+            </Message>);
         return (
             <Fragment>
                 <div className="ui segment">
+                    {this.state.needsReview && reviewMessage}
                     {this.getCollapsedText()}
                 </div>
                 <div className="ui segment">
-                    <p><a href="javascript:void(0)" onClick={() => this.setState({collapse: false})}>Change</a></p>
+                    <p><a href="javascript:void(0)" onClick={this.unCollapse}>Change</a></p>
                     { this.state.canRemove && <p><a href="javascript:void(0)" onClick={this.removeFilter}>Remove</a></p> }
                 </div>
             </Fragment>)
@@ -49,6 +58,10 @@ export default class BaseFilter extends Component {
 
     collapse = () => {
         this.setState({collapse: true})
+    };
+
+    unCollapse = () => {
+        this.setState({collapse: false, needsReview: false})
     };
 
     save = () => {

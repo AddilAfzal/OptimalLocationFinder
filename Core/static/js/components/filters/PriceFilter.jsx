@@ -46,6 +46,7 @@ export default class PriceFilter extends BaseFilter {
         this.state.canRemove = false;
         this.state.price = [0,0];
         this.state.term = 'month'; // Week/Month
+        this.state.listingType = props.data.listingType;
     }
 
     static description = "price...";
@@ -61,17 +62,21 @@ export default class PriceFilter extends BaseFilter {
     };
 
     componentWillReceiveProps(nextProps, nextContext) {
+        // console.log(nextProps, this.state)
+        if(nextProps.data.listingType !== this.state.listingType) {
+            console.log("Changing state")
+            this.setState({listingType: nextProps.data.listingType, price: [0,0], term: null, needsReview: true})
+        }
         console.log(nextProps);
         console.log("Receiving props")
     }
 
     getCollapsedText = () => {
-        let { price, term } = this.state;
-        // console.log(this.props)
+        let { price, term, listingType } = this.state;
         return (
             <Fragment>
                 <h3>Price</h3>
-                <p>{formatCurrency(price[0])} - {formatCurrency(price[1])}{this.props.data.property_type === 'rent' && '/' + term}</p>
+                <p>{formatCurrency(price[0])} - {formatCurrency(price[1])}{listingType === 'rent' && '/' + term}</p>
             </Fragment>
         )
     };
@@ -81,14 +86,13 @@ export default class PriceFilter extends BaseFilter {
     };
 
     renderBody() {
-        const {term, price} = this.state;
-        let propertyData = this.props.data;
+        const {term, price, listingType} = this.state;
 
         return (
             <Fragment>
                 <h3>Price</h3>
 
-                {propertyData.property_type === 'rent' && [<Form.Group inline>
+                {listingType === 'rent' && [<Form.Group inline>
                     <Form.Radio
                         label='Per Month'
                         value='month'
@@ -109,11 +113,11 @@ export default class PriceFilter extends BaseFilter {
                 <br/>
                 <Range
                     defaultValue={[0, 10]}
-                    value={price.map(x => x/(propertyData.property_type === 'rent' ? 50 : 25000))}
+                    value={price.map(x => x/(listingType === 'rent' ? 50 : 25000))}
                     step={1}
                     max={50}
-                    onChange={(price) => this.setState({price: price.map(x => x * (propertyData.property_type === 'rent' ? 50 : 25000))})}
-                    marks={propertyData.property_type === 'rent' ? rentalPriceRange() : salesPriceRange()}
+                    onChange={(price) => this.setState({price: price.map(x => x * (listingType === 'rent' ? 50 : 25000))})}
+                    marks={listingType === 'rent' ? rentalPriceRange() : salesPriceRange()}
                 />
                 <Divider horizontal/>
             </Fragment>
