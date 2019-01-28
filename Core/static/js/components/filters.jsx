@@ -86,7 +86,7 @@ export default class filters extends Component {
 
     removeFilter = async (f) => {
         let key = f.props["data-key"];
-        let filters = this.state.filters.filter((f) => parseInt(f.key) !== key);
+        let filters = this.state.filters.filter( (f) => f.key.toString() !== key.toString());
         await this.setState({filters})
         this.reloadData();
     };
