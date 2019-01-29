@@ -32,7 +32,7 @@ export default class PropertyTypeFilter extends BaseFilter {
         ];
 
         this.setState({options});
-        this.setState({propertyTypes: ['Flat']});
+        // this.setState({propertyTypes: ['Flat']});
     }
 
     static description = "Type of property...";

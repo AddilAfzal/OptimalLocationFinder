@@ -25,14 +25,6 @@ export default class filters extends Component {
         super();
 
         this.state = {
-            show: {
-                PropertyTypeFilter: true,
-                AreaFilter: true,
-                RoomsFilter: false,
-                PriceFilter: false,
-                DistanceFilter: false,
-            },
-
             data: {},
             filters: [],
 
@@ -41,23 +33,26 @@ export default class filters extends Component {
     }
 
     componentDidMount() {
-        const {filters, showPriceFilter, showPropertyTypeFilter, lock, data} = this.state;
+        const {filters, lock, data} = this.state;
         const {addFilter, removeFilter, enableLock, disableLock, reloadData} = this;
 
         const propMethods = {addFilter, removeFilter, enableLock, disableLock, reloadData};
         const propVars = {lock, filters, data};
 
         const onPriceValid = () => this.addFilter(<PropertyTypeFilter ref={React.createRef()}
-                                                       {...propMethods}
-                                                       {...propVars}/>);
+                                                                      key={Math.random()}
+                                                                      {...propMethods}
+                                                                      {...propVars}/>);
 
         const onListingStatusValid = () => this.addFilter(<PriceFilter ref={React.createRef()}
                                                                        onFirstValid={onPriceValid}
+                                                                       key={Math.random()}
                                                                        {...propMethods}
                                                                        {...propVars}/>);
 
         this.addFilter(<ListingTypeFilter ref={React.createRef()}
                                           onFirstValid={onListingStatusValid}
+                                          key={Math.random()}
                                           {...propMethods}
                                           {...propVars}/>);
     };
@@ -78,7 +73,7 @@ export default class filters extends Component {
     addFilter = (f) => this.setState({filters: [...this.state.filters, f]});
 
     removeFilter = async (f) => {
-        let key = f.props["data-key"];
+        const key = f.props["data-key"];
         let filters = this.state.filters.filter( (f) => f.key.toString() !== key.toString());
         await this.setState({filters})
         this.reloadData();
@@ -108,10 +103,10 @@ export default class filters extends Component {
                         Please select at least one filter to apply.
                     </p>
 
-                    <AddFilterModal {...propMethods}b {...propVars}/>
+                    { (filters.length >= 3 && lock === false) && <AddFilterModal {...propMethods} {...propVars}/> }
 
                     <div style={{textAlign: 'right'}}>
-                        { this.state.filters.length > 0 && <Button size={'large'} primary>Submit</Button> }
+                        { this.state.filters.length > 0 && <Button size={'large'} primary disabled={!(filters.length >= 3 && lock === false) }>Submit</Button> }
                     </div>
                     <Button onClick={this.printData}>Print data</Button>
                 </Fragment>

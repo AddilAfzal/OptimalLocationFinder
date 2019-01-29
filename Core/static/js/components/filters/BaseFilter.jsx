@@ -19,6 +19,7 @@ export default class BaseFilter extends Component {
         this.state.needsReview = false;
         this.state.showLoader = true;
 
+        props.enableLock();
     }
 
     componentDidMount() {
