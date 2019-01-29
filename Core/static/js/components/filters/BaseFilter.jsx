@@ -61,12 +61,14 @@ export default class BaseFilter extends Component {
     };
 
     unCollapse = () => {
+        this.props.enableLock();
         this.setState({collapse: false, needsReview: false})
     };
 
     save = () => {
         this.collapse();
         this.props.reloadData();
+        this.props.disableLock();
         if (this.props.hasOwnProperty("onFirstValid") && !this.hasOwnProperty('doneOnFirstValid')) {
             this.props.onFirstValid();
             this.doneOnFirstValid = true;

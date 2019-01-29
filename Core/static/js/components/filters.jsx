@@ -32,9 +32,14 @@ export default class filters extends Component {
                 PriceFilter: false,
                 DistanceFilter: false,
             },
+
             data: {},
             filters: [],
+
             showPriceFilter: false,
+            showPropertyTypeFilter: false,
+
+            lock: true,
         };
     }
 
@@ -48,11 +53,6 @@ export default class filters extends Component {
     //         ]
     //     });
     // };
-
-
-    getFilter = (filterType) => {
-        return this.state.filters.filter(f => f.type.name === filterType)[0];
-    };
 
     reloadData = async () => {
         let data = this.state.filters.length > 0 ? this.state.filters
@@ -86,9 +86,22 @@ export default class filters extends Component {
         this.reloadData();
     };
 
-    onFirstValid = async () => {
+    onListingStatusValid = async () => {
         await this.reloadData();
         this.setState({showPriceFilter: true});
+    };
+
+    onPriceValid = async () => {
+        await this.reloadData();
+        this.setState({showPropertyTypeFilter: true});
+    };
+
+    enableLock= () => {
+        this.setState({lock: true})
+    };
+
+    disableLock = () => {
+        this.setState({lock: false})
     };
 
     propertyFilterRef = React.createRef();
@@ -96,7 +109,11 @@ export default class filters extends Component {
 
 
     render() {
-        const {filters, showPriceFilter} = this.state;
+        const {filters, showPriceFilter, showPropertyTypeFilter, lock, data} = this.state;
+        const {addFilter, removeFilter, enableLock, disableLock, reloadData} = this;
+
+        const propMethods = {addFilter, removeFilter, enableLock, disableLock, reloadData};
+        const propVars = {lock, filters, data};
 
         return (
             <div>
@@ -107,24 +124,17 @@ export default class filters extends Component {
                     <br/>
                     <br/>
                     <hr/>
-                    <ListingTypeFilter ref={this.propertyFilterRef} reloadData={this.reloadData}
-                                       onFirstValid={this.onFirstValid}/>
-                    { this.state.showPriceFilter && <PriceFilter ref={this.priceFilterRef}
-                                 reloadData={this.reloadData}
-                                 getFilter={this.getFilter}
-                                 data={this.state.data}/> }
+
+                    <ListingTypeFilter ref={this.propertyFilterRef} onFirstValid={this.onListingStatusValid} {...propMethods} {...propVars}/>
+                    { showPriceFilter && <PriceFilter ref={this.priceFilterRef} onFirstValid={this.onPriceValid} {...propMethods} {...propVars}/> }
+                    { showPropertyTypeFilter && <PropertyTypeFilter ref={this.priceFilterRef} {...propMethods} {...propVars}/> }
                     {filters}
 
                     <p>
                         Please select at least one filter to apply.
                     </p>
 
-                    <AddFilterModal
-                        filters={this.state.filters}
-                        addFilter={this.addFilter}
-                        removeFilter={this.removeFilter}
-                        reloadData={this.reloadData}
-                    />
+                    <AddFilterModal {...propMethods}b {...propVars}/>
 
                     <div style={{textAlign: 'right'}}>
                         { this.state.filters.length > 0 && <Button size={'large'} primary>Submit</Button> }
