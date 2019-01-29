@@ -23,9 +23,6 @@ export default class AddFilterModal extends Component {
                 AreaFilter,
                 RoomsFilter,
                 DistanceFilter,
-                PriceFilter,
-                ListingTypeFilter,
-                PropertyTypeFilter,
             ],
             open: false,
         };

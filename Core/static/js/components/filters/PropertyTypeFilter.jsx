@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {
-    Button, Header, Form, Dropdown
+    Button, Header, Form, Dropdown, List
 } from 'semantic-ui-react'
 
 import {Segment} from 'semantic-ui-react'
@@ -41,7 +41,10 @@ export default class PropertyTypeFilter extends BaseFilter {
         return (
             <Fragment>
                 <h3>Property type</h3>
-                <p>{propertyTypes.reduce((x, i) => x + ", " + i)}</p>
+                  <List bulleted horizontal>
+                      { propertyTypes.map((value, index) => <List.Item key={index} as='span'>{value}</List.Item>)}
+                  </List>
+                {/*<p>{propertyTypes.reduce((x, i) => x + ", " + i)}</p>*/}
             </Fragment>
         )
     };

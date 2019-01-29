@@ -71,13 +71,7 @@ export default class filters extends Component {
 
     printData = () => {
         console.log(
-            this.state.filters
-                .map(f => f.ref.current.getData())
-                .reduce((obj, item) => {
-                    let key = Object.keys(item)[0];
-                    obj[key] = item[key];
-                    return obj;
-                })
+            this.state.data
         );
     };
 
