@@ -5,12 +5,13 @@ import {
 
 import {Divider, Segment} from 'semantic-ui-react'
 import Slider, {Range} from 'rc-slider';
-import PropertyTypeFilter from "./filters/PropertyTypeFilter";
+import ListingTypeFilter from "./filters/ListingTypeFilter";
 import AreaFilter from "./filters/AreaFilter";
 import RoomsFilter from "./filters/RoomsFilter";
 import DistanceFilter from "./filters/DistanceFilter";
 import PriceFilter from "./filters/PriceFilter";
 import Icon from "semantic-ui-react/dist/commonjs/elements/Icon";
+import PropertyTypeFilter from "./filters/PropertyTypeFilter";
 
 
 export default class AddFilterModal extends Component {
@@ -23,6 +24,7 @@ export default class AddFilterModal extends Component {
                 RoomsFilter,
                 DistanceFilter,
                 PriceFilter,
+                ListingTypeFilter,
                 PropertyTypeFilter,
             ],
             open: false,

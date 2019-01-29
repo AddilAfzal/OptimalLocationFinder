@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {
-    Button, Header, Form
+    Button, Header, Form, Dropdown
 } from 'semantic-ui-react'
 
 import {Segment} from 'semantic-ui-react'
@@ -12,56 +12,63 @@ export default class PropertyTypeFilter extends BaseFilter {
         super(props);
 
         this.state.canRemove = false;
-        this.state.listing_status = null;
+        this.state.propertyTypes = [];
+        this.state.options = [];
     }
 
-    static description = "Type of listing...";
+    componentDidMount() {
+        const options = [
+          { key: 'flat', text: 'Flat', value: 'Flat' },
+          { key: 'terraced_house', text: 'Terraced house', value: 'Terraced house' },
+          { key: 'semi-detached_house', text: 'Semi-detached house', value: 'Semi-detached house' },
+          { key: 'detached_house', text: 'Detached house', value: 'Detached house' },
+          { key: 'studio', text: 'Studio', value: 'Studio' },
+          { key: 'maisonette', text: 'Maisonette', value: 'Maisonette' },
+          { key: 'bungalow', text: 'Bungalow', value: 'Bungalow' },
+          { key: 'cottage', text: 'Cottage', value: 'Cottage' },
+          { key: 'land', text: 'Land', value: 'Land' },
+
+        ];
+
+        this.setState({options});
+        this.setState({propertyTypes: ['Flat']});
+    }
+
+    static description = "Type of property...";
 
     getCollapsedText = () => {
-        let {listing_status} = this.state;
+        let {propertyTypes} = this.state;
         return (
             <Fragment>
-                <h3>Listing type</h3>
-                <p>{listing_status && (listing_status.charAt(0).toUpperCase() + listing_status.slice(1))}</p>
+                <h3>Property type</h3>
+                <p>{propertyTypes.reduce((x, i) => x + ", " + i)}</p>
             </Fragment>
         )
     };
 
-    handleChangeListingStatus = (e, {value}) => {
-        this.setState({listing_status: value});
-    };
-
     getData = () => {
-        return {'listingType': this.state.listing_status};
+        return {'propertyTypes': this.state.propertyTypes};
     };
 
     renderBody() {
-        const {listing_status} = this.state;
+        const {propertyTypes, options} = this.state;
 
         return (
             <Fragment>
-                <h3>Listing type</h3>
-                <Header style={{marginTop: 0}} size='small'>What type of listing are you interested in?</Header>
-                <Form.Group inline>
-                    <Form.Radio
-                        label='Rent'
-                        value='rent'
-                        checked={listing_status === 'rent'}
-                        onChange={this.handleChangeListingStatus}
-                    />
-                    <Form.Radio
-                        label='Sale'
-                        value='sale'
-                        checked={listing_status === 'sale'}
-                        onChange={this.handleChangeListingStatus}
-                    />
-                </Form.Group>
+                <h3>Property type</h3>
+                <Header style={{marginTop: 0}} size='small'>What type of property are you looking for?</Header>
+                <Dropdown
+                    placeholder='Skills'
+                    options={options}
+                    value={propertyTypes}
+                    onChange={(a, b) => this.setState({propertyTypes: b.value})}
+                    fluid multiple selection />
             </Fragment>
 
         )
     }
 
     isValid = () => {
-        return !!(this.state.listing_status)
+        return (this.state.propertyTypes).length > 0
     };
 }

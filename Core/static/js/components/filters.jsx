@@ -5,10 +5,11 @@ import {
 
 import {Divider, Segment} from 'semantic-ui-react'
 import Slider, {Range} from 'rc-slider';
-import PropertyTypeFilter from "./filters/PropertyTypeFilter";
+import ListingTypeFilter from "./filters/ListingTypeFilter";
 import AreaFilter from "./filters/AreaFilter";
 import RoomsFilter from "./filters/RoomsFilter";
 import DistanceFilter from "./filters/DistanceFilter";
+import PropertyTypeFilter from "./filters/PropertyTypeFilter";
 import PriceFilter from "./filters/PriceFilter";
 import AddFilterModal from "./AddFIlterModal";
 
@@ -112,8 +113,8 @@ export default class filters extends Component {
                     <br/>
                     <br/>
                     <hr/>
-                    <PropertyTypeFilter ref={this.propertyFilterRef} reloadData={this.reloadData}
-                                        onFirstValid={this.onFirstValid}/>
+                    <ListingTypeFilter ref={this.propertyFilterRef} reloadData={this.reloadData}
+                                       onFirstValid={this.onFirstValid}/>
                     { this.state.showPriceFilter && <PriceFilter ref={this.priceFilterRef}
                                  reloadData={this.reloadData}
                                  getFilter={this.getFilter}
