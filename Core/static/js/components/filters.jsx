@@ -75,9 +75,7 @@ export default class filters extends Component {
         );
     };
 
-    addFilter = async (f) => {
-        await this.setState({filters: [...this.state.filters, f]})
-    };
+    addFilter = (f) => this.setState({filters: [...this.state.filters, f]});
 
     removeFilter = async (f) => {
         let key = f.props["data-key"];
@@ -86,23 +84,11 @@ export default class filters extends Component {
         this.reloadData();
     };
 
-    onListingStatusValid = async () => {
-        await this.reloadData();
-        this.setState({showPriceFilter: true});
-    };
+    onListingStatusValid = () => this.reloadData().then(() => this.setState({showPriceFilter: true}));
+    onPriceValid = () =>  this.reloadData().then(() => this.setState({showPropertyTypeFilter: true}));
 
-    onPriceValid = async () => {
-        await this.reloadData();
-        this.setState({showPropertyTypeFilter: true});
-    };
-
-    enableLock= () => {
-        this.setState({lock: true})
-    };
-
-    disableLock = () => {
-        this.setState({lock: false})
-    };
+    enableLock = () => this.setState({lock: true});
+    disableLock = () => this.setState({lock: false});
 
     propertyFilterRef = React.createRef();
     priceFilterRef = React.createRef();
