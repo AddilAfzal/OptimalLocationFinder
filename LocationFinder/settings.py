@@ -44,9 +44,11 @@ INSTALLED_APPS = [
     'HereMaps',
     'rest_framework',
     'django_filters',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -130,9 +132,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'assets'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'assets'),
+# )
 
 WEBPACK_LOADER = {
     'DEFAULT': {
@@ -155,3 +157,5 @@ REST_FRAMEWORK = {
 HERE_MAPS_APP_ID = "vtHijdI94WzWFph3OASO"
 HERE_MAPS_APP_CODE = "3ViBdfQh00uW03S2gnk5CQ"
 ZOOPLA_API_KEY = "4zd7kgvjktq4p464btnk9g58"
+
+INTERNAL_IPS = ['127.0.0.1']
