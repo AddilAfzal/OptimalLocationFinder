@@ -17,6 +17,7 @@ export default class PropertyTypeFilter extends BaseFilter {
     }
 
     componentDidMount() {
+        super.componentDidMount();
         const options = [
           { key: 'flat', text: 'Flat', value: 'Flat' },
           { key: 'terraced_house', text: 'Terraced house', value: 'Terraced house' },

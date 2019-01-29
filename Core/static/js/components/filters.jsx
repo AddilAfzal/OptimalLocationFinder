@@ -66,6 +66,9 @@ export default class filters extends Component {
         if (this.priceFilterRef.current) {
             data = {...data, ...this.priceFilterRef.current.getData()};
         }
+        if (this.propertyTypeFilterRef.current) {
+            data = {...data, ...this.propertyTypeFilterRef.current.getData()};
+        }
         await this.setState({data})
     };
 
@@ -92,7 +95,7 @@ export default class filters extends Component {
 
     propertyFilterRef = React.createRef();
     priceFilterRef = React.createRef();
-
+    propertyTypeFilterRef = React.createRef();
 
     render() {
         const {filters, showPriceFilter, showPropertyTypeFilter, lock, data} = this.state;
@@ -113,7 +116,7 @@ export default class filters extends Component {
 
                     <ListingTypeFilter ref={this.propertyFilterRef} onFirstValid={this.onListingStatusValid} {...propMethods} {...propVars}/>
                     { showPriceFilter && <PriceFilter ref={this.priceFilterRef} onFirstValid={this.onPriceValid} {...propMethods} {...propVars}/> }
-                    { showPropertyTypeFilter && <PropertyTypeFilter ref={this.priceFilterRef} {...propMethods} {...propVars}/> }
+                    { showPropertyTypeFilter && <PropertyTypeFilter ref={this.propertyTypeFilterRef} {...propMethods} {...propVars}/> }
                     {filters}
 
                     <p>

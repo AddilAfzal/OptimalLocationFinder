@@ -1,7 +1,8 @@
 import React, {Component, Fragment} from "react";
 import {
-    Button, Message
+    Button, Dimmer, Loader, Message
 } from 'semantic-ui-react'
+
 
 export default class BaseFilter extends Component {
     constructor(props) {
@@ -16,6 +17,12 @@ export default class BaseFilter extends Component {
         this.state.canRemove = true;
         this.state.collapse = false;
         this.state.needsReview = false;
+        this.state.showLoader = true;
+
+    }
+
+    componentDidMount() {
+        setTimeout(() => this.setState({showLoader: false}),500);
     }
 
     removeFilter = () => {
@@ -50,6 +57,9 @@ export default class BaseFilter extends Component {
     render() {
         return (
             <div className="ui segments">
+                <Dimmer inverted active={this.state.showLoader}>
+                    <Loader inverted content='Loading'/>
+                </Dimmer>
                 {this.state.collapse ? this.renderCollapsed() :
                     [<div className="ui segment"> {this.renderBody()}</div>,
                     <div className="ui segment"> {this.renderSave()}</div>]}
