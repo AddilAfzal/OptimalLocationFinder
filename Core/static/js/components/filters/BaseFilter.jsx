@@ -49,7 +49,7 @@ export default class BaseFilter extends Component {
                     {this.getCollapsedText()}
                 </div>
                 <div className="ui segment">
-                    <p><a href="javascript:void(0)" onClick={this.unCollapse}>Change</a></p>
+                    {!this.props.lock && <p><a href="javascript:void(0)" onClick={this.unCollapse}>Change</a></p>}
                     { this.state.canRemove && <p><a href="javascript:void(0)" onClick={this.removeFilter}>Remove</a></p> }
                 </div>
             </Fragment>)

@@ -13,16 +13,9 @@ import PropertyTypeFilter from "./filters/PropertyTypeFilter";
 import PriceFilter from "./filters/PriceFilter";
 import AddFilterModal from "./AddFIlterModal";
 
-
-const options = [
-    {key: 'm', text: 'Male', value: 'male'},
-    {key: 'f', text: 'Female', value: 'female'},
-];
-
-
 export default class filters extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             data: {},
@@ -39,12 +32,12 @@ export default class filters extends Component {
         const propMethods = {addFilter, removeFilter, enableLock, disableLock, reloadData};
         const propVars = {lock, filters, data};
 
-        const onPriceValid = () => this.addFilter(<PropertyTypeFilter ref={React.createRef()}
+        let onPriceValid = () => this.addFilter(<PropertyTypeFilter ref={React.createRef()}
                                                                       key={Math.random()}
                                                                       {...propMethods}
                                                                       {...propVars}/>);
 
-        const onListingStatusValid = () => this.addFilter(<PriceFilter ref={React.createRef()}
+        let onListingStatusValid = () => this.addFilter(<PriceFilter ref={React.createRef()}
                                                                        onFirstValid={onPriceValid}
                                                                        key={Math.random()}
                                                                        {...propMethods}
@@ -83,11 +76,13 @@ export default class filters extends Component {
     disableLock = () => this.setState({lock: false});
 
     render() {
-        const {filters, lock, data} = this.state;
+        const {lock, data} = this.state;
         const {addFilter, removeFilter, enableLock, disableLock, reloadData} = this;
 
         const propMethods = {addFilter, removeFilter, enableLock, disableLock, reloadData};
         const propVars = {lock, filters, data};
+
+        let updatedFilters = this.state.filters.map((F) => React.cloneElement(F,{...propVars, ...propMethods}))
 
         return (
             <div>
@@ -98,7 +93,7 @@ export default class filters extends Component {
                     <br/>
                     <br/>
                     <hr/>
-                    {filters}
+                    {updatedFilters}
                     <p>
                         Please select at least one filter to apply.
                     </p>
