@@ -103,7 +103,9 @@ export default class filters extends Component {
                         Please select at least one filter to apply.
                     </p>
 
-                    { (filters.length >= 3 && lock === false) && <AddFilterModal {...propMethods} {...propVars}/> }
+                    {/*{ (filters.length >= 3 && lock === false) &&*/}
+                    <AddFilterModal {...propMethods} {...propVars}/>
+                    {/*}*/}
 
                     <div style={{textAlign: 'right'}}>
                         { this.state.filters.length > 0 && <Button size={'large'} primary disabled={!(filters.length >= 3 && lock === false) }>Submit</Button> }

@@ -62,13 +62,12 @@ export default class PropertyTypeFilter extends BaseFilter {
                 <h3>Property type</h3>
                 <Header style={{marginTop: 0}} size='small'>What type of property are you looking for?</Header>
                 <Dropdown
-                    placeholder='Skills'
+                    placeholder='Property type'
                     options={options}
                     value={propertyTypes}
                     onChange={(a, b) => this.setState({propertyTypes: b.value})}
                     fluid multiple selection />
             </Fragment>
-
         )
     }
 
