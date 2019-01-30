@@ -5,7 +5,7 @@ import {
 
 import BaseFilter from "./BaseFilter";
 import {Circle, CircleMarker, Map, Marker, Popup, TileLayer} from 'react-leaflet'
-
+import Slider from 'rc-slider';
 
 export default class AreaFilter extends BaseFilter {
     constructor(props) {
@@ -22,7 +22,7 @@ export default class AreaFilter extends BaseFilter {
 
             markerShow: false,
             markerPosition: null,
-            markerRadius: 200, // in KM
+            markerRadius: 4000, // in M
         };
 
     }
@@ -37,10 +37,12 @@ export default class AreaFilter extends BaseFilter {
     static description = "Filter the list of homes to be located within a specific area.";
 
     getCollapsedText = () => {
+        const {markerPosition, markerRadius} = this.state;
         return (
             <Fragment>
                 <h3>Area</h3>
-                <p><i className="fas fa-map-marker-alt"/> {this.state.area}</p>
+                <p><i className="fas fa-map-marker-alt"/> Within a {markerRadius / 1000} KM radius from coordinates
+                    ({markerPosition.lat} {markerPosition.lng})</p>
             </Fragment>
         )
     };
@@ -101,12 +103,27 @@ export default class AreaFilter extends BaseFilter {
                         <Circle center={markerPosition} radius={markerRadius}/>]}
                 </Map>
                 <br/>
+                <p>Radius: {this.state.markerRadius/1000} KM</p>
+                <Slider
+                    min={1}
+                    max={8000}
+                    defaultValue={markerRadius}
+                    marks={{ 0:"0 KM", 2000:"2 KM", 4000:"4 KM", 6000:"6 KM", 8000:"8 KM" }}
+                    onChange={(e) => this.setState({markerRadius: e })}/>
+                <br/>
+                <br/>
                 <Button.Group vertical labeled icon>
-                    {markerPosition && <Button icon='marker' content='Remove Marker' onClick={() => this.setState({markerPosition: null})}
-                            disabled={this.state.markerMode}/>}
+                    {markerPosition &&
+                    <Button icon='marker' content='Remove Marker'
+                            onClick={() => this.setState({markerPosition: null})}
+                            disabled={!this.state.markerPosition}/>}
                 </Button.Group>
 
             </Fragment>
         )
     }
+
+    isValid = () => {
+        return this.state.markerPosition && this.state.markerRadius;
+    };
 }
