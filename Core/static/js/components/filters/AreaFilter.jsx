@@ -14,6 +14,7 @@ export default class AreaFilter extends BaseFilter {
         this.state = {
             ...this.state,
             area: "London, United Kingdom",
+            londonBoundary: null,
 
             mapZoom: 10,
             mapCenterPosition: [51.49, -0.14],
@@ -22,12 +23,16 @@ export default class AreaFilter extends BaseFilter {
             markerShow: false,
             markerPosition: null,
             markerRadius: 200, // in KM
-
-            markerMode: false,
         };
 
-        setTimeout(() => this.setState({markerRadius: 1000}), 3000)
     }
+
+    // componentWillMount() {
+    //     fetch("/static/json/greaterlondon.json")
+    //         .then(response => response.json())
+    //         .then(response => this.setState({londonBoundary: response.features}));
+    //
+    // }
 
     static description = "Filter the list of homes to be located within a specific area.";
 
@@ -50,32 +55,21 @@ export default class AreaFilter extends BaseFilter {
         };
     };
 
-    toggleMarkerMode = () => {
-        if(this.state.markerMode) {
-            this.setState({
-                mapDragging: true,
-                markerMode: false,
-            });
-        } else {
-            this.setState({
-                mapDragging: false,
-                markerMode: true,
-            })
-        }
-    };
-
-
     mapOnClick = (e) => {
         this.setState({markerPosition: e.latlng, markerShow: true});
         console.log(this.mapRef)
         console.log(e)
     };
 
+    mapOnDrag = (e) => {
+        console.log(e)
+    };
+
     mapRef = React.createRef();
 
     renderBody() {
-        const {area, mapCenterPosition, mapZoom, mapDragging,
-            markerShow, markerPosition, markerRadius, marker} = this.state;
+        const {area, mapCenterPosition, mapZoom,
+            markerShow, markerPosition, markerRadius} = this.state;
 
         return (
             <Fragment>
@@ -92,24 +86,24 @@ export default class AreaFilter extends BaseFilter {
                     </Message.List>
                 </Message>
                 <Map ref={this.mapRef}
+                     // maxBounds={null}
                      center={mapCenterPosition}
                      minZoom={10}
                      zoom={mapZoom}
                      onClick={this.mapOnClick}
                      dragging={true}
+                     onDrag={this.mapOnDrag}
                      style={{height: 550, border: "1px solid #ddd", padding: 26, marginTop: 16}}>
                     <TileLayer
-                        // url="https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png"
                         url="https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
-                        // attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                     />
                     {(markerShow && markerPosition) && [<Marker position={markerPosition} draggable={true}/>,
                         <Circle center={markerPosition} radius={markerRadius}/>]}
                 </Map>
                 <br/>
                 <Button.Group vertical labeled icon>
-                    <Button icon='marker' content='Remove Marker' onClick={this.toggleMarkerMode}
-                            disabled={this.state.markerMode}/>
+                    {markerPosition && <Button icon='marker' content='Remove Marker' onClick={() => this.setState({markerPosition: null})}
+                            disabled={this.state.markerMode}/>}
                 </Button.Group>
 
             </Fragment>
