@@ -3,7 +3,8 @@ from json import JSONDecodeError
 from django.http import HttpResponse
 import json
 
-from HereMaps.methods import get_routes
+from HereMaps.methods import get_routes, get_reverse_geo_code
+from HereMaps.models import ReverseGeoCodeCache
 from Zoopla.models import Property
 
 
@@ -36,3 +37,15 @@ def distance_api(request):
         return HttpResponse(content="Failed", status=500)
 
     return HttpResponse(content="success")
+
+
+def reverse_geo_code(request, lat, lng):
+    o = ReverseGeoCodeCache.objects.filter(latitude=lat, longitude=lng)
+    if o.count() == 1:
+        o = o.get()
+    else:
+        s = get_reverse_geo_code(lat, lng)
+        o = ReverseGeoCodeCache.objects.create(latitude=lat, longitude=lng, label=s)
+
+    response = {'label': o.label}
+    return HttpResponse(json.dumps(response))

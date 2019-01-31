@@ -94,3 +94,15 @@ def extract_duration(raw_duration="PT24M"):
         total += int(minutes[:-1])
 
     return total
+
+
+def get_reverse_geo_code(lat, lng):
+    r = requests.get(
+        'https://reverse.geocoder.api.here.com/6.2/reversegeocode.json?'
+        'app_id=%s&app_code=%s&'
+        'mode=retrieveAreas&'
+        'prox=%s,%s,5' % (HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE, lat, lng))
+    address_data = r.json()['Response']['View'][0]['Result'][0]['Location']['Address']
+    label = address_data['Label']
+    postcode = address_data['PostalCode']
+    return "%s, %s" % (label, postcode)
