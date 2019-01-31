@@ -23,6 +23,7 @@ export default class AreaFilter extends BaseFilter {
             markerShow: false,
             markerPosition: null,
             markerRadius: 4000, // in M
+            label: null,
         };
 
     }
@@ -36,15 +37,30 @@ export default class AreaFilter extends BaseFilter {
 
     static description = "Filter the list of homes to be located within a specific area.";
 
-    getCollapsedText = () => {
+    getCollapsedText = async () => {
+        if(this.state.label === null) {
+            await this.setState({label: await this.getLabel(
+                this.state.markerPosition.lat,
+                this.state.markerPosition.lng)});
+        }
+
         const {markerPosition, markerRadius} = this.state;
         return (
             <Fragment>
                 <h3>Area</h3>
                 <p><i className="fas fa-map-marker-alt"/> Within a {markerRadius / 1000} KM radius from coordinates
-                    ({markerPosition.lat} {markerPosition.lng})</p>
+                    ({markerPosition.lat} {markerPosition.lng}) {this.state.label}</p>
             </Fragment>
         )
+    };
+
+    getLabel = async (lat, lng) => {
+        let x = await fetch(`/api/reverse-geo-code/${lat}/${lng}`)
+            .then((r) => r.json())
+            .then((x) => x.label)
+
+        console.log(x)
+        return x;
     };
 
     getData = () => {
@@ -70,8 +86,10 @@ export default class AreaFilter extends BaseFilter {
     mapRef = React.createRef();
 
     renderBody() {
-        const {area, mapCenterPosition, mapZoom,
-            markerShow, markerPosition, markerRadius} = this.state;
+        const {
+            area, mapCenterPosition, mapZoom,
+            markerShow, markerPosition, markerRadius
+        } = this.state;
 
         return (
             <Fragment>
@@ -88,7 +106,7 @@ export default class AreaFilter extends BaseFilter {
                     </Message.List>
                 </Message>
                 <Map ref={this.mapRef}
-                     // maxBounds={null}
+                    // maxBounds={null}
                      center={mapCenterPosition}
                      minZoom={10}
                      zoom={mapZoom}
@@ -103,13 +121,13 @@ export default class AreaFilter extends BaseFilter {
                         <Circle center={markerPosition} radius={markerRadius}/>]}
                 </Map>
                 <br/>
-                <p>Radius: {this.state.markerRadius/1000} KM</p>
+                <p>Radius: {this.state.markerRadius / 1000} KM</p>
                 <Slider
                     min={1}
                     max={8000}
                     defaultValue={markerRadius}
-                    marks={{ 0:"0 KM", 2000:"2 KM", 4000:"4 KM", 6000:"6 KM", 8000:"8 KM" }}
-                    onChange={(e) => this.setState({markerRadius: e })}/>
+                    marks={{0: "0 KM", 2000: "2 KM", 4000: "4 KM", 6000: "6 KM", 8000: "8 KM"}}
+                    onChange={(e) => this.setState({markerRadius: e})}/>
                 <br/>
                 <br/>
                 <Button.Group vertical labeled icon>
