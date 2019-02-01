@@ -20,7 +20,7 @@ export default class Map extends Component {
     async init() {
         let map = L.map(this.mapRef.current).setView([51.505, -0.09], 10);
 
-        L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+        L.tileLayer('https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmaporg/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 

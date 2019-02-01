@@ -8,7 +8,7 @@ import {
 } from 'semantic-ui-react'
 import Footer from './../components/footer'
 import Navigation from './../components/navigation'
-import Filters from "./../components/filters";
+import Filters from "../components/Filters";
 
 
 export default class indexContainer extends Component {

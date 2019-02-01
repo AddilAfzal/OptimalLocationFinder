@@ -51,7 +51,7 @@ export default class PropertyTypeFilter extends BaseFilter {
     };
 
     getData = () => {
-        return {'propertyTypes': this.state.propertyTypes};
+        return {'propertyTypes': {'property_type': this.state.propertyTypes}};
     };
 
     renderBody() {

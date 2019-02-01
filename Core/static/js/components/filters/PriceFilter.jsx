@@ -46,7 +46,7 @@ export default class PriceFilter extends BaseFilter {
         this.state.canRemove = false;
         this.state.price = [0,0];
         this.state.term = 'month'; // Week/Month
-        this.state.listingType = props.data.listingType;
+        this.state.listingType = props.data.listingType.listing_status;
     }
 
     static description = "price...";
@@ -55,20 +55,23 @@ export default class PriceFilter extends BaseFilter {
         let { price, term } = this.state;
         return {
             'price': {
-                price: {min: price[0], max: price[1]},
-                term,
+                price_min: price[0],
+                price_max: price[1],
+                price_term: term,
             }
         };
     };
 
     componentWillReceiveProps(nextProps, nextContext) {
         // console.log(nextProps, this.state)
-        if(nextProps.data.listingType !== this.state.listingType) {
-            console.log("Changing state")
-            this.setState({listingType: nextProps.data.listingType, price: [0,0], term: null, needsReview: true})
+        if(nextProps.data.listingType.listing_status !== this.state.listingType) {
+            this.setState({
+                listingType: nextProps.data.listingType.listing_status,
+                price: [0, 0],
+                term: null,
+                needsReview: true
+            })
         }
-        console.log(nextProps);
-        console.log("Receiving props")
     }
 
     getCollapsedText = () => {

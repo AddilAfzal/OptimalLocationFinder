@@ -32,7 +32,9 @@ export default class ListingTypeFilter extends BaseFilter {
     };
 
     getData = () => {
-        return {'listingType': this.state.listing_status};
+        return {'listingType':
+                {'listing_status': this.state.listing_status}
+        };
     };
 
     renderBody() {

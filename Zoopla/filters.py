@@ -51,8 +51,10 @@ class PriceFilter(django_filters.FilterSet):
 
     def filter_price(self, queryset, field, value):
         data = dict(self.data)
+        print("filtering")
+        print(queryset)
         if 'listing_status' in data:
-            listing_status = data['listing_status'][0]
+            listing_status = data['listing_status']
             
             filters = {}
             filters['listing_status'] = listing_status

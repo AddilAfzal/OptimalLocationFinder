@@ -75,14 +75,29 @@ export default class filters extends Component {
     enableLock = () => this.setState({lock: true});
     disableLock = () => this.setState({lock: false});
 
+    onSubmit = () => {
+        const requestData = Object.entries(this.state.data).reduce((obj, [key, value]) => {
+            return {...obj, ...value};
+        }, {});
+
+        console.log(requestData)
+
+        fetch('/api/properties/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(requestData)
+        }).then(x => x.json()).then(y => console.log(y));
+
+    };
+
     render() {
-        const {lock, data} = this.state;
+        const {lock, data, filters} = this.state;
         const {addFilter, removeFilter, enableLock, disableLock, reloadData} = this;
 
         const propMethods = {addFilter, removeFilter, enableLock, disableLock, reloadData};
         const propVars = {lock, filters, data};
 
-        let updatedFilters = this.state.filters.map((F) => React.cloneElement(F,{...propVars, ...propMethods}))
+        let updatedFilters = this.state.filters.map((F) => React.cloneElement(F,{...propVars, ...propMethods}));
 
         return (
             <div>
@@ -103,7 +118,8 @@ export default class filters extends Component {
                     {/*}*/}
 
                     <div style={{textAlign: 'right'}}>
-                        { this.state.filters.length > 0 && <Button size={'large'} primary disabled={!(filters.length >= 3 && lock === false) }>Submit</Button> }
+                        <Button size={'large'} primary disabled={(filters.length < 3 || lock === true)}
+                                onClick={this.onSubmit}>Submit</Button>
                     </div>
                     <Button onClick={this.printData}>Print data</Button>
                 </Fragment>
