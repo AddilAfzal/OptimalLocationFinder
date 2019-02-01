@@ -13,7 +13,7 @@ import PropertyTypeFilter from "./filters/PropertyTypeFilter";
 import PriceFilter from "./filters/PriceFilter";
 import AddFilterModal from "./AddFIlterModal";
 
-export default class filters extends Component {
+export default class Filters extends Component {
     constructor(props) {
         super(props);
 
@@ -75,19 +75,20 @@ export default class filters extends Component {
     enableLock = () => this.setState({lock: true});
     disableLock = () => this.setState({lock: false});
 
-    onSubmit = () => {
+    onSubmit = async () => {
         const requestData = Object.entries(this.state.data).reduce((obj, [key, value]) => {
             return {...obj, ...value};
         }, {});
 
         console.log(requestData)
 
-        fetch('/api/properties/', {
+        const properties = await fetch('/api/properties/', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(requestData)
-        }).then(x => x.json()).then(y => console.log(y));
+        }).then(x => x.json());
 
+        this.props.history.push('/results', {'properties': properties});
     };
 
     render() {
