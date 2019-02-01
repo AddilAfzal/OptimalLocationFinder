@@ -1,39 +1,37 @@
 import React, {Component, Fragment} from "react";
 import * as L from "leaflet";
-import {Message} from "semantic-ui-react";
+import {Message, Segment} from "semantic-ui-react";
 import {Circle, Marker, TileLayer, Map as LeafletMap} from "react-leaflet";
+import MarkerClusterGroup from 'react-leaflet-markercluster';
 
 export default class Map extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            properties: props.location.state.properties,
-            map: null,
+            properties: props.location.state.properties.results,
+            count: props.location.state.properties.count,
+            data: props.data,
 
             mapCenterPosition: [51.49, -0.14],
             mapZoom: 10,
+
+            markers: [],
         };
     }
 
-    mapRef = React.createRef();
 
     componentDidMount() {
-        // this.init()
+        const markers = this.state.properties.map((elem) =>
+            <Marker key={elem.listing_id} position={[elem.latitude, elem.longitude]} draggable={false}
+                    onClick={() => this.markerOnClick(elem)}/>
+        );
+
+        this.setState({markers})
     }
 
-    async init() {
-        let map = L.map(this.mapRef.current).setView([51.505, -0.09], 10);
-
-        L.tileLayer('https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png').addTo(map);
-
-        // L.marker([51.5, -0.09]).addTo(map)
-        //     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-        //     .openPopup();
-
-        let properties = await this.props.getData();
-        await this.setState({properties, map})
-        this.displayResults();
+    markerOnClick = (elem) => {
+        console.log(elem);
     };
 
     displayResults() {
@@ -48,14 +46,15 @@ export default class Map extends Component {
 
     render() {
 
-        const {mapCenterPosition} = this.state;
+        const {mapCenterPosition, markers, count} = this.state;
         return (
             <Fragment>
                 <LeafletMap
                     // maxBounds={null}
                      center={mapCenterPosition}
                      zoom={10}
-                     // minZoom={10}
+                     minZoom={10}
+                     maxZoom={15}
                      // zoom={mapZoom}
                      // onClick={this.mapOnClick}
                      // dragging={true}
@@ -64,9 +63,15 @@ export default class Map extends Component {
                     <TileLayer
                         url="https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
                     />
+                    <MarkerClusterGroup>
+                        {markers}
+                    </MarkerClusterGroup>
                     {/*{(markerShow && markerPosition) && [<Marker position={markerPosition} draggable={true}/>,*/}
                         {/*<Circle center={markerPosition} radius={markerRadius}/>]}*/}
                 </LeafletMap>
+                <Segment>
+                    Results: {count}
+                </Segment>
             </Fragment>
         )
     }

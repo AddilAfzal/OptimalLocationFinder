@@ -20,7 +20,6 @@ export default class Filters extends Component {
         this.state = {
             data: {},
             filters: [],
-
             lock: true,
         };
     }
@@ -76,7 +75,8 @@ export default class Filters extends Component {
     disableLock = () => this.setState({lock: false});
 
     onSubmit = async () => {
-        const requestData = Object.entries(this.state.data).reduce((obj, [key, value]) => {
+        let {data, filters} = this.state;
+        const requestData = Object.entries(data).reduce((obj, [key, value]) => {
             return {...obj, ...value};
         }, {});
 
@@ -88,7 +88,7 @@ export default class Filters extends Component {
             body: JSON.stringify(requestData)
         }).then(x => x.json());
 
-        this.props.history.push('/results', {'properties': properties});
+        this.props.history.push('/results', {properties, data});
     };
 
     render() {

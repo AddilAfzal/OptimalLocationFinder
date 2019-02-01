@@ -31,9 +31,12 @@ export default class RoomsFilter extends BaseFilter {
         let { bedrooms, bathrooms, receptions} = this.state;
         return {
             'rooms': {
-                bathrooms,
-                receptions,
-                bedrooms,
+                num_bathrooms_min: bathrooms.min,
+                num_bathrooms_max: bathrooms.max,
+                num_recepts_min: receptions.min,
+                num_recepts_max: receptions.max,
+                num_bedrooms_min: bedrooms.min,
+                num_bedrooms_max: bedrooms.max,
             }
         };
     };

@@ -25,7 +25,7 @@ from Zoopla.serializers import PropertySerializer
 
 @csrf_exempt
 def property_api(request):
-    queryset = Property.objects.filter(listing_id__contains=123)
+    queryset = Property.objects.all()
 
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -35,6 +35,13 @@ def property_api(request):
         qs = RoomFilter(data, qs).qs
         qs = PriceFilter(data, qs).qs
 
-        return HttpResponse(json.dumps(PropertySerializer(qs, many=True).data), content_type="json")
+        response = json.dumps(
+            {
+                'count': qs.count(),
+                'results': PropertySerializer(qs, many=True).data,
+            }
+        )
+
+        return HttpResponse(response, content_type="json")
 
     return Http404('Error')
