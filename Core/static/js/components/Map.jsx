@@ -34,21 +34,15 @@ export default class Map extends Component {
         console.log(elem);
     };
 
-    displayResults() {
-        // console.log(this)
-        this.state.properties.results.forEach((l) => {
-            console.log(l)
-            L.marker([l.latitude, l.longitude])
-                .addTo(this.state.map)
-                .bindPopup(new Intl.NumberFormat('en-GB', {style: 'currency', currency: 'GBP'}).format(l.price));
-        })
-    }
-
     render() {
-
         const {mapCenterPosition, markers, count} = this.state;
         return (
             <Fragment>
+                <Message
+                    icon='point'
+                    header={`${count.toLocaleString()} results found`}
+                    content='Click on a cluster to zoom in.'
+                />
                 <LeafletMap
                     // maxBounds={null}
                      center={mapCenterPosition}
@@ -66,12 +60,7 @@ export default class Map extends Component {
                     <MarkerClusterGroup>
                         {markers}
                     </MarkerClusterGroup>
-                    {/*{(markerShow && markerPosition) && [<Marker position={markerPosition} draggable={true}/>,*/}
-                        {/*<Circle center={markerPosition} radius={markerRadius}/>]}*/}
                 </LeafletMap>
-                <Segment>
-                    Results: {count}
-                </Segment>
             </Fragment>
         )
     }

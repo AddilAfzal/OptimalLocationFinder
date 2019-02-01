@@ -21,6 +21,7 @@ export default class Filters extends Component {
             data: {},
             filters: [],
             lock: true,
+            submitLoading: false,
         };
     }
 
@@ -75,6 +76,7 @@ export default class Filters extends Component {
     disableLock = () => this.setState({lock: false});
 
     onSubmit = async () => {
+        await this.setState({submitLoading: true});
         let {data, filters} = this.state;
         const requestData = Object.entries(data).reduce((obj, [key, value]) => {
             return {...obj, ...value};
@@ -92,8 +94,8 @@ export default class Filters extends Component {
     };
 
     render() {
-        const {lock, data, filters} = this.state;
-        const {addFilter, removeFilter, enableLock, disableLock, reloadData} = this;
+        const {lock, data, filters, submitLoading} = this.state;
+        const {addFilter, removeFilter, enableLock, disableLock, reloadData, onSubmit} = this;
 
         const propMethods = {addFilter, removeFilter, enableLock, disableLock, reloadData};
         const propVars = {lock, filters, data};
@@ -120,7 +122,7 @@ export default class Filters extends Component {
 
                     <div style={{textAlign: 'right'}}>
                         <Button size={'large'} primary disabled={(filters.length < 3 || lock === true)}
-                                onClick={this.onSubmit}>Submit</Button>
+                                loading={submitLoading} onClick={onSubmit}>Submit</Button>
                     </div>
                     <Button onClick={this.printData}>Print data</Button>
                 </Fragment>
