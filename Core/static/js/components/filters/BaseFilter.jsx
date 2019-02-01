@@ -84,6 +84,10 @@ export default class BaseFilter extends Component {
             this.props.onFirstValid();
             this.doneOnFirstValid = true;
         }
+
+        if(this.hasOwnProperty("onSave")) {
+            this.onSave();
+        }
     };
 
     renderSave() {

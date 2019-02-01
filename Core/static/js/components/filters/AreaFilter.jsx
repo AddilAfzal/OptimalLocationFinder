@@ -37,19 +37,12 @@ export default class AreaFilter extends BaseFilter {
 
     static description = "Filter the list of homes to be located within a specific area.";
 
-    getCollapsedText = async () => {
-        if(this.state.label === null) {
-            await this.setState({label: await this.getLabel(
-                this.state.markerPosition.lat,
-                this.state.markerPosition.lng)});
-        }
-
-        const {markerPosition, markerRadius} = this.state;
+    getCollapsedText = () => {
+        const {markerRadius, label} = this.state;
         return (
             <Fragment>
                 <h3>Area</h3>
-                <p><i className="fas fa-map-marker-alt"/> Within a {markerRadius / 1000} KM radius from coordinates
-                    ({markerPosition.lat} {markerPosition.lng}) {this.state.label}</p>
+                <p><i className="fas fa-map-marker-alt"/> Within a {markerRadius / 1000} KM radius from {label}</p>
             </Fragment>
         )
     };
@@ -59,7 +52,6 @@ export default class AreaFilter extends BaseFilter {
             .then((r) => r.json())
             .then((x) => x.label)
 
-        console.log(x)
         return x;
     };
 
@@ -84,6 +76,13 @@ export default class AreaFilter extends BaseFilter {
     };
 
     mapRef = React.createRef();
+
+    onSave = async () => {
+        if(this.state.label === null) {
+            let label = await this.getLabel(this.state.markerPosition.lat, this.state.markerPosition.lng);
+            this.setState({label});
+        }
+    };
 
     renderBody() {
         const {
