@@ -16,8 +16,11 @@ export default class Map extends Component {
 
             mapCenterPosition: [51.49, -0.14],
             mapZoom: 10,
+            mapBounds: null,
+            mapMaxBounds: null,
 
             markers: [],
+            markerClusterBounds: null,
 
             property: null,
         };
@@ -29,16 +32,25 @@ export default class Map extends Component {
             <Marker key={elem.listing_id} position={[elem.latitude, elem.longitude]} draggable={false}
                     onClick={() => this.markerOnClick(elem)}/>
         );
-
-        this.setState({markers})
+        this.setState({markers}, this.setBounds);
     }
+
+    setBounds = async () => {
+        let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
+        let mapMaxBounds = this.leafletMap.current.leafletElement.getBounds();
+        this.setState({markerClusterBounds, mapMaxBounds});
+        this.leafletMap.current.leafletElement.fitBounds(markerClusterBounds)
+    };
 
     markerOnClick = (property) => {
         this.setState({property});
     };
 
+    leafletMap = React.createRef();
+    markerCluster = React.createRef();
+
     render() {
-        const {mapCenterPosition, markers, count} = this.state;
+        const {mapCenterPosition, markers, count, mapMaxBounds} = this.state;
         return (
             <Fragment>
                 <Message
@@ -49,20 +61,17 @@ export default class Map extends Component {
                 />
                 <Segment attached>
                     <LeafletMap
-                        // maxBounds={null}
+                        ref={this.leafletMap}
                         center={mapCenterPosition}
-                        zoom={10}
+                        zoom={8}
                         minZoom={10}
-                        maxZoom={15}
-                        // zoom={mapZoom}
-                        // onClick={this.mapOnClick}
-                        // dragging={true}
-                        // onDrag={this.mapOnDrag}
+                        maxZoom={16}
+                        maxBounds={mapMaxBounds}
                         style={{minHeight: 768, border: "1px solid #ddd", padding: 26, marginTop: 16}}>
                         <TileLayer
                             url="https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
                         />
-                        <MarkerClusterGroup>
+                        <MarkerClusterGroup ref={this.markerCluster}>
                             {markers}
                         </MarkerClusterGroup>
                     </LeafletMap>

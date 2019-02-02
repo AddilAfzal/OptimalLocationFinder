@@ -6,6 +6,7 @@ from Zoopla.models import Property
 
 
 class BasicPropertyFilter(django_filters.FilterSet):
+    area = django_filters.CharFilter(method="filter_area")
     latitude = django_filters.NumberFilter()
     longitude = django_filters.NumberFilter()
     radius = django_filters.NumberFilter(method='filter_area')
@@ -24,11 +25,11 @@ class BasicPropertyFilter(django_filters.FilterSet):
             return queryset
 
     def filter_area(self, queryset, field, value):
-        print(a, self.data['latitude'])
-        return queryset
-
-    # def filter_area(self, qs, field, value):
-    #     return qs.filter(Q(outcode__istartswith=value) | Q(post_town__iexact=value))
+        lat, lng = value.split(",")
+        return queryset.extra(where=["(6367*acos(cos(radians(%s))*"
+                              "cos(radians(latitude))*"
+                              "cos(radians(longitude)-radians(%s))+"
+                              "sin(radians(%s))*sin(radians(latitude)))) < %s" % (lat, lng, lat, 5)])
 
     class Meta:
         model = Property
@@ -51,8 +52,7 @@ class PriceFilter(django_filters.FilterSet):
 
     def filter_price(self, queryset, field, value):
         data = dict(self.data)
-        print("filtering")
-        print(queryset)
+
         if 'listing_status' in data:
             listing_status = data['listing_status']
             
