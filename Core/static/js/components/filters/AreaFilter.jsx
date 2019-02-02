@@ -37,6 +37,28 @@ export default class AreaFilter extends BaseFilter {
 
     static description = "Filter the list of homes to be located within a specific area.";
 
+    componentDidMount() {
+        super.componentDidMount();
+        let area = this.props.data.area;
+        if(area) {
+            const tmp = area.area.split(",");
+            this.state.markerPosition = {lat: tmp[0], lng: tmp[1]};
+            this.state.markerRadius = area.radius*1000;
+            this.state.markerShow = true;
+            this.save();
+        }
+    }
+
+    getData = () => {
+        let {area, markerRadius, markerPosition} = this.state;
+        return {
+            'area': {
+                area: markerPosition.lat + "," + markerPosition.lng,
+                radius: markerRadius/1000
+            },
+        };
+    };
+
     getCollapsedText = () => {
         const {markerRadius, label} = this.state;
         return (
@@ -53,16 +75,6 @@ export default class AreaFilter extends BaseFilter {
             .then((x) => x.label)
 
         return x;
-    };
-
-    getData = () => {
-        let {area, markerRadius, markerPosition} = this.state;
-        return {
-            'area': {
-                area: markerPosition.lat + "," + markerPosition.lng,
-                radius: markerRadius/1000
-            },
-        };
     };
 
     mapOnClick = (e) => {

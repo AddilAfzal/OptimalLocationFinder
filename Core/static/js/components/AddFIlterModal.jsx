@@ -15,8 +15,8 @@ import PropertyTypeFilter from "./filters/PropertyTypeFilter";
 
 
 export default class AddFilterModal extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             filterMethods: [
@@ -31,10 +31,8 @@ export default class AddFilterModal extends Component {
     open = () => this.setState({open: true});
     close = () => this.setState({open: false});
 
-    onSelect = (F) => {
-        let {addFilter} = this.props;
-        const key = Math.random();
-        addFilter(<F ref={React.createRef()} key={key} data-key={key} {...this.props} />)
+    onSelect = async (F) => {
+        await this.props.createFilterComponent(F)
     };
 
     render() {

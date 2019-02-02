@@ -16,7 +16,6 @@ import AddFilterModal from "./AddFIlterModal";
 export default class Filters extends Component {
     constructor(props) {
         super(props);
-        console.log("Loading filters")
         console.log(props)
 
         this.state = {
@@ -30,30 +29,45 @@ export default class Filters extends Component {
     }
 
     componentDidMount() {
+        this.loadFilters();
+        // this.onSubmit();
+    };
+
+    loadFilters = async () => {
         const {filters, lock, data} = this.state;
         const {addFilter, removeFilter, enableLock, disableLock, reloadData} = this;
 
         const propMethods = {addFilter, removeFilter, enableLock, disableLock, reloadData};
         const propVars = {lock, filters, data};
 
-        let onPriceValid = () => this.addFilter(<PropertyTypeFilter ref={React.createRef()}
-                                                                      key={Math.random()}
-                                                                      {...propMethods}
-                                                                      {...propVars}/>);
+        let onPriceValid = async () => await this.addFilter(<PropertyTypeFilter ref={React.createRef()}
+                                                                    key={Math.random()}
+                                                                    {...propMethods}
+                                                                    {...propVars}/>);
 
-        let onListingStatusValid = () => this.addFilter(<PriceFilter ref={React.createRef()}
-                                                                       onFirstValid={onPriceValid}
-                                                                       key={Math.random()}
-                                                                       {...propMethods}
-                                                                       {...propVars}/>);
+        let onListingStatusValid = async () => await this.addFilter(<PriceFilter ref={React.createRef()}
+                                                                     onFirstValid={onPriceValid}
+                                                                     key={Math.random()}
+                                                                     {...propMethods}
+                                                                     {...propVars}/>);
 
-        this.addFilter(<ListingTypeFilter ref={React.createRef()}
+        await this.addFilter(<ListingTypeFilter ref={React.createRef()}
                                           onFirstValid={onListingStatusValid}
                                           key={Math.random()}
                                           {...propMethods}
                                           {...propVars}/>);
 
-        // this.onSubmit();
+        Object.keys(data).forEach((k) => {
+            switch (k) {
+                case 'area':
+                    this.createFilterComponent(AreaFilter);
+            }
+        });
+    };
+
+    createFilterComponent = (F) => {
+        const key = Math.random();
+        this.addFilter(<F ref={React.createRef()} key={key} data-key={key} {...this.props} />)
     };
 
     reloadData = async () => {
@@ -69,13 +83,16 @@ export default class Filters extends Component {
 
     printData = () => console.log(this.state.data);
 
-    addFilter = (f) => this.setState({filters: [...this.state.filters, f]});
+    addFilter = (f) => {
+        console.log(f)
+        this.setState({filters: [...this.state.filters, f]});
+    };
 
     removeFilter = async (f) => {
         const key = f.props["data-key"];
         let filters = this.state.filters.filter( (f) => f.key.toString() !== key.toString());
         await this.setState({filters})
-        this.reloadData();
+        await this.reloadData();
     };
 
     enableLock = () => this.setState({lock: true});
@@ -101,9 +118,9 @@ export default class Filters extends Component {
 
     render() {
         const {lock, data, filters, submitLoading} = this.state;
-        const {addFilter, removeFilter, enableLock, disableLock, reloadData, onSubmit} = this;
+        const {addFilter, removeFilter, enableLock, disableLock, reloadData, onSubmit, createFilterComponent} = this;
 
-        const propMethods = {addFilter, removeFilter, enableLock, disableLock, reloadData};
+        const propMethods = {addFilter, removeFilter, enableLock, disableLock, reloadData, createFilterComponent};
         const propVars = {lock, filters, data};
 
         let updatedFilters = this.state.filters.map((F) => React.cloneElement(F,{...propVars, ...propMethods}));
