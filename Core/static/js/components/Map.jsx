@@ -1,8 +1,9 @@
 import React, {Component, Fragment} from "react";
 import * as L from "leaflet";
-import {Message, Segment} from "semantic-ui-react";
+import {Header, Message, Segment} from "semantic-ui-react";
 import {Circle, Marker, TileLayer, Map as LeafletMap} from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
+import Property from "./Property";
 
 export default class Map extends Component {
     constructor(props) {
@@ -17,6 +18,8 @@ export default class Map extends Component {
             mapZoom: 10,
 
             markers: [],
+
+            property: null,
         };
     }
 
@@ -30,8 +33,8 @@ export default class Map extends Component {
         this.setState({markers})
     }
 
-    markerOnClick = (elem) => {
-        console.log(elem);
+    markerOnClick = (property) => {
+        this.setState({property});
     };
 
     render() {
@@ -39,28 +42,37 @@ export default class Map extends Component {
         return (
             <Fragment>
                 <Message
+                    attached
                     icon='point'
                     header={`${count.toLocaleString()} results found`}
                     content='Click on a cluster to zoom in.'
                 />
-                <LeafletMap
-                    // maxBounds={null}
-                     center={mapCenterPosition}
-                     zoom={10}
-                     minZoom={10}
-                     maxZoom={15}
-                     // zoom={mapZoom}
-                     // onClick={this.mapOnClick}
-                     // dragging={true}
-                     // onDrag={this.mapOnDrag}
-                     style={{minHeight: 768, border: "1px solid #ddd", padding: 26, marginTop: 16}}>
-                    <TileLayer
-                        url="https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
-                    />
-                    <MarkerClusterGroup>
-                        {markers}
-                    </MarkerClusterGroup>
-                </LeafletMap>
+                <Segment attached>
+                    <LeafletMap
+                        // maxBounds={null}
+                        center={mapCenterPosition}
+                        zoom={10}
+                        minZoom={10}
+                        maxZoom={15}
+                        // zoom={mapZoom}
+                        // onClick={this.mapOnClick}
+                        // dragging={true}
+                        // onDrag={this.mapOnDrag}
+                        style={{minHeight: 768, border: "1px solid #ddd", padding: 26, marginTop: 16}}>
+                        <TileLayer
+                            url="https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
+                        />
+                        <MarkerClusterGroup>
+                            {markers}
+                        </MarkerClusterGroup>
+                    </LeafletMap>
+                </Segment>
+                <Header as='h4' attached='top'>
+                    Property
+                </Header>
+                <Segment attached>
+                    <Property property={this.state.property}/>
+                </Segment>
             </Fragment>
         )
     }

@@ -18,7 +18,8 @@ export default class Filters extends Component {
         super(props);
 
         this.state = {
-            data: {},
+            data: (JSON.parse('{"listingType":{"listing_status":"rent"},"price":{"price_min":0,"price_max":400,"price_term":"month"},"propertyTypes":{"property_type":["Terraced house"]}}')),
+            // data: {},data,
             filters: [],
             lock: true,
             submitLoading: false,
@@ -48,6 +49,8 @@ export default class Filters extends Component {
                                           key={Math.random()}
                                           {...propMethods}
                                           {...propVars}/>);
+
+        // this.onSubmit();
     };
 
     reloadData = async () => {

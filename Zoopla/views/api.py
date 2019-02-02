@@ -7,6 +7,7 @@ from rest_framework import status, generics
 from Zoopla.filters import BasicPropertyFilter, RoomFilter, PriceFilter
 from Zoopla.models import Property
 from Zoopla.serializers import PropertySerializer
+from django.db import connection
 
 
 # class PropertiesList(generics.ListAPIView):
@@ -25,7 +26,7 @@ from Zoopla.serializers import PropertySerializer
 
 @csrf_exempt
 def property_api(request):
-    queryset = Property.objects.all()
+    queryset = Property.objects.all().prefetch_related('propertyimage_set')
 
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -34,7 +35,6 @@ def property_api(request):
         qs = BasicPropertyFilter(data, queryset).qs
         qs = RoomFilter(data, qs).qs
         qs = PriceFilter(data, qs).qs
-
         response = json.dumps(
             {
                 'count': qs.count(),
@@ -42,6 +42,7 @@ def property_api(request):
             }
         )
 
+        print(len(connection.queries))
         return HttpResponse(response, content_type="json")
 
     return Http404('Error')
