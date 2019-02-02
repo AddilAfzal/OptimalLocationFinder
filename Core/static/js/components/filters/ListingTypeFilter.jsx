@@ -12,7 +12,17 @@ export default class ListingTypeFilter extends BaseFilter {
         super(props);
 
         this.state.canRemove = false;
-        this.state.listing_status = null;
+        this.state.listing_status = "sale";
+
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+        let listingType = this.props.data.listingType;
+        if(listingType) {
+            this.state.listing_status = listingType.listing_status;
+            this.save();
+        }
     }
 
     static description = "Type of listing...";

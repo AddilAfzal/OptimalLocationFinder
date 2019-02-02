@@ -13,7 +13,7 @@ export default class AreaFilter extends BaseFilter {
 
         this.state = {
             ...this.state,
-            area: "London, United Kingdom",
+            area: null,
             londonBoundary: null,
 
             mapZoom: 10,

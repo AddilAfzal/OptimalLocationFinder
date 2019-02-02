@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import * as L from "leaflet";
-import {Header, Message, Segment} from "semantic-ui-react";
+import {Button, Header, Message, Segment} from "semantic-ui-react";
 import {Circle, Marker, TileLayer, Map as LeafletMap} from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import Property from "./Property";
@@ -12,7 +12,7 @@ export default class Map extends Component {
         this.state = {
             properties: props.location.state.properties.results,
             count: props.location.state.properties.count,
-            data: props.data,
+            data: props.location.state.data,
 
             mapCenterPosition: [51.49, -0.14],
             mapZoom: 10,
@@ -46,6 +46,11 @@ export default class Map extends Component {
         this.setState({property});
     };
 
+    handleEditFilters = () => {
+        let {data} = this.state;
+        this.props.history.push('/', {data});
+    };
+
     leafletMap = React.createRef();
     markerCluster = React.createRef();
 
@@ -53,6 +58,7 @@ export default class Map extends Component {
         const {mapCenterPosition, markers, count, mapMaxBounds} = this.state;
         return (
             <Fragment>
+                <Button onClick={this.handleEditFilters}>Edit filters</Button>
                 <Message
                     attached
                     icon='point'

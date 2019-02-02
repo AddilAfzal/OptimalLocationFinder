@@ -16,13 +16,16 @@ import AddFilterModal from "./AddFIlterModal";
 export default class Filters extends Component {
     constructor(props) {
         super(props);
+        console.log("Loading filters")
+        console.log(props)
 
         this.state = {
-            data: (JSON.parse('{"listingType":{"listing_status":"rent"},"price":{"price_min":0,"price_max":400,"price_term":"month"},"propertyTypes":{"property_type":["Terraced house"]}}')),
-            // data: {},data,
+            // data: (JSON.parse('{"listingType":{"listing_status":"rent"},"price":{"price_min":0,"price_max":400,"price_term":"month"},"propertyTypes":{"property_type":["Terraced house"]}}')),
+            data: {},
             filters: [],
             lock: true,
             submitLoading: false,
+            ...props.location.state,
         };
     }
 

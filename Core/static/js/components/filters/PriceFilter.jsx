@@ -62,6 +62,17 @@ export default class PriceFilter extends BaseFilter {
         };
     };
 
+    componentDidMount() {
+        super.componentDidMount();
+        let price = this.props.data.price;
+        if(price) {
+            const {price_min, price_max, price_term} = price;
+            this.state.price = [price_min, price_max];
+            this.state.term = price_term;
+            this.save();
+        }
+    }
+
     componentWillReceiveProps(nextProps, nextContext) {
         // console.log(nextProps, this.state)
         if(nextProps.data.listingType.listing_status !== this.state.listingType) {

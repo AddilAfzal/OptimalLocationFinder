@@ -32,10 +32,17 @@ export default class PropertyTypeFilter extends BaseFilter {
         ];
 
         this.setState({options});
+
+        let propertyTypes = this.props.data.propertyTypes;
+        if(propertyTypes) {
+            this.state.propertyTypes = propertyTypes.property_type;
+            this.save();
+        }
         // this.setState({propertyTypes: ['Flat']});
     }
 
     static description = "Type of property...";
+
 
     getCollapsedText = () => {
         let {propertyTypes} = this.state;
