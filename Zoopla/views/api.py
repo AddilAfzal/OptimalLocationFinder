@@ -30,7 +30,6 @@ def property_api(request):
 
     if request.method == 'POST':
         data = json.loads(request.body)
-        print(request.body)
 
         qs = BasicPropertyFilter(data, queryset).qs
         qs = RoomFilter(data, qs).qs

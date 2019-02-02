@@ -26,7 +26,6 @@ export default class Map extends Component {
         };
     }
 
-
     componentDidMount() {
         const markers = this.state.properties.map((elem) =>
             <Marker key={elem.listing_id} position={[elem.latitude, elem.longitude]} draggable={false}

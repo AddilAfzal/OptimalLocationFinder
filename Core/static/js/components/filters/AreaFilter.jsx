@@ -56,11 +56,11 @@ export default class AreaFilter extends BaseFilter {
     };
 
     getData = () => {
-        let {area, radius, markerPosition} = this.state;
+        let {area, markerRadius, markerPosition} = this.state;
         return {
             'area': {
                 area: markerPosition.lat + "," + markerPosition.lng,
-                radius
+                radius: markerRadius/1000
             },
         };
     };

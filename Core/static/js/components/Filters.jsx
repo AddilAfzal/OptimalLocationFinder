@@ -88,7 +88,7 @@ export default class Filters extends Component {
             return {...obj, ...value};
         }, {});
 
-        console.log(requestData)
+        // console.log(requestData)
 
         const properties = await fetch('/api/properties/', {
             method: 'POST',
