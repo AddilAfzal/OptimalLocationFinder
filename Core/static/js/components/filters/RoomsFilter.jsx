@@ -27,6 +27,19 @@ export default class RoomsFilter extends BaseFilter {
 
     static description = "Select the number of each type of room needed.";
 
+    componentDidMount() {
+        super.componentDidMount();
+
+        let rooms = this.props.data.rooms;
+        if(rooms) {
+            console.log("updating rooms")
+            this.state.bedrooms = {min: rooms.num_bedrooms_min, max: rooms.num_bedrooms_max};
+            this.state.bathrooms = {min: rooms.num_bathrooms_min, max: rooms.num_bathrooms_max};
+            this.state.receptions = {min: rooms.num_recepts_min, max: rooms.num_recepts_max};
+            this.save();
+        }
+    }
+
     getData = () => {
         let { bedrooms, bathrooms, receptions} = this.state;
         return {

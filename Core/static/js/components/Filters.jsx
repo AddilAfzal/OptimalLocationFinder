@@ -57,12 +57,17 @@ export default class Filters extends Component {
                                           {...propMethods}
                                           {...propVars}/>);
 
-        Object.keys(data).forEach((k) => {
-            switch (k) {
+        // Recreate the components on page back functionality.
+        for(let key in data) {
+            console.log(key)
+            switch (key) {
                 case 'area':
                     this.createFilterComponent(AreaFilter);
+                    continue;
+                case 'rooms':
+                    this.createFilterComponent(RoomsFilter);
             }
-        });
+        }
     };
 
     createFilterComponent = (F) => {
@@ -71,6 +76,10 @@ export default class Filters extends Component {
     };
 
     reloadData = async () => {
+        if (this.state.filters.filter(f => f.ref.current === undefined | f.ref.current === null).length > 0) {
+            return
+        }
+
         let data = this.state.filters.length > 0 ? this.state.filters
             .map(f => f.ref.current.getData())
             .reduce((obj, item) => {

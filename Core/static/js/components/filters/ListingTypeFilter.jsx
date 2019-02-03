@@ -12,7 +12,7 @@ export default class ListingTypeFilter extends BaseFilter {
         super(props);
 
         this.state.canRemove = false;
-        this.state.listing_status = "sale";
+        this.state.listing_status = "rent";
 
     }
 
