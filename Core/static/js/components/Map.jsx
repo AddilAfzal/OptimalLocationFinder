@@ -64,6 +64,7 @@ export default class Map extends Component {
                     icon='point'
                     header={`${count.toLocaleString()} results found`}
                     content='Click on a cluster to zoom in.'
+                    success
                 />
                 <Segment attached>
                     <LeafletMap

@@ -76,7 +76,6 @@ export default class PriceFilter extends BaseFilter {
             this.state.price = [rentalprice__per_month_min | rentalprice__per_week_min,
                 rentalprice__per_month_max | rentalprice__per_week_max];
             this.state.term = rentalprice__per_week_max !== undefined ? 'week': 'month';
-            console.log(rentalprice__per_week_max)
             this.save();
         }
     }
@@ -127,8 +126,8 @@ export default class PriceFilter extends BaseFilter {
                         checked={term === 'week'}
                         onChange={this.handleChangePriceTerm}
                     />
-                </Form.Group>, <br/>]}
-
+                </Form.Group>]}
+                <br/>
                 <Header style={{marginTop: 0}} size='small'>Range</Header>
                 {formatCurrency(price[0])} - {formatCurrency(price[1])}
                 <br/>

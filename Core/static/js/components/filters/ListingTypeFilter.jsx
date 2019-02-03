@@ -1,9 +1,8 @@
-import React, {Component, Fragment} from "react";
+import React, {Fragment} from "react";
 import {
-    Button, Header, Form
+    Header, Form
 } from 'semantic-ui-react'
 
-import {Segment} from 'semantic-ui-react'
 import BaseFilter from "./BaseFilter";
 
 

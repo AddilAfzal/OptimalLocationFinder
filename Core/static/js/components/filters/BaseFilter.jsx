@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {
-    Button, Dimmer, Loader, Message
+    Button, Dimmer, Loader, Message, Segment
 } from 'semantic-ui-react'
 
 
@@ -36,7 +36,7 @@ export default class BaseFilter extends Component {
 
     renderCollapsed() {
         let reviewMessage =
-          ( <Message>
+          ( <Message warning>
                 <Message.Header>Requires updating</Message.Header>
                 <p>
                     A change to another filter means this will need to be updated.
@@ -44,27 +44,32 @@ export default class BaseFilter extends Component {
             </Message>);
         return (
             <Fragment>
-                <div className="ui segment">
+                <Segment secondary={this.props.lock}>
                     {this.state.needsReview && reviewMessage}
                     {this.getCollapsedText()}
-                </div>
-                <div className="ui segment">
-                    {!this.props.lock && <p><a href="javascript:void(0)" onClick={this.unCollapse}>Change</a></p>}
-                    { this.state.canRemove && <p><a href="javascript:void(0)" onClick={this.removeFilter}>Remove</a></p> }
-                </div>
+                </Segment>
+                <Segment secondary={this.props.lock}>
+                    <Button.Group labeled icon>
+                        <Button icon="edit" href="javascript:void(0)" onClick={this.unCollapse} primary
+                                disabled={this.props.lock} content={"Change"}  compact/>
+                        {this.state.canRemove &&
+                        <Button icon={"trash"} href="javascript:void(0)" onClick={this.removeFilter} color={"red"}
+                                disabled={this.props.lock} compact content={"Remove"}/>}
+                    </Button.Group>
+                </Segment>
             </Fragment>)
     }
 
     render() {
         return (
-            <div className="ui segments">
+            <Segment.Group>
                 <Dimmer inverted active={this.state.showLoader}>
                     <Loader inverted content='Loading'/>
                 </Dimmer>
                 {this.state.collapse ? this.renderCollapsed() :
-                    [<div className="ui segment"> {this.renderBody()}</div>,
-                    <div className="ui segment"> {this.renderSave()}</div>]}
-            </div>)
+                    [<Segment> {this.renderBody()}</Segment>,
+                    <Segment> {this.renderSave()}</Segment>]}
+            </Segment.Group>)
     }
 
     collapse = () => {

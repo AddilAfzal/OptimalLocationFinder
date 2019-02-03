@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status, generics
 
-from Zoopla.filters import BasicPropertyFilter, RoomFilter, PriceFilter
+from Zoopla.filters import BasicPropertyFilter, RoomFilter, PriceFilter, AreaFilter
 from Zoopla.models import Property
 from Zoopla.serializers import PropertySerializer
 from django.db import connection
@@ -34,6 +34,8 @@ def property_api(request):
         qs = BasicPropertyFilter(data, queryset).qs
         qs = RoomFilter(data, qs).qs
         qs = PriceFilter(data, qs).qs
+        qs = AreaFilter(data, qs).qs
+
         response = json.dumps(
             {
                 'count': qs.count(),

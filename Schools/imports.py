@@ -21,7 +21,7 @@ def import_schools(csv_path="Schools/data/england_spine.csv"):
         i = 0
         for row in reader:
             row = [item.strip() for item in row]
-            school, created = School.objects.get_or_create(
+            school = School.objects.create(
                 urn=int(row[0].strip('\ufeff')),
                 name=row[4],
                 other_name=row[5],
@@ -38,9 +38,11 @@ def import_schools(csv_path="Schools/data/england_spine.csv"):
                 age_to=int(row[23]),
                 gender=get_gender(row[24]),
                 sixth_form_gender=get_gender(row[25]),
+                lng=0,
+                lat=0,
             )
             i += 1
-            if i % 10 == 0:
+            if i % 100 == 0:
                 print(i)
             # print(row)
 

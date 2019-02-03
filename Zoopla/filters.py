@@ -6,19 +6,10 @@ from Zoopla.models import Property
 
 
 class BasicPropertyFilter(django_filters.FilterSet):
-    area = django_filters.CharFilter(method="filter_area")
     listing_status = django_filters.CharFilter()
     property_type = django_filters.CharFilter(method='filter_property_type')
 
-    def filter_property_type(self, queryset, field, value):
-        data = dict(self.data)
-
-        if data[field]:
-            q_list = map(lambda n: Q(property_type__icontains=n), data[field])
-            q_list = reduce(lambda a, b: a | b, q_list)
-            return queryset.filter(q_list)
-        else:
-            return queryset
+    area = django_filters.CharFilter(method="filter_area")
 
     def filter_area(self, queryset, field, value):
         data = dict(self.data)
@@ -29,6 +20,16 @@ class BasicPropertyFilter(django_filters.FilterSet):
                                          "cos(radians(longitude)-radians(%s))+"
                                          "sin(radians(%s))*sin(radians(latitude)))) < %s" % (lat, lng, lat, data['radius'])])
         return queryset
+
+    def filter_property_type(self, queryset, field, value):
+        data = dict(self.data)
+
+        if data[field]:
+            q_list = map(lambda n: Q(property_type__icontains=n), data[field])
+            q_list = reduce(lambda a, b: a | b, q_list)
+            return queryset.filter(q_list)
+        else:
+            return queryset
 
     class Meta:
         model = Property
@@ -77,3 +78,21 @@ class PriceFilter(django_filters.FilterSet):
     class Meta:
         model = Property
         fields = ['price']
+
+
+class AreaFilter(django_filters.FilterSet):
+    area = django_filters.CharFilter(method="filter_area")
+
+    def filter_area(self, queryset, field, value):
+        data = dict(self.data)
+        if 'radius' in data:
+            lat, lng = value.split(",")
+            return queryset.extra(where=["(6367*acos(cos(radians(%s))*"
+                                         "cos(radians(latitude))*"
+                                         "cos(radians(longitude)-radians(%s))+"
+                                         "sin(radians(%s))*sin(radians(latitude)))) < %s" % (lat, lng, lat, data['radius'])])
+        return queryset
+
+    class Meta:
+        model = Property
+        fields = ('area',)

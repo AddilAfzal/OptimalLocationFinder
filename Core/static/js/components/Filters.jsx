@@ -19,7 +19,6 @@ export default class Filters extends Component {
         console.log(props)
 
         this.state = {
-            // data: (JSON.parse('{"listingType":{"listing_status":"rent"},"price":{"price_min":0,"price_max":400,"price_term":"month"},"propertyTypes":{"property_type":["Terraced house"]}}')),
             data: {},
             filters: [],
             lock: true,
@@ -59,7 +58,6 @@ export default class Filters extends Component {
 
         // Recreate the components on page back functionality.
         for(let key in data) {
-            console.log(key)
             switch (key) {
                 case 'area':
                     this.createFilterComponent(AreaFilter);
@@ -90,10 +88,7 @@ export default class Filters extends Component {
         await this.setState({data})
     };
 
-    printData = () => console.log(this.state.data);
-
     addFilter = (f) => {
-        console.log(f)
         this.setState({filters: [...this.state.filters, f]});
     };
 
@@ -136,9 +131,6 @@ export default class Filters extends Component {
 
         return (
             <div>
-                <Button primary size="large" onClick={() => this.setState({show: true})}>
-                    Start
-                </Button>
                 <Fragment>
                     <br/>
                     <br/>
@@ -156,7 +148,6 @@ export default class Filters extends Component {
                         <Button size={'large'} primary disabled={(filters.length < 3 || lock === true)}
                                 loading={submitLoading} onClick={onSubmit}>Submit</Button>
                     </div>
-                    <Button onClick={this.printData}>Print data</Button>
                 </Fragment>
             </div>
         )
