@@ -53,12 +53,13 @@ export default class PriceFilter extends BaseFilter {
 
     getData = () => {
         let { price, term } = this.state;
+
+        let tmp = {};
+        tmp[`rentalprice__per_${term}_min`] = price[0];
+        tmp[`rentalprice__per_${term}_max`] = price[1];
+
         return {
-            'price': {
-                price_min: price[0],
-                price_max: price[1],
-                price_term: term,
-            }
+            'price': tmp
         };
     };
 
@@ -66,9 +67,16 @@ export default class PriceFilter extends BaseFilter {
         super.componentDidMount();
         let price = this.props.data.price;
         if(price) {
-            const {price_min, price_max, price_term} = price;
-            this.state.price = [price_min, price_max];
-            this.state.term = price_term;
+            const {rentalprice__per_month_min,
+                rentalprice__per_month_max,
+                rentalprice__per_week_min,
+                rentalprice__per_week_max,
+                } = price;
+
+            this.state.price = [rentalprice__per_month_min | rentalprice__per_week_min,
+                rentalprice__per_month_max | rentalprice__per_week_max];
+            this.state.term = rentalprice__per_week_max !== undefined ? 'week': 'month';
+            console.log(rentalprice__per_week_max)
             this.save();
         }
     }

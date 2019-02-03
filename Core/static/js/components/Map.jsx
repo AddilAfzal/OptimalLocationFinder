@@ -42,6 +42,7 @@ export default class Map extends Component {
     };
 
     markerOnClick = (property) => {
+        console.log(property)
         this.setState({property});
     };
 

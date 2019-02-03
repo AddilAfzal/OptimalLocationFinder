@@ -47,11 +47,17 @@ class RoomFilter(django_filters.FilterSet):
 
 
 class PriceFilter(django_filters.FilterSet):
-    price = django_filters.RangeFilter(field_name="rentalprice__per_month", method='filter_price') # price_min and price_max
+    ACCURATE_CHOICES = (
+        (0, 'per_month'),
+        (1, 'per_week'),
+    )
+
+    rentalprice__per_month = django_filters.RangeFilter(method='filter_price') # price_min and price_max
+    rentalprice__per_week = django_filters.RangeFilter(method='filter_price') # price_min and price_max
+    accurate = django_filters.ChoiceFilter(choices=ACCURATE_CHOICES, required=False)
 
     def filter_price(self, queryset, field, value):
         data = dict(self.data)
-
         if 'listing_status' in data:
             listing_status = data['listing_status']
             
@@ -59,10 +65,10 @@ class PriceFilter(django_filters.FilterSet):
             filters['listing_status'] = listing_status
 
             if value.stop:
-                filters['price__lte'] = value.stop
+                filters[field + '__lte'] = value.stop
 
             if value.start:
-                filters['price__gte'] = value.start
+                filters[field + '__gte'] = value.start
             
             return queryset.filter(**filters)
         else:
