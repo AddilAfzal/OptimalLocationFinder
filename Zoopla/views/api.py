@@ -39,7 +39,7 @@ def property_api(request):
         response = json.dumps(
             {
                 'count': qs.count(),
-                'results': PropertySerializer(qs, many=True).data,
+                'results': PropertySerializer(qs.distinct(), many=True).data,
             }
         )
 

@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
 import * as L from "leaflet";
-import {Button, Header, Message, Segment} from "semantic-ui-react";
-import {Circle, Marker, TileLayer, Map as LeafletMap} from "react-leaflet";
+import {Button, Header, Image, Message, Segment} from "semantic-ui-react";
+import {Circle, Marker, TileLayer, Map as LeafletMap, Popup} from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import Property from "./Property";
 
@@ -29,7 +29,11 @@ export default class Map extends Component {
     componentDidMount() {
         const markers = this.state.properties.map((elem) =>
             <Marker key={elem.listing_id} position={[elem.latitude, elem.longitude]} draggable={false}
-                    onClick={() => this.markerOnClick(elem)}/>
+                    onClick={() => this.markerOnClick(elem)}>
+                <Popup>
+                    {elem.propertyimage_set.map(x => <Image src={x.url}/>)}
+                </Popup>
+            </Marker>
         );
         this.setState({markers}, this.setBounds);
     }
