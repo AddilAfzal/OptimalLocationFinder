@@ -1,12 +1,13 @@
 import json
 
 from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status, generics
 
 from Zoopla.filters import BasicPropertyFilter, RoomFilter, PriceFilter, AreaFilter
 from Zoopla.models import Property
-from Zoopla.serializers import PropertySerializer
+from Zoopla.serializers import PropertySerializer, RoomsSerializer
 from django.db import connection
 
 
@@ -47,3 +48,18 @@ def property_api(request):
         return HttpResponse(response, content_type="json")
 
     return Http404('Error')
+
+
+def get_property(request, listing_id):
+    print("test")
+    p = get_object_or_404(Property, listing_id=listing_id)
+    rooms_serialized = RoomsSerializer(p).data
+
+    response = json.dumps(
+        {
+            'rooms': rooms_serialized,
+
+        }
+    )
+
+    return HttpResponse(response, content_type="json")

@@ -1,27 +1,27 @@
 import React, {Component, Fragment} from "react";
-import * as L from "leaflet";
-import {Button, Image, Message, Segment} from "semantic-ui-react";
-import {Circle, Marker, TileLayer, Map as LeafletMap} from "react-leaflet";
-import MarkerClusterGroup from 'react-leaflet-markercluster';
+import {Button, Divider, Header, Icon, Image} from "semantic-ui-react";
 
 export default class Property extends Component {
     constructor(props) {
         super(props);
     }
 
-
-    componentDidMount() {
-
-    }
-
     render() {
         const {property} = this.props;
-        if (property) {
+        if (property !== null) {
             return (
                 <Fragment>
                     <h5> {property.street_name}, {property.outcode}</h5>
                     <Button onClick={() => window.open(property.details_url)}>Zoopla</Button>
                     {property.propertyimage_set.map(x => <Image src={x.url}/>)}
+
+                    <Divider horizontal>
+                        <Header as='h4'>
+                            <Icon name='bar chart'/>
+                            Crime Statistics
+                        </Header>
+                    </Divider>
+
                 </Fragment>
             )
         } else {

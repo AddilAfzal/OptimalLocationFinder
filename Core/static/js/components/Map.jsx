@@ -1,19 +1,9 @@
 import React, {Component, Fragment} from "react";
-import * as L from "leaflet";
-import {Button, Card, Header, Image, Message, Segment} from "semantic-ui-react";
-import {Circle, Marker, TileLayer, Map as LeafletMap, Popup, Tooltip} from "react-leaflet";
+import {Button, Header, Message, Segment} from "semantic-ui-react";
+import { Marker, TileLayer, Map as LeafletMap} from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import Property from "./Property";
-import Control from 'react-leaflet-control';
-
-function formatPrice(property)
-{
-    if(property.listing_status === 'rent') {
-        return `£${property.rentalprice_set[0].per_month} pcm`
-    } else {
-        return `£${property.price}`
-    }
-}
+import ControlInfo from "./ControlInfo";
 
 export default class Map extends Component {
     constructor(props) {
@@ -58,9 +48,9 @@ export default class Map extends Component {
         this.leafletMap.current.leafletElement.fitBounds(markerClusterBounds)
     };
 
-    markerOnClick = (property) => {
-        console.log(property)
-        this.setState({property});
+    markerOnClick = async (property) => {
+        let data = await fetch('/api/properties/' + property.listing_id).then(x => x.json());
+        await this.setState({property: {...property, ...data}});
     };
 
     handleEditFilters = () => {
@@ -98,24 +88,14 @@ export default class Map extends Component {
                         <MarkerClusterGroup ref={this.markerCluster}>
                             {markers}
                         </MarkerClusterGroup>
-
-                        {property !== null ? <Control position="bottomleft">
-                            <Card>
-                                <Card.Content>
-                                    <Card.Header content={property.street_name}/>
-                                    <Card.Meta content={formatPrice(property)}/>
-                                    {/*<Card.Description content='Jake is a drummer living in New York.'/>*/}
-                                </Card.Content>
-                            </Card>
-                        </Control>: <Card> Click onto a property to see more information</Card>}
-
+                        <ControlInfo property={property}/>
                     </LeafletMap>
                 </Segment>
                 <Header as='h4' attached='top'>
                     Property
                 </Header>
                 <Segment attached>
-                    <Property property={this.state.property}/>
+                    <Property property={property}/>
                 </Segment>
             </Fragment>
         )

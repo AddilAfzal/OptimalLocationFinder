@@ -3,8 +3,10 @@ from rest_framework import serializers
 from Zoopla.models import Property, PropertyImage, RentalPrice
 
 
-# class RoomsSerializer(serializers.Serializer):
-#     pass
+class RoomsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Property
+        fields = ('num_bathrooms', 'num_bedrooms', 'num_recepts')
 
 
 class PropertyImageSerializer(serializers.ModelSerializer):
