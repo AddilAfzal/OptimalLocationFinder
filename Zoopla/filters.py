@@ -2,6 +2,7 @@ import django_filters, json
 from django.db.models import Q
 from pandas.compat import reduce
 
+from Schools.models import School
 from Zoopla.models import Property
 
 
@@ -98,3 +99,10 @@ class AreaFilter(django_filters.FilterSet):
     class Meta:
         model = Property
         fields = ('area',)
+
+
+class SchoolFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = School
+        fields = ('is_primary', 'is_secondary', 'is_post16', 'gender')

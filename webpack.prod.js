@@ -1,6 +1,8 @@
 var path = require("path");
 var webpack = require('webpack');
 var BundleTracker = require('webpack-bundle-tracker');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
 
 const defaults = [
     'babel-polyfill',
@@ -8,11 +10,11 @@ const defaults = [
 
 module.exports = {
     context: __dirname,
-    mode: 'development',
+    mode: 'production',
 
     entry: {
-        'index': [...defaults, './react/Index'],
-        'map': [...defaults, './react/Map'],
+        'IndexPage': ['@babel/polyfill', './Core/static/js/IndexPage'],
+        // 'map': [...defaults, './react/Map'],
     },
 
     output: {
@@ -23,6 +25,9 @@ module.exports = {
     plugins: [
         new BundleTracker({filename: './webpack-stats.json'}),
     ],
+    optimization: {
+            minimizer: [new UglifyJsPlugin()]
+    },
 
     module: {
         rules: [

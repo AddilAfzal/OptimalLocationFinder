@@ -44,14 +44,12 @@ def property_api(request):
             }
         )
 
-        print(len(connection.queries))
         return HttpResponse(response, content_type="json")
 
     return Http404('Error')
 
 
 def get_property(request, listing_id):
-    print("test")
     p = get_object_or_404(Property, listing_id=listing_id)
     rooms_serialized = RoomsSerializer(p).data
 

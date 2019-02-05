@@ -1,13 +1,14 @@
 var path = require("path");
 var webpack = require('webpack');
 var BundleTracker = require('webpack-bundle-tracker');
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 module.exports = {
     context: __dirname,
     mode: 'development',
     entry: {
         'IndexPage': ['@babel/polyfill', './Core/static/js/IndexPage'],
-        'MapPage': ['@babel/polyfill', './Core/static/js/MapPage'],
+        // 'MapPage': ['@babel/polyfill', './Core/static/js/MapPage'],
     },
 
     output: {
