@@ -26,7 +26,7 @@ from django.db import connection
 
 @csrf_exempt
 def property_api(request):
-    queryset = Property.objects.all().prefetch_related('propertyimage_set')
+    queryset = Property.objects.all().prefetch_related('propertyimage_set', 'rentalprice_set')
 
     if request.method == 'POST':
         data = json.loads(request.body)

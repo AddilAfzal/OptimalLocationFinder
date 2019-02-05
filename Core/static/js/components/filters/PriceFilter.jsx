@@ -52,11 +52,16 @@ export default class PriceFilter extends BaseFilter {
     static description = "price...";
 
     getData = () => {
-        let { price, term } = this.state;
+        let { price, term, listingType } = this.state;
 
         let tmp = {};
-        tmp[`rentalprice__per_${term}_min`] = price[0];
-        tmp[`rentalprice__per_${term}_max`] = price[1];
+        if(listingType === 'rent') {
+            tmp[`rentalprice__per_${term}_min`] = price[0];
+            tmp[`rentalprice__per_${term}_max`] = price[1];
+        } else {
+            tmp['price_min'] = price[0];
+            tmp['price_max'] = price[1];
+        }
 
         return {
             'price': tmp
@@ -66,7 +71,9 @@ export default class PriceFilter extends BaseFilter {
     componentDidMount() {
         super.componentDidMount();
         let price = this.props.data.price;
-        if(price) {
+        let listingType = this.props.data.listingType;
+
+        if(price && listingType && listingType.listing_status === 'rent') {
             const {rentalprice__per_month_min,
                 rentalprice__per_month_max,
                 rentalprice__per_week_min,
@@ -76,6 +83,10 @@ export default class PriceFilter extends BaseFilter {
             this.state.price = [rentalprice__per_month_min | rentalprice__per_week_min,
                 rentalprice__per_month_max | rentalprice__per_week_max];
             this.state.term = rentalprice__per_week_max !== undefined ? 'week': 'month';
+            this.save();
+        } else if(price && listingType && listingType.listing_status === 'sale') {
+            this.state.price = [price.price_min, price.price_max];
+            this.state.listingType = listingType.listing_status;
             this.save();
         }
     }

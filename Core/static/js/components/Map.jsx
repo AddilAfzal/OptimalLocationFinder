@@ -1,9 +1,19 @@
 import React, {Component, Fragment} from "react";
 import * as L from "leaflet";
-import {Button, Header, Image, Message, Segment} from "semantic-ui-react";
-import {Circle, Marker, TileLayer, Map as LeafletMap, Popup} from "react-leaflet";
+import {Button, Card, Header, Image, Message, Segment} from "semantic-ui-react";
+import {Circle, Marker, TileLayer, Map as LeafletMap, Popup, Tooltip} from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import Property from "./Property";
+import Control from 'react-leaflet-control';
+
+function formatPrice(property)
+{
+    if(property.listing_status === 'rent') {
+        return `£${property.rentalprice_set[0].per_month} pcm`
+    } else {
+        return `£${property.price}`
+    }
+}
 
 export default class Map extends Component {
     constructor(props) {
@@ -30,9 +40,12 @@ export default class Map extends Component {
         const markers = this.state.properties.map((elem) =>
             <Marker key={elem.listing_id} position={[elem.latitude, elem.longitude]} draggable={false}
                     onClick={() => this.markerOnClick(elem)}>
-                <Popup>
-                    {elem.propertyimage_set.map(x => <Image src={x.url}/>)}
-                </Popup>
+                {/*<Popup>*/}
+                    {/*{elem.propertyimage_set.map(x => <Image src={x.url}/>)}*/}
+                {/*</Popup>*/}
+                {/*<Tooltip style={{height: 100, width: 100}}>*/}
+                {/*</Tooltip>*/}
+
             </Marker>
         );
         this.setState({markers}, this.setBounds);
@@ -59,7 +72,7 @@ export default class Map extends Component {
     markerCluster = React.createRef();
 
     render() {
-        const {mapCenterPosition, markers, count, mapMaxBounds} = this.state;
+        const {mapCenterPosition, markers, count, mapMaxBounds, property} = this.state;
         return (
             <Fragment>
                 <Button onClick={this.handleEditFilters}>Edit filters</Button>
@@ -85,6 +98,17 @@ export default class Map extends Component {
                         <MarkerClusterGroup ref={this.markerCluster}>
                             {markers}
                         </MarkerClusterGroup>
+
+                        {property !== null ? <Control position="bottomleft">
+                            <Card>
+                                <Card.Content>
+                                    <Card.Header content={property.street_name}/>
+                                    <Card.Meta content={formatPrice(property)}/>
+                                    {/*<Card.Description content='Jake is a drummer living in New York.'/>*/}
+                                </Card.Content>
+                            </Card>
+                        </Control>: <Card> Click onto a property to see more information</Card>}
+
                     </LeafletMap>
                 </Segment>
                 <Header as='h4' attached='top'>

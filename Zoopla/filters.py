@@ -55,6 +55,8 @@ class PriceFilter(django_filters.FilterSet):
 
     rentalprice__per_month = django_filters.RangeFilter(method='filter_price') # price_min and price_max
     rentalprice__per_week = django_filters.RangeFilter(method='filter_price') # price_min and price_max
+    price = django_filters.RangeFilter(method='filter_price')
+
     accurate = django_filters.ChoiceFilter(choices=ACCURATE_CHOICES, required=False)
 
     def filter_price(self, queryset, field, value):

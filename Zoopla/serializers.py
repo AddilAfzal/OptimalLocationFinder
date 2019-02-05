@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from Zoopla.models import Property, PropertyImage
+from Zoopla.models import Property, PropertyImage, RentalPrice
 
 
 # class RoomsSerializer(serializers.Serializer):
@@ -13,10 +13,18 @@ class PropertyImageSerializer(serializers.ModelSerializer):
         fields = ('url',)
 
 
+class RentalPriceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RentalPrice
+        fields = ('per_month', 'per_week', 'shared_occupancy')
+
+
 class PropertySerializer(serializers.ModelSerializer):
     propertyimage_set = PropertyImageSerializer(many=True)
+    rentalprice_set = RentalPriceSerializer(many=True)
 
     class Meta:
         model = Property
         fields = ('listing_id', 'longitude', 'latitude', 'street_name', 'post_town',
-                  'outcode', 'price', 'listing_status', 'details_url', 'thumbnail_url', 'propertyimage_set')
+                  'outcode', 'price', 'listing_status', 'details_url', 'thumbnail_url', 'propertyimage_set',
+                  'rentalprice_set')
