@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'webpack_loader',
+    'corsheaders',
     'Core',
     'Schools',
     'Zoopla',
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -159,3 +160,6 @@ HERE_MAPS_APP_CODE = "3ViBdfQh00uW03S2gnk5CQ"
 ZOOPLA_API_KEY = "4zd7kgvjktq4p464btnk9g58"
 
 INTERNAL_IPS = ['127.0.0.1']
+
+if DEBUG:
+    CORS_ORIGIN_ALLOW_ALL = True

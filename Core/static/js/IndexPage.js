@@ -12,3 +12,5 @@ ReactDOM.render(
   element,
   document.getElementById('react')
 );
+
+module.hot.accept();
