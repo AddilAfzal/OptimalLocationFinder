@@ -1,6 +1,7 @@
 import csv
 
 from Core.methods import postcode_lookup
+from Core.models import Postcode
 from Schools.models import School
 
 
@@ -38,6 +39,8 @@ def import_schools(csv_path="Schools/data/england_spine.csv"):
                 age_to=int(row[23]),
                 gender=get_gender(row[24]),
                 sixth_form_gender=get_gender(row[25]),
+                religion=(None if row[26] in ['None', 'Does not apply'] else row[26]),
+                selective=(row[27] == 'Selective'),
                 lng=0,
                 lat=0,
             )
@@ -82,6 +85,25 @@ def update_postcodes():
 
         print(i)
 
+#
+# def update_postcodes_two():
+#     i = 0
+#
+#     for s in School.objects.all():
+#         try:
+#             p = Postcode.objects.get(postal_code=s.postcode)
+#             s.lat = p.latitude
+#             s.lng = p.longitude
+#             s.save()
+#         except (TypeError, IndexError) as e:
+#             print(e)
+#             pass
+#
+#         if i % 100 == 0:
+#             print(i)
+#         i += 1
+
 
 def import_ofsted_data(csv_path="Schools/data/england_ofsted-schools.csv"):
     pass
+

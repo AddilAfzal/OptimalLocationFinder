@@ -4,6 +4,7 @@ from Schools.models import School
 
 
 class SchoolFilter(django_filters.FilterSet):
+
     class Meta:
         model = School
-        fields = ['name']
+        fields = ['religion', 'selective', 'is_post16', 'is_primary', 'is_secondary']

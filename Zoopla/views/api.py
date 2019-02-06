@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status, generics
 
+from Schools.methods import filter_properties_for_schools
 from Zoopla.filters import BasicPropertyFilter, RoomFilter, PriceFilter, AreaFilter
 from Zoopla.models import Property
 from Zoopla.serializers import PropertySerializer, RoomsSerializer
@@ -32,10 +33,15 @@ def property_api(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         print(data)
+        data['school'] = {
+            'is_secondary': True,
+        }
+
         qs = BasicPropertyFilter(data, queryset).qs
         qs = RoomFilter(data, qs).qs
         qs = PriceFilter(data, qs).qs
         qs = AreaFilter(data, qs).qs
+        qs = filter_properties_for_schools(data, qs)
 
         response = json.dumps(
             {

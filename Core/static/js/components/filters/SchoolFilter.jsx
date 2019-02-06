@@ -131,7 +131,6 @@ export default class SchoolFilter extends BaseFilter {
                             name='checkboxRadioGroup'
                             value='any'
                             checked={admissionType === 'any'}
-                            // onChange={() => this.setState({admissionType: 'any'})}
                             onChange={this.handleChangeAdmissionType}
                         />
                     </Form.Field>
