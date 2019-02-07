@@ -15,8 +15,8 @@ export default class SchoolFilter extends BaseFilter {
             is_primary: false,
             is_secondary: false,
             is_post16: false,
-            gender: "mixed",
-            admissionType: 'any',
+            gender: "M",
+            selective: 'any',
         }
     }
 
@@ -37,13 +37,26 @@ export default class SchoolFilter extends BaseFilter {
     };
 
     getData = () => {
-        return {'school': {}};
+        const {is_primary, is_secondary, is_post16, gender, selective} = this.state;
+
+        return {
+            'school': {
+                'school': {
+                    is_primary,
+                    is_post16,
+                    is_secondary,
+                    gender,
+                    selective,
+                }
+
+            }
+        };
     };
 
-    handleChangeAdmissionType = (_, {value}) => this.setState({admissionType: value});
+    handleChangeAdmissionType = (_, {value}) => this.setState({selective: value});
 
     renderBody() {
-        const {is_primary, is_secondary, is_post16, gender, admissionType} = this.state;
+        const {is_primary, is_secondary, is_post16, gender, selective} = this.state;
 
         return (
             <Fragment>
@@ -81,9 +94,9 @@ export default class SchoolFilter extends BaseFilter {
                                     radio
                                     label='Mixed'
                                     name='checkboxRadioGroup'
-                                    value='mixed'
-                                    checked={gender === 'mixed'}
-                                    onChange={() => this.setState({gender: 'mixed'})}
+                                    value='M'
+                                    checked={gender === 'M'}
+                                    onChange={() => this.setState({gender: 'M'})}
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -93,27 +106,29 @@ export default class SchoolFilter extends BaseFilter {
                                     name='checkboxRadioGroup'
                                     value='that'
                                     onChange={() => this.setState({gender: null})}
-                                    checked={gender === 'boys' | gender === 'girls' | gender === null}
+                                    checked={gender === 'B' | gender === 'G' | gender === null}
                                     // onChange={this.handleChange}
                                 />
                             </Form.Field>
                         </Form>
                     </Grid.Column>
 
-                    {(gender === null | gender === 'boys' | gender === 'girls') ?
+                    {(gender === null | gender === 'B' | gender === 'G') ?
                     <Grid.Column width={6}>
                         <Grid>
                             <Grid.Row>
                                 <Grid.Column width={4}>
                                     <Checkbox
-                                        checked={gender === 'boys'}
+                                        checked={gender === 'B'}
                                         label={<label>Boys </label>}
+                                        onChange={() => this.setState({gender: 'B'})}
                                     />
                                 </Grid.Column>
                                 <Grid.Column width={4}>
                                     <Checkbox
-                                        checked={gender === 'girls'}
-                                        label={<label>Girls </label>}
+                                        checked={gender === 'G'}
+                                        label={<label>Girls</label>}
+                                        onChange={() => this.setState({gender: 'G'})}
                                     />
                                 </Grid.Column>
                             </Grid.Row>
@@ -130,7 +145,7 @@ export default class SchoolFilter extends BaseFilter {
                             label='Any'
                             name='checkboxRadioGroup'
                             value='any'
-                            checked={admissionType === 'any'}
+                            checked={selective === 'any'}
                             onChange={this.handleChangeAdmissionType}
                         />
                     </Form.Field>
@@ -139,8 +154,8 @@ export default class SchoolFilter extends BaseFilter {
                             radio
                             label='Non-selective'
                             name='checkboxRadioGroup'
-                            value='non-selective'
-                            checked={admissionType === 'non-selective'}
+                            value={false}
+                            checked={selective === false}
                             onChange={this.handleChangeAdmissionType}
                         />
                     </Form.Field>
@@ -149,8 +164,8 @@ export default class SchoolFilter extends BaseFilter {
                             radio
                             label='Selective'
                             name='checkboxRadioGroup'
-                            value='selective'
-                            checked={admissionType === 'selective'}
+                            value={true}
+                            checked={selective === true}
                             onChange={this.handleChangeAdmissionType}
                         />
                     </Form.Field>

@@ -1,4 +1,5 @@
 import json
+import time
 
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
@@ -33,22 +34,24 @@ def property_api(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         print(data)
-        data['school'] = {
-            'is_secondary': True,
-        }
 
         qs = BasicPropertyFilter(data, queryset).qs
         qs = RoomFilter(data, qs).qs
         qs = PriceFilter(data, qs).qs
         qs = AreaFilter(data, qs).qs
-        qs = filter_properties_for_schools(data, qs)
 
+        start = time.time()
+        qs = filter_properties_for_schools(data, qs)
+        end = time.time()
+        print("time: ", end - start)
         response = json.dumps(
             {
-                'count': qs.count(),
-                'results': PropertySerializer(qs.distinct(), many=True).data,
+                'count': qs.__len__(),
+                'results': PropertySerializer(qs, many=True).data,
             }
         )
+
+        print(len(connection.queries))
 
         return HttpResponse(response, content_type="json")
 
