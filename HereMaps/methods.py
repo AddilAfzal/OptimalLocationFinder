@@ -1,7 +1,6 @@
 import re
 
 import pytz
-from dateutil.relativedelta import relativedelta
 from django.utils import timezone
 
 import requests

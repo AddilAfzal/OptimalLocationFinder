@@ -5,7 +5,7 @@ import {
 
 import AreaFilter from "./filters/AreaFilter";
 import RoomsFilter from "./filters/RoomsFilter";
-import DistanceFilter from "./filters/DistanceFilter";
+import CommuteFilter from "./filters/CommuteFilter";
 import Icon from "semantic-ui-react/dist/commonjs/elements/Icon";
 import SchoolFilter from "./filters/SchoolFilter";
 
@@ -18,7 +18,7 @@ export default class AddFilterModal extends Component {
             filterMethods: [
                 AreaFilter,
                 RoomsFilter,
-                DistanceFilter,
+                CommuteFilter,
                 SchoolFilter
             ],
             open: false,

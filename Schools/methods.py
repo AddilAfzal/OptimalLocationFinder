@@ -78,8 +78,7 @@ def filter_properties_for_schools(data, qs):
         ecef_schools = [geodetic2ecef(lat, lon) for lat, lon in schools]
         tree = KDTree(numpy.array(ecef_schools))
 
-        for (i, p) in enumerate(qs):
-            print(i, p.latitude)
+        for p in qs:
             l = geodetic2ecef(p.latitude, p.longitude)
             if tree.query_ball_point([l], r=euclidean_distance(school_radius))[0].__len__() > 0:
                 property_list.append(p)

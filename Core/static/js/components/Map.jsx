@@ -2,8 +2,8 @@ import React, {Component, Fragment} from "react";
 import {Button, Header, Message, Segment} from "semantic-ui-react";
 import { Marker, TileLayer, Map as LeafletMap} from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
-import Property from "./Property";
-import ControlInfo from "./ControlInfo";
+import Property from "./map/Property";
+import ControlInfo from "./map/ControlInfo";
 
 export default class Map extends Component {
     constructor(props) {
@@ -44,7 +44,7 @@ export default class Map extends Component {
     setBounds = async () => {
         let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
         let mapMaxBounds = this.leafletMap.current.leafletElement.getBounds();
-        this.setState({markerClusterBounds, mapMaxBounds});
+        this.setState({mapMaxBounds});
         this.leafletMap.current.leafletElement.fitBounds(markerClusterBounds)
     };
 

@@ -8,10 +8,10 @@ import Slider, {Range} from 'rc-slider';
 import ListingTypeFilter from "./filters/ListingTypeFilter";
 import AreaFilter from "./filters/AreaFilter";
 import RoomsFilter from "./filters/RoomsFilter";
-import DistanceFilter from "./filters/DistanceFilter";
+import CommuteFilter from "./filters/CommuteFilter";
 import PropertyTypeFilter from "./filters/PropertyTypeFilter";
 import PriceFilter from "./filters/PriceFilter";
-import AddFilterModal from "./AddFIlterModal";
+import AddFilterModal from "./AddFilterModal";
 
 export default class Filters extends Component {
     constructor(props) {

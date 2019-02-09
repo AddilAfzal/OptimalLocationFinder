@@ -1,10 +1,12 @@
 from json import JSONDecodeError
 
+import requests
 from django.http import HttpResponse
 import json
 
 from HereMaps.methods import get_routes, get_reverse_geo_code
 from HereMaps.models import ReverseGeoCodeCache
+from LocationFinder.settings import HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE
 from Zoopla.models import Property
 
 
@@ -49,3 +51,26 @@ def reverse_geo_code(request, lat, lng):
 
     response = {'label': o.label}
     return HttpResponse(json.dumps(response))
+
+
+def search_input(request, search):
+    """
+    Call the here maps API to return auto complete sugggestions for user input.
+    :return:
+    """
+    # r = requests.get(
+    #     'http://autocomplete.geocoder.api.here.com/6.2/suggest.json'
+    #     '?app_id=%s'
+    #     '&app_code=%s'
+    #     '&query=%s' % (HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE, search))
+    r = requests.get(
+        'https://places.cit.api.here.com/places/v1/autosuggest'
+        '?at=51.49,-0.14'
+        '&app_id=%s'
+        '&app_code=%s'
+        '&q=%s' % (HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE, search))
+
+    response = r.json()
+    print(response)
+
+    return HttpResponse(json.dumps(response), content_type="json")

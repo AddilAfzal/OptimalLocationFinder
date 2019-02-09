@@ -13,5 +13,6 @@ app_name = 'heremaps'
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^api/distance/', api.distance_api, name="api_distances"),
+    path('api/auto_complete/<str:search>/', api.search_input),
     path('api/reverse-geo-code/<str:lat>/<str:lng>/', api.reverse_geo_code),
 ]
