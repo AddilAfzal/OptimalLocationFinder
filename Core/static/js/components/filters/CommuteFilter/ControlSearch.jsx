@@ -23,17 +23,6 @@ class ControlSearch extends Component {
         }
     }
 
-    // componentDidMount() {
-    //     DomEvent
-    //         .disableClickPropagation(this.container)
-    //         .disableScrollPropagation(this.container)
-    // }
-
-    refContainer(el) {
-        this.container = el;
-    }
-
-
     componentDidUpdate(prevProps, prevState, snapshot) {
         if(prevProps.property !== this.props.property) {
             this.forceUpdate();
@@ -53,7 +42,8 @@ class ControlSearch extends Component {
             await this.getSuggestions(o.value);
             if(this.state.suggestions && this.state.suggestions.length > 0) {
                 const results = this.state.suggestions
-                    .map( (x, i) => ({title: x.href, text: x.title, position: x.position}))
+                    .filter(s => s.resultType !== "chain")
+                    .map( (x, i) => ({title: x.href, text: x.title, position: x.position, vicinity: x.vicinity,}))
                     .slice(0, 6);
                 this.setState({results});
             }
@@ -64,15 +54,17 @@ class ControlSearch extends Component {
     }, 600);
 
     handleResultSelect = (e, {result}) => {
-        let marker = <Marker ref={React.createRef()} draggable={true} position={result.position} text={result.text}/>
+        let marker = <Marker ref={React.createRef()} draggable={true}
+                             position={result.position} text={result.text}
+                             time={45} />
         this.setState({ value: result.text});
-        console.log(result)
         this.props.addMarker(marker);
     };
 
     render() {
         const {results, value, loading} = this.state;
-        let resultRenderer = ({text}) => <div>{text}</div>;
+        let resultRenderer = ({text, vicinity}) =>
+            <div>{text} <small dangerouslySetInnerHTML={{__html:vicinity.split("<br/>").join(", ")}}/></div>;
 
         return (
             <Search

@@ -37,8 +37,20 @@ export default class CommuteFilter extends BaseFilter {
 
     static description = "Filter for homes that match your ideal commute time.";
 
+
     getData = () => {
-        return {'distance': this.state.distance};
+        const formatMarkerData = (x) => {
+            const {text, position, time} = x.props;
+            return {
+                text,
+                position,
+                time,
+            }
+        };
+
+        let markerData = this.state.mapMarkers.map(formatMarkerData);
+        console.log("data: ", markerData);
+        return {'commute': markerData};
     };
 
     getCollapsedText = () => {
