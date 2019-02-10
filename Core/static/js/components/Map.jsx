@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {Button, Header, Message, Segment} from "semantic-ui-react";
-import { Marker, TileLayer, Map as LeafletMap} from "react-leaflet";
+import {Marker, TileLayer, Map as LeafletMap, Polyline} from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import Property from "./map/Property";
 import ControlInfo from "./map/ControlInfo";
@@ -22,7 +22,10 @@ export default class Map extends Component {
             markers: [],
             markerClusterBounds: null,
 
+            polylinePositions: [],
+
             property: null,
+
         };
     }
 
@@ -50,7 +53,16 @@ export default class Map extends Component {
 
     markerOnClick = async (property) => {
         let data = await fetch('/api/properties/' + property.listing_id).then(x => x.json());
-        await this.setState({property: {...property, ...data}});
+        let polylinePositions = [];
+        if(property.route_data) {
+            polylinePositions =
+                property.route_data[0].response.route[0].leg[0].maneuver
+                    .map(x => [x.position.latitude, x.position.longitude])
+        }
+        await this.setState({
+            property: {...property, ...data},
+            polylinePositions,
+        });
     };
 
     handleEditFilters = () => {
@@ -62,7 +74,7 @@ export default class Map extends Component {
     markerCluster = React.createRef();
 
     render() {
-        const {mapCenterPosition, markers, count, mapMaxBounds, property} = this.state;
+        const {mapCenterPosition, markers, count, mapMaxBounds, property, polylinePositions} = this.state;
         return (
             <Fragment>
                 <Button onClick={this.handleEditFilters}>Edit filters</Button>
@@ -87,6 +99,7 @@ export default class Map extends Component {
                         />
                         <MarkerClusterGroup ref={this.markerCluster}>
                             {markers}
+                            <Polyline positions={polylinePositions}/>
                         </MarkerClusterGroup>
                         <ControlInfo property={property}/>
                     </LeafletMap>
