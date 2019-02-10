@@ -36,7 +36,8 @@ export default class ControlInfo extends Component {
 
             return (
                 <Control position="bottomleft">
-                    <Image src={property.propertyimage_set[0].url} size='tiny' verticalAlign='middle'/>
+                    {property.propertyimage_set.length > 0 ?
+                        <Image src={property.propertyimage_set[0].url} size='tiny' verticalAlign='middle'/> : ''}
                     <Card>
                         <Card.Content>
                             <Card.Header content={property.street_name}/>

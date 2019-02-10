@@ -1,4 +1,5 @@
 import json
+import random
 from math import radians, cos, sin, sqrt, atan2
 
 from HereMaps.methods import get_route
@@ -95,6 +96,7 @@ def filter_properties_for_schools(data, qs):
 def filter_properties_by_commute(data, qs):
 
     if 'commute' in data:
+        # properties = random.sample(list(qs), 100)
         properties = qs[:100]
 
         t = RouteCache.objects.all().values()
@@ -112,7 +114,6 @@ def filter_properties_by_commute(data, qs):
 
                 if query:   # If the query returns at least one item
                     cached_object = query.first()
-                    print(cached_object)
                     if cached_object and cached_object['commute_time'] <= required_commute_time:   # If the commute time is within the defined max.
                         route = json.loads(cached_object['data'])
                     else:
@@ -122,7 +123,6 @@ def filter_properties_by_commute(data, qs):
                     if not expected_commute_time <= required_commute_time:
                         continue
 
-                print(p)
                 if hasattr(p, 'route_data'):
                     p.route_data.append(route)
                 else:
