@@ -1,6 +1,12 @@
 import React, {Component} from "react";
-import {Button} from "semantic-ui-react";
+import {Button, Select} from "semantic-ui-react";
 
+const time_options = [
+    {key: 15, value: 15, text: "15 Min"},
+    {key: 30, value: 30, text: "30 Min"},
+    {key: 45, value: 45, text: "45 Min"},
+    {key: 60, value: 60, text: "60 Min"},
+]
 
 export default class MarkerTable extends Component {
     constructor(props) {
@@ -9,7 +15,7 @@ export default class MarkerTable extends Component {
     }
 
     render() {
-        const {markers, edit} = this.props;
+        const {markers, edit, updateMarker} = this.props;
         console.log(markers)
         const rows = markers.map((m, i) =>
             <tr key={m.props.href}>
@@ -23,7 +29,12 @@ export default class MarkerTable extends Component {
                         <Button compact disabled={!edit}><i className="fas fa-walking"/></Button>
                     </Button.Group>
                 </td>
-                <td>{m.props.time}</td>
+                <td>{ edit ?
+                    <Select upward placeholder='Select your country' options={time_options}
+                            value={m.props.time}
+                            onChange={(e, v) => updateMarker(m.key, {...m.props, time: v.value} )}/> :
+                    `${m.props.time} Minutes`}
+                </td>
                 {edit && <td><Button>Remove</Button></td>}
             </tr>);
 

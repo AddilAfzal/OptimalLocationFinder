@@ -54,7 +54,7 @@ class ControlSearch extends Component {
     }, 600);
 
     handleResultSelect = (e, {result}) => {
-        let marker = <Marker ref={React.createRef()} draggable={true}
+        let marker = <Marker key={result.position} ref={React.createRef()} draggable={true}
                              position={result.position} text={result.text}
                              time={45} />
         this.setState({ value: result.text});

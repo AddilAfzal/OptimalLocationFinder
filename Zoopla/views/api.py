@@ -42,10 +42,10 @@ def property_api(request):
         qs = filter_properties_for_schools(data, qs)
 
         start = time.time()
-        end = time.time()
-
-        print("time: ", end - start)
         qs = filter_properties_by_commute(data, qs)
+        end = time.time()
+        print("time: ", end - start)
+
 
         # print("data", qs)
         response = json.dumps(

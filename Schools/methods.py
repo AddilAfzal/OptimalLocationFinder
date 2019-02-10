@@ -95,31 +95,35 @@ def filter_properties_for_schools(data, qs):
 def filter_properties_by_commute(data, qs):
 
     if 'commute' in data:
-        properties = qs[:200]
+        properties = qs[:100]
+
+        t = RouteCache.objects.all().values()
 
         for l in data['commute']:
             filtered_properties = []
 
             text = l['text']
             position = l['position']
-            commute_time = l['time'] * 60
+            required_commute_time = l['time'] * 60
 
             for p in properties:
-                query = RouteCache.objects.filter(start_latitude=p.latitude, start_longitude=p.longitude,
+                query = t.filter(start_latitude=p.latitude, start_longitude=p.longitude,
                                                   des_latitude=position[0], des_longitude=position[1])
 
                 if query:   # If the query returns at least one item
-                    print("found")
                     cached_object = query.first()
-                    if cached_object.commute_time <= commute_time:   # If the commute time is within the defined max.
-                        route = json.loads(cached_object.data)
+                    print(cached_object)
+                    if cached_object and cached_object['commute_time'] <= required_commute_time:   # If the commute time is within the defined max.
+                        route = json.loads(cached_object['data'])
                     else:
                         continue
                 else:
-                    route = get_route([p['latitude'], p['longitude']], position)
+                    route, expected_commute_time = get_route([p.latitude, p.longitude], position)
+                    if not expected_commute_time <= required_commute_time:
+                        continue
 
                 print(p)
-                if hasattr(p,'route_data'):
+                if hasattr(p, 'route_data'):
                     p.route_data.append(route)
                 else:
                     p.route_data = [route]
@@ -127,7 +131,6 @@ def filter_properties_by_commute(data, qs):
                 filtered_properties.append(p)
 
             properties = filtered_properties
-            filtered_properties = []
 
         return properties
 

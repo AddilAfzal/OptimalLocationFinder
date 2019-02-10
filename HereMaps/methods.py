@@ -124,8 +124,9 @@ def get_route(a, b, mode="publicTransport"):
         print(api_url)
         r = requests.get(api_url)
         j = r.json()
+        commute_time = j['response']["route"][0]['summary']['baseTime']
         RouteCache.objects.create(start_latitude=a[0], start_longitude=a[1],
                                   des_latitude=b[0], des_longitude=b[1],
                                   data=r.text,
-                                  commute_time=j['response']["route"][0]['summary']['baseTime'])
-        return j
+                                  commute_time=commute_time)
+        return j, commute_time

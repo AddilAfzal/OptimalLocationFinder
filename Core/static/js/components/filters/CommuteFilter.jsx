@@ -53,7 +53,8 @@ export default class CommuteFilter extends BaseFilter {
 
         if (commute) {
             console.log(commute)
-            this.state.mapMarkers = commute.commute.map(x => <Marker ref={React.createRef()} draggable={true} {...x}/>);
+            this.state.mapMarkers = commute.commute.map(x =>
+                <Marker key={Math.random()} ref={React.createRef()} draggable={true} {...x}/>);
             this.save();
         }
     }
@@ -78,6 +79,12 @@ export default class CommuteFilter extends BaseFilter {
         // this.setBounds();
     };
 
+    updateMarker = (key, new_props) => {
+        let marker = this.state.mapMarkers.find(m => m.key === key);
+        marker = React.cloneElement(marker, new_props);
+        this.setState( {mapMarkers: [...this.state.mapMarkers.filter(x => x.key !== key), marker]});
+    };
+
     isValid() {
         return true;
     }
@@ -91,7 +98,7 @@ export default class CommuteFilter extends BaseFilter {
         return (
             <Fragment>
                 <h3>Commute</h3>
-                <MarkerTable markers={mapMarkers} edit={true}/>
+                <MarkerTable markers={mapMarkers} edit={true} updateMarker={this.updateMarker}/>
                 <Divider/>
                 <Map ref={this.mapRef}
                      maxZoom={16}
