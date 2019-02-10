@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status, generics
 
-from Schools.methods import filter_properties_for_schools
+from Schools.methods import filter_properties_for_schools, filter_properties_by_commute
 from Zoopla.filters import BasicPropertyFilter, RoomFilter, PriceFilter, AreaFilter
 from Zoopla.models import Property
 from Zoopla.serializers import PropertySerializer, RoomsSerializer
@@ -39,11 +39,15 @@ def property_api(request):
         qs = RoomFilter(data, qs).qs
         qs = PriceFilter(data, qs).qs
         qs = AreaFilter(data, qs).qs.distinct()
+        qs = filter_properties_for_schools(data, qs)
 
         start = time.time()
-        qs = filter_properties_for_schools(data, qs)
         end = time.time()
+
         print("time: ", end - start)
+        qs = filter_properties_by_commute(data, qs)
+
+        # print("data", qs)
         response = json.dumps(
             {
                 'count': qs.__len__(),

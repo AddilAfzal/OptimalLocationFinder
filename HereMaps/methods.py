@@ -5,6 +5,7 @@ from django.utils import timezone
 
 import requests
 
+from HereMaps.models import RouteCache
 from LocationFinder.settings import HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE
 
 start = [(51.523252, -0.370472),(51.523252, -0.310472)]
@@ -39,10 +40,8 @@ def get_routes(start_geo, des_geo, mode="car"):
                          '%s'
                          '&summaryAttributes=traveltime'
                          '&mode=fastest;%s;traffic:enabled' % (
-                         HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE, start_joined, des_joined, mode))
-    else:
-        # Will need to perform single calls to the transit API and find quickest location to travel from
-        pass
+                            HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE, start_joined, des_joined, mode))
+
 
     connections = r.json()
     print(connections)
@@ -105,3 +104,28 @@ def get_reverse_geo_code(lat, lng):
     label = address_data['Label']
     postcode = address_data['PostalCode']
     return "%s, %s" % (label, postcode)
+
+
+def get_route(a, b, mode="publicTransport"):
+    """
+    Get the fastest route traveling from point a to b
+    :return:
+    """
+    if mode == 'publicTransport':
+        api_url = ('https://route.api.here.com/routing/7.2/calculateroute.json'
+                         '?app_id=%s'
+                         '&app_code=%s'
+                         '&waypoint0=geo!%s'
+                         '&waypoint1=geo!%s'
+                         '&departure=now'
+                         '&mode=fastest;publicTransport'
+                         '&combineChange=true' % (
+                             HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE, "%s,%s" % (a[0], a[1]), "%s,%s" % (b[0], b[1])))
+        print(api_url)
+        r = requests.get(api_url)
+        j = r.json()
+        RouteCache.objects.create(start_latitude=a[0], start_longitude=a[1],
+                                  des_latitude=b[0], des_longitude=b[1],
+                                  data=r.text,
+                                  commute_time=j['response']["route"][0]['summary']['baseTime'])
+        return j

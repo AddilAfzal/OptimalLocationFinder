@@ -53,7 +53,7 @@ export default class CommuteFilter extends BaseFilter {
 
         if (commute) {
             console.log(commute)
-            this.state.mapMarkers = commute.map(x => <Marker ref={React.createRef()} draggable={true} {...x}/>);
+            this.state.mapMarkers = commute.commute.map(x => <Marker ref={React.createRef()} draggable={true} {...x}/>);
             this.save();
         }
     }

@@ -1,5 +1,8 @@
+import json
 from math import radians, cos, sin, sqrt, atan2
 
+from HereMaps.methods import get_route
+from HereMaps.models import RouteCache
 from Schools.filters import SchoolFilter
 from Schools.models import School
 import numpy
@@ -88,3 +91,44 @@ def filter_properties_for_schools(data, qs):
     else:
         return qs
 
+
+def filter_properties_by_commute(data, qs):
+
+    if 'commute' in data:
+        properties = qs[:200]
+
+        for l in data['commute']:
+            filtered_properties = []
+
+            text = l['text']
+            position = l['position']
+            commute_time = l['time'] * 60
+
+            for p in properties:
+                query = RouteCache.objects.filter(start_latitude=p.latitude, start_longitude=p.longitude,
+                                                  des_latitude=position[0], des_longitude=position[1])
+
+                if query:   # If the query returns at least one item
+                    print("found")
+                    cached_object = query.first()
+                    if cached_object.commute_time <= commute_time:   # If the commute time is within the defined max.
+                        route = json.loads(cached_object.data)
+                    else:
+                        continue
+                else:
+                    route = get_route([p['latitude'], p['longitude']], position)
+
+                print(p)
+                if hasattr(p,'route_data'):
+                    p.route_data.append(route)
+                else:
+                    p.route_data = [route]
+
+                filtered_properties.append(p)
+
+            properties = filtered_properties
+            filtered_properties = []
+
+        return properties
+
+    return qs

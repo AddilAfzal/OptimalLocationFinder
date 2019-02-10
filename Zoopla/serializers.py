@@ -24,9 +24,10 @@ class RentalPriceSerializer(serializers.ModelSerializer):
 class PropertySerializer(serializers.ModelSerializer):
     propertyimage_set = PropertyImageSerializer(many=True)
     rentalprice_set = RentalPriceSerializer(many=True)
+    route_data = serializers.JSONField()
 
     class Meta:
         model = Property
         fields = ('listing_id', 'longitude', 'latitude', 'street_name', 'post_town',
                   'outcode', 'price', 'listing_status', 'details_url', 'thumbnail_url', 'propertyimage_set',
-                  'rentalprice_set')
+                  'rentalprice_set', 'route_data')

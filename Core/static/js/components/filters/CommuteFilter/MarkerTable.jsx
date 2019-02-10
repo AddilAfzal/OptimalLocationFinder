@@ -23,7 +23,7 @@ export default class MarkerTable extends Component {
                         <Button compact disabled={!edit}><i className="fas fa-walking"/></Button>
                     </Button.Group>
                 </td>
-                <td>Time</td>
+                <td>{m.props.time}</td>
                 {edit && <td><Button>Remove</Button></td>}
             </tr>);
 
