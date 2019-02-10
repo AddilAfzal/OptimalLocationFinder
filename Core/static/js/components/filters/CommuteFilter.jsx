@@ -18,10 +18,6 @@ export default class CommuteFilter extends BaseFilter {
 
         this.state = {
             ...this.state,
-            distance: [
-                {distance: "2", from: "City, University of London"}
-            ],
-            area: null,
 
             mapZoom: 10,
             mapCenterPosition: [51.49, -0.14],
@@ -32,11 +28,9 @@ export default class CommuteFilter extends BaseFilter {
             markerPosition: null,
             markerRadius: 4000, // in M
         };
-
     }
 
     static description = "Filter for homes that match your ideal commute time.";
-
 
     getData = () => {
         const formatMarkerData = (x) => {
@@ -49,21 +43,26 @@ export default class CommuteFilter extends BaseFilter {
         };
 
         let markerData = this.state.mapMarkers.map(formatMarkerData);
-        console.log("data: ", markerData);
-        return {'commute': markerData};
+        return {'commute': {'commute': markerData}};
     };
 
-    getCollapsedText = () => {
-        let table_rows = this.state.distance.map((item) => {
-            return (
-                <span>{item.from} {item.distance}KM</span>
-            )
-        });
 
+    componentDidMount() {
+        super.componentDidMount();
+        let commute = this.props.data.commute;
+
+        if (commute) {
+            console.log(commute)
+            this.state.mapMarkers = commute.map(x => <Marker ref={React.createRef()} draggable={true} {...x}/>);
+            this.save();
+        }
+    }
+
+    getCollapsedText = () => {
         return (
             <Fragment>
-                <h3>Distance</h3>
-                {table_rows}
+                <h3>Commute</h3>
+                <MarkerTable markers={this.state.mapMarkers} edit={false}/>
             </Fragment>
         )
     };
@@ -79,6 +78,10 @@ export default class CommuteFilter extends BaseFilter {
         // this.setBounds();
     };
 
+    isValid() {
+        return true;
+    }
+
     mapRef = React.createRef();
     markerCluster = React.createRef();
 
@@ -87,8 +90,8 @@ export default class CommuteFilter extends BaseFilter {
 
         return (
             <Fragment>
-                <h3>Distance</h3>
-                <MarkerTable markers={mapMarkers}/>
+                <h3>Commute</h3>
+                <MarkerTable markers={mapMarkers} edit={true}/>
                 <Divider/>
                 <Map ref={this.mapRef}
                      maxZoom={16}

@@ -38,7 +38,7 @@ def property_api(request):
         qs = BasicPropertyFilter(data, queryset).qs
         qs = RoomFilter(data, qs).qs
         qs = PriceFilter(data, qs).qs
-        qs = AreaFilter(data, qs).qs
+        qs = AreaFilter(data, qs).qs.distinct()
 
         start = time.time()
         qs = filter_properties_for_schools(data, qs)

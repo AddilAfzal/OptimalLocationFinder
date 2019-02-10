@@ -64,6 +64,9 @@ export default class Filters extends Component {
                     continue;
                 case 'rooms':
                     this.createFilterComponent(RoomsFilter);
+                    continue;
+                case 'commute':
+                    this.createFilterComponent(CommuteFilter);
             }
         }
     };

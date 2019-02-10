@@ -64,7 +64,9 @@ class ControlSearch extends Component {
     render() {
         const {results, value, loading} = this.state;
         let resultRenderer = ({text, vicinity}) =>
-            <div>{text} <small dangerouslySetInnerHTML={{__html:vicinity.split("<br/>").join(", ")}}/></div>;
+            <div>{text} {vicinity &&
+                <small dangerouslySetInnerHTML={{__html: vicinity.split("<br/>").join(", ")}}/>}
+            </div>;
 
         return (
             <Search

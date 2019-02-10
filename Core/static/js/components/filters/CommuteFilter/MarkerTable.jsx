@@ -9,7 +9,7 @@ export default class MarkerTable extends Component {
     }
 
     render() {
-        const {markers} = this.props;
+        const {markers, edit} = this.props;
         console.log(markers)
         const rows = markers.map((m, i) =>
             <tr key={m.props.href}>
@@ -18,13 +18,13 @@ export default class MarkerTable extends Component {
                 <td>{m.props.position}</td>
                 <td>
                     <Button.Group>
-                        <Button compact><i className="fas fa-subway"/></Button>
-                        <Button compact><i className="fas fa-bus"/></Button>
-                        <Button compact><i className="fas fa-walking"/></Button>
+                        <Button compact disabled={!edit} active ><i className="fas fa-subway"/></Button>
+                        <Button compact disabled={!edit}><i className="fas fa-bus"/></Button>
+                        <Button compact disabled={!edit}><i className="fas fa-walking"/></Button>
                     </Button.Group>
                 </td>
                 <td>Time</td>
-                <td><Button>Remove</Button></td>
+                {edit && <td><Button>Remove</Button></td>}
             </tr>);
 
         return (
@@ -36,7 +36,7 @@ export default class MarkerTable extends Component {
                     <th>Position</th>
                     <th>Mode of transport</th>
                     <th>Max commute time</th>
-                    <th> </th>
+                    {edit && <th> </th>}
                 </tr>
                 </thead>
                 <tbody>
