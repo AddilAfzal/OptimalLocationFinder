@@ -97,7 +97,8 @@ def filter_properties_by_commute(data, qs):
 
     if 'commute' in data:
         # properties = random.sample(list(qs), 100)
-        properties = qs[:100]
+        properties = qs[:300]
+        # TODO: order by distance from commute points
 
         t = RouteCache.objects.all().values()
 

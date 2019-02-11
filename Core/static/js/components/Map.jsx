@@ -4,6 +4,7 @@ import {Marker, TileLayer, Map as LeafletMap, Polyline} from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import Property from "./map/Property";
 import ControlInfo from "./map/ControlInfo";
+import Crime from "./information/Crime";
 
 export default class Map extends Component {
     constructor(props) {
@@ -104,12 +105,8 @@ export default class Map extends Component {
                         <ControlInfo property={property}/>
                     </LeafletMap>
                 </Segment>
-                <Header as='h4' attached='top'>
-                    Property
-                </Header>
-                <Segment attached>
-                    <Property property={property}/>
-                </Segment>
+                <Property property={property}/>
+                <Crime property={property}/>
             </Fragment>
         )
     }
