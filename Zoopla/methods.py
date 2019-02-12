@@ -1,4 +1,5 @@
 import json
+import numpy
 
 import pytz
 import requests
@@ -407,3 +408,18 @@ def price_range_frequency():
         values.append({
 
         })
+
+
+def get_sale_price_histogram():
+    prices = Property.objects.filter(listing_status="sale")\
+        .exclude(price=0)\
+        .values_list('price')\
+        .order_by('price')
+
+    q = numpy.histogram(prices, bins=numpy.arange(0, 1500000, 50000))
+
+    tmp = []
+    for (r, v) in zip(map(int, q[1]), map(int,q[0])):
+        tmp.append({'price': r, 'value': v})
+
+    return tmp

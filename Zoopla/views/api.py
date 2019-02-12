@@ -1,4 +1,5 @@
 import json
+import numpy
 import time
 
 from django.http import Http404, HttpResponse
@@ -8,6 +9,7 @@ from rest_framework import status, generics
 
 from Schools.methods import filter_properties_for_schools, filter_properties_by_commute
 from Zoopla.filters import BasicPropertyFilter, RoomFilter, PriceFilter, AreaFilter
+from Zoopla.methods import get_sale_price_histogram
 from Zoopla.models import Property
 from Zoopla.serializers import PropertySerializer, RoomsSerializer
 from django.db import connection
@@ -71,6 +73,15 @@ def get_property(request, listing_id):
             'rooms': rooms_serialized,
 
         }
+    )
+
+    return HttpResponse(response, content_type="json")
+
+
+def sale_price_histogram(request):
+    data = get_sale_price_histogram()
+
+    response = json.dumps(list(data)
     )
 
     return HttpResponse(response, content_type="json")

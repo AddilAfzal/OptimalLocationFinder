@@ -32,25 +32,9 @@ export default class indexContainer extends Component {
                     <p>Optimal location finder (OLF) is a tool to help you find the best place to live depending on a
                         set of unique
                         requirements.</p>
-
-                    {/*<Filters/>*/}
                     <br/>
                     <Router>
                         <div>
-                            {/*<nav>*/}
-                            {/*<ul>*/}
-                            {/*<li>*/}
-                            {/*<Link to="/">Home</Link>*/}
-                            {/*</li>*/}
-                            {/*<li>*/}
-                            {/*<Link to="/about/">About</Link>*/}
-                            {/*</li>*/}
-                            {/*<li>*/}
-                            {/*<Link to="/results/" others={{}}>Results</Link>*/}
-                            {/*</li>*/}
-                            {/*</ul>*/}
-                            {/*</nav>*/}
-
                             <Route path="/" exact component={Filters}/>
                             <Route path="/results/" component={Map}/>
                         </div>

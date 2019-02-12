@@ -5,6 +5,7 @@ import {
 
 import BaseFilter from "./BaseFilter";
 import {Range} from "rc-slider";
+import {Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 
 function formatCurrency(i) {
     let s = new Intl.NumberFormat('en-GB', {style: 'currency', currency: 'GBP'}).format((i));
@@ -15,8 +16,8 @@ function formatCurrency(i) {
 function salesPriceRange() {
     let values = {};
 
-    for (let i = 0; i <= 50; i += 1) {
-        if(i % 8 === 0) {
+    for (let i = 0; i <= 62; i += 1) {
+        if(i % 5 === 0) {
             values[i] = formatCurrency(i * 25000);
         } else {
             values[i] = "";
@@ -43,10 +44,14 @@ export default class PriceFilter extends BaseFilter {
     constructor(props) {
         super(props);
 
-        this.state.canRemove = false;
-        this.state.price = [0,0];
-        this.state.term = 'month'; // Week/Month
-        this.state.listingType = props.data.listingType.listing_status;
+        this.state = {
+            ...this.state,
+            canRemove: false,
+            price: [0, 0],
+            term: 'month', // Week/Month
+            listingType: props.data.listingType.listing_status,
+            chartData: null,
+        }
     }
 
     static description = "price...";
@@ -89,6 +94,8 @@ export default class PriceFilter extends BaseFilter {
             this.state.listingType = listingType.listing_status;
             this.save();
         }
+
+        this.fetchChartData();
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -113,12 +120,17 @@ export default class PriceFilter extends BaseFilter {
         )
     };
 
+    fetchChartData = async () => {
+        const chartData = await fetch('/api/get_price_data/').then(x => x.json());
+        this.setState({chartData: chartData}, () => console.log(this.state.chartData))
+    };
+
     handleChangePriceTerm = (elmm, a) => {
         this.setState({term: a.value})
     };
 
     renderBody() {
-        const {term, price, listingType} = this.state;
+        const {term, price, listingType, chartData} = this.state;
 
         return (
             <Fragment>
@@ -143,11 +155,27 @@ export default class PriceFilter extends BaseFilter {
                 {formatCurrency(price[0])} - {formatCurrency(price[1])}
                 <br/>
                 <br/>
+
+                {chartData &&
+                <div style={{height: 100}}>
+                    <ResponsiveContainer>
+                        <AreaChart
+                            data={chartData}
+                            // margin={{top: 20, right: 20, bottom: 20, left: 20,}}
+                        >
+                            {/*<XAxis dataKey="price"/>*/}
+                            {/*<YAxis dataKey="value"/>*/}
+                            <Area dataKey="value" label="Price" stroke="#838d92" fill="#abe2fb"/>
+                            <Tooltip/>
+                        </AreaChart>
+                    </ResponsiveContainer>
+                </div>}
+
                 <Range
                     defaultValue={[0, 10]}
                     value={price.map(x => x/(listingType === 'rent' ? 50 : 25000))}
                     step={1}
-                    max={50}
+                    max={listingType === 'rent' ? 50 : 62}
                     onChange={(price) => this.setState({price: price.map(x => x * (listingType === 'rent' ? 50 : 25000))})}
                     marks={listingType === 'rent' ? rentalPriceRange() : salesPriceRange()}
                 />
