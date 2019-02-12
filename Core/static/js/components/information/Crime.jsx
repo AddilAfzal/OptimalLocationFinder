@@ -1,5 +1,7 @@
 import React, {Component, Fragment} from "react";
-import {Card, Segment} from "semantic-ui-react";
+import {Card, Header, Segment} from "semantic-ui-react";
+import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+
 
 export default class Crime extends Component {
     constructor(props) {
@@ -7,20 +9,19 @@ export default class Crime extends Component {
 
         this.state = {
             data: null,
-            categoryCounts: null,
             loading: true,
             property: null,
+            chartData: null,
         }
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
         if(nextProps.property !== this.state.property) {
-            this.setState({property: nextProps.property}, this.fetchData);
+            this.setState({property: nextProps.property, loading: true}, this.fetchData);
         }
     }
 
     fetchData = async () => {
-        console.log(this.props.property)
         const {latitude, longitude} = this.props.property;
         const data =
             await fetch(`https://data.police.uk/api/crimes-street/all-crime?lat=${latitude}&lng=${longitude}`)
@@ -35,21 +36,36 @@ export default class Crime extends Component {
             return acc
         }, {});
 
-        console.log(p)
+        const chartData = Object.keys(p).map(k => ({category: k, value: p[k]}) );
 
-        this.setState({data});
-        console.log(data)
+        this.setState({data, chartData, loading: false});
     };
 
     render() {
         const {property} = this.props;
-        const {data, loading} = this.state;
+        const {data, loading, chartData} = this.state;
 
         if(data) {
             return (
-                <Segment loading={loading}>
-                    <h1>Test</h1>
-                </Segment>
+                <Fragment>
+                    <Header as='h3' attached='top'>
+                        Crime Statistics
+                    </Header>
+                    <Segment attached loading={loading} style={{height: 400, paddingBottom: 40}}>
+                        <h4>Types of crime committed in the last 30 days.</h4>
+                        <ResponsiveContainer>
+                            <BarChart data={chartData}
+                                      margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+                                <CartesianGrid strokeDasharray="3 3"/>
+                                <XAxis dataKey="category"/>
+                                <YAxis/>
+                                <Tooltip/>
+                                <Legend/>
+                                <Bar dataKey="value" fill="#8884d8"/>
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </Segment>
+                </Fragment>
             )
         } else {
             return ""
