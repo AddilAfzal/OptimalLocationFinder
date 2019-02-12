@@ -410,13 +410,21 @@ def price_range_frequency():
         })
 
 
-def get_sale_price_histogram():
-    prices = Property.objects.filter(listing_status="sale")\
-        .exclude(price=0)\
-        .values_list('price')\
-        .order_by('price')
+def get_price_histogram(listing_status="sale"):
+    if listing_status == 'sale':
+        prices = Property.objects.filter(listing_status="sale") \
+            .exclude(price=0) \
+            .values_list('price') \
+            .order_by('price')
+        q = numpy.histogram(prices, bins=numpy.arange(0, 1500000, 50000))
 
-    q = numpy.histogram(prices, bins=numpy.arange(0, 1500000, 50000))
+    else:
+        prices = Property.objects.filter(listing_status="rent")\
+            .exclude(price=0)\
+            .values_list('rentalprice__per_month')\
+            .order_by('price')
+        q = numpy.histogram(prices, bins=numpy.arange(0, 4500, 50))
+
 
     tmp = []
     for (r, v) in zip(map(int, q[1]), map(int,q[0])):

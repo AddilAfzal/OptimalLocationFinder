@@ -29,7 +29,7 @@ function salesPriceRange() {
 function rentalPriceRange() {
     let values = {};
 
-    for (let i = 0; i <= 50; i += 1) {
+    for (let i = 0; i <= 90; i += 1) {
         if(i % 5 === 0) {
             values[i] = formatCurrency(i * 50);
         } else {
@@ -94,8 +94,7 @@ export default class PriceFilter extends BaseFilter {
             this.state.listingType = listingType.listing_status;
             this.save();
         }
-
-        this.fetchChartData();
+        this.fetchChartData()
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -106,7 +105,7 @@ export default class PriceFilter extends BaseFilter {
                 price: [0, 0],
                 term: null,
                 needsReview: true
-            })
+            }, this.fetchChartData);
         }
     }
 
@@ -121,8 +120,9 @@ export default class PriceFilter extends BaseFilter {
     };
 
     fetchChartData = async () => {
-        const chartData = await fetch('/api/get_price_data/').then(x => x.json());
-        this.setState({chartData: chartData}, () => console.log(this.state.chartData))
+        const tmp = this.state.listingType === 'sale' ? 'get_sales_histogram' : 'get_rental_histogram';
+        const chartData = await fetch(`/api/${tmp}/`).then(x => x.json());
+        await this.setState({chartData});
     };
 
     handleChangePriceTerm = (elmm, a) => {
@@ -175,7 +175,7 @@ export default class PriceFilter extends BaseFilter {
                     defaultValue={[0, 10]}
                     value={price.map(x => x/(listingType === 'rent' ? 50 : 25000))}
                     step={1}
-                    max={listingType === 'rent' ? 50 : 62}
+                    max={listingType === 'rent' ? 90 : 62}
                     onChange={(price) => this.setState({price: price.map(x => x * (listingType === 'rent' ? 50 : 25000))})}
                     marks={listingType === 'rent' ? rentalPriceRange() : salesPriceRange()}
                 />
