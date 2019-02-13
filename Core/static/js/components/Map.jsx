@@ -5,6 +5,7 @@ import MarkerClusterGroup from 'react-leaflet-markercluster';
 import Property from "./map/Property";
 import ControlInfo from "./map/ControlInfo";
 import Crime from "./information/Crime";
+import HealthServices from "./information/HealthServices";
 
 export default class Map extends Component {
     constructor(props) {
@@ -106,6 +107,7 @@ export default class Map extends Component {
                     </LeafletMap>
                 </Segment>
                 <Property property={property}/>
+                <HealthServices property={property}/>
                 <Crime property={property}/>
             </Fragment>
         )

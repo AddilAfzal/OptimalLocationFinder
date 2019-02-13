@@ -1,4 +1,7 @@
 import csv
+from datetime import datetime
+
+from django.core.exceptions import ObjectDoesNotExist
 
 from CQC.models import CQCLocation
 from Core.methods import postcode_lookup
@@ -72,3 +75,42 @@ def update_postcodes():
             i += 1
 
         print(i)
+
+
+def update_ratings(csv_path="CQC/data/ratings February 2019.csv"):
+    with open(csv_path) as csvreader:
+        reader = csv.reader(csvreader, delimiter=',', quotechar='"', )
+        i = 0
+
+        last_location = None
+
+        for row in reader:
+            i += 1
+            if i < 2:
+                continue
+
+            if i % 1000 == 0:
+                print(i)
+
+            row = [item.strip() for item in row]
+
+            cqc_id = row[0]
+            last_inspection_date = datetime.strptime(row[8], "%d/%m/%Y").date()
+            last_rating = row[7]
+
+            try:
+                if last_location and last_location.cqc_id == cqc_id:
+                    l = last_location
+                else:
+                    l = CQCLocation.objects.get(cqc_id=cqc_id)
+
+                if not l.last_inspection_date or l.last_inspection_date < last_inspection_date:
+                    l.last_inspection_date = last_inspection_date
+                    l.last_rating = last_rating
+                    l.save()
+
+                last_location = l
+                continue
+
+            except ObjectDoesNotExist:
+                continue

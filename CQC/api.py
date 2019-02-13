@@ -20,15 +20,15 @@ def get_closest_health_services(request, latitude, longitude):
         {
             'dentist': {
                 **CQCLocationSerializer(dentists[dentist_index]).data,
-                'distance': distance_den
+                'distance': round(distance_den, 3)
             },
             'hospital': {
                 **CQCLocationSerializer(hospital[hospital_index]).data,
-                'distance': distance_den
+                'distance': round(distance_hos, 3)
             },
             'gp': {
                 **CQCLocationSerializer(gps[gp_index]).data,
-                'distance': distance_den
+                'distance': round(distance_gp, 3)
             }
         }
     )
