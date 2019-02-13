@@ -16,7 +16,7 @@ function formatCurrency(i) {
 function salesPriceRange() {
     let values = {};
 
-    for (let i = 0; i <= 62; i += 1) {
+    for (let i = 0; i <= 60; i += 1) {
         if(i % 5 === 0) {
             values[i] = formatCurrency(i * 25000);
         } else {
@@ -47,11 +47,12 @@ export default class PriceFilter extends BaseFilter {
         this.state = {
             ...this.state,
             canRemove: false,
-            price: [0, 0],
             term: 'month', // Week/Month
             listingType: props.data.listingType.listing_status,
             chartData: null,
         }
+
+        this.state.price = this.state.listingType === 'sale' ? [0, 1500000] : [0, 4500];
     }
 
     static description = "price...";
@@ -172,10 +173,10 @@ export default class PriceFilter extends BaseFilter {
                 </div>}
 
                 <Range
-                    defaultValue={[0, 10]}
+                    defaultValue={[0,0]}
                     value={price.map(x => x/(listingType === 'rent' ? 50 : 25000))}
                     step={1}
-                    max={listingType === 'rent' ? 90 : 62}
+                    max={listingType === 'rent' ? 90 : 60}
                     onChange={(price) => this.setState({price: price.map(x => x * (listingType === 'rent' ? 50 : 25000))})}
                     marks={listingType === 'rent' ? rentalPriceRange() : salesPriceRange()}
                 />
