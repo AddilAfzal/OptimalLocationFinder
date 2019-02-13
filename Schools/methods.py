@@ -1,7 +1,6 @@
 import json
-import random
-from math import radians, cos, sin, sqrt, atan2
 
+from Core.methods import geodetic2ecef, euclidean_distance
 from HereMaps.methods import get_route
 from HereMaps.models import RouteCache
 from Schools.filters import SchoolFilter
@@ -46,28 +45,6 @@ from scipy.spatial import KDTree
 #         return property_list
 #     else:
 #         return qs
-
-A = 6378.137
-B = 6356.7523142
-ESQ = 6.69437999014 * 0.001
-
-
-def geodetic2ecef(lat, lon, alt=0):
-    """Convert geodetic coordinates to ECEF."""
-    lat, lon = radians(lat), radians(lon)
-    xi = sqrt(1 - ESQ * sin(lat))
-    x = (A / xi + alt) * cos(lat) * cos(lon)
-    y = (A / xi + alt) * cos(lat) * sin(lon)
-    z = (A / xi * (1 - ESQ) + alt) * sin(lat)
-    return x, y, z
-
-
-def euclidean_distance(distance):
-    """Return the approximate Euclidean distance corresponding to the
-    given great circle distance (in km).
-
-    """
-    return 2 * A * sin(distance / (2 * B))
 
 
 def filter_properties_for_schools(data, qs):

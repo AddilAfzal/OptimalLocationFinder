@@ -3,10 +3,10 @@ from django.db import models
 
 class Location(models.Model):
     name = models.CharField(max_length=100)
-    postcode = models.CharField(max_length=8)
-    street = models.CharField(max_length=100)
+    postcode = models.CharField(max_length=10)
+    street = models.CharField(max_length=100, null=True)
     locality = models.CharField(max_length=60, null=True)
-    town = models.CharField(max_length=60)
+    town = models.CharField(max_length=60, null=True)
 
     lng = models.DecimalField(max_digits=9, decimal_places=6)
     lat = models.DecimalField(max_digits=9, decimal_places=6)

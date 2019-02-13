@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'Schools',
     'Zoopla',
     'HereMaps',
+    'CQC',
     'rest_framework',
     'django_filters',
     'debug_toolbar',

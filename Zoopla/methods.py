@@ -423,7 +423,7 @@ def get_price_histogram(listing_status="sale"):
             .exclude(price=0)\
             .values_list('rentalprice__per_month')\
             .order_by('price')
-        q = numpy.histogram(prices, bins=numpy.arange(0, 4500, 50))
+        q = numpy.histogram(prices, bins=numpy.arange(0, 4500, 100))
 
 
     tmp = []
