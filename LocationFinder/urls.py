@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include('Schools.urls', namespace="Schools")),
     path('', include('Zoopla.urls', namespace="Zoopla")),
     path('', include('HereMaps.urls', namespace="HereMaps")),
+    path('', include('CQC.urls', namespace="CQC")),
 ]
 
 if settings.DEBUG:
