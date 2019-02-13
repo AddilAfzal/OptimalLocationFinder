@@ -39,10 +39,11 @@ export default class HealthServices extends Component {
                     <Header as='h3' attached='top'>
                         Heath-care Services
                     </Header>
-                    <Segment attached loading={loading} style={{height: 200, paddingBottom: 40}}>
+                    <Segment attached loading={loading} style={{paddingBottom: 40}}>
                         <h4>Distance from closest health-care services</h4>
-                          <Table basic='very' celled collapsing>
-                              <Table.Header>
+                          <Table basic='very' celled collapsing definition style={{width: "100%"}}>
+                              <Table.Header fullWidth>
+
                                   <Table.Row>
                                       <Table.HeaderCell> </Table.HeaderCell>
                                       <Table.HeaderCell>Location</Table.HeaderCell>
@@ -53,7 +54,7 @@ export default class HealthServices extends Component {
 
                               <Table.Body>
                                   <Table.Row>
-                                      <Table.Cell>
+                                      <Table.Cell textAlign='center'>
                                           <Header as='h4' image>
                                               <Header.Content>
                                                   <i className="fas fa-user-md fa-2x"/> GP
@@ -62,19 +63,31 @@ export default class HealthServices extends Component {
                                       </Table.Cell>
                                       <Table.Cell>{data['gp']['name']}</Table.Cell>
                                       <Table.Cell>{data['gp']['distance']} KM</Table.Cell>
-                                      <Table.Cell>Good</Table.Cell>
+                                      <Table.Cell>{data['gp']['last_rating']} </Table.Cell>
                                   </Table.Row>
                                   <Table.Row>
-                                      <Table.Cell>
+                                      <Table.Cell textAlign='center'>
                                           <Header as='h4' image>
                                               <Header.Content>
-                                                  <i className="fas fa-user-md fa-2x"/> GP
+                                                  <i className="fas fa-hospital-symbol fa-2x"/> Hospital
                                               </Header.Content>
                                           </Header>
                                       </Table.Cell>
                                       <Table.Cell>{data['hospital']['name']}</Table.Cell>
                                       <Table.Cell>{data['hospital']['distance']} KM</Table.Cell>
-                                      <Table.Cell>Good</Table.Cell>
+                                      <Table.Cell>{data['hospital']['last_rating']} </Table.Cell>
+                                  </Table.Row>
+                                  <Table.Row>
+                                      <Table.Cell textAlign='center'>
+                                          <Header as='h4' image>
+                                              <Header.Content>
+                                                  <i className="fa fa-tooth fa-2x"/> Dentist
+                                              </Header.Content>
+                                          </Header>
+                                      </Table.Cell>
+                                      <Table.Cell>{data['dentist']['name']}</Table.Cell>
+                                      <Table.Cell>{data['dentist']['distance']} KM</Table.Cell>
+                                      <Table.Cell>N/A </Table.Cell>
                                   </Table.Row>
                               </Table.Body>
                           </Table>
