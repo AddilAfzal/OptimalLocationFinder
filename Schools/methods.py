@@ -74,8 +74,19 @@ def filter_properties_by_commute(data, qs):
 
     if 'commute' in data:
         # properties = random.sample(list(qs), 100)
-        properties = qs[:300]
-        # TODO: order by distance from commute points
+        # properties = qs[:300]
+
+        property_coordinates = qs.values('latitude', 'longitude')
+        ecef_properties = [geodetic2ecef(x['latitude'], x['longitude']) for x in property_coordinates]
+
+        commute_points = [geodetic2ecef(x['position'][0], x['position'][1]) for x in data['commute']]
+
+        tree = KDTree(numpy.array(ecef_properties))
+        distance_ar, index_ar = tree.query(commute_points, k=100)
+        # print(index_ar)
+        index_ar = list((map(int, index_ar[0].tolist() )))
+        properties = [qs[i] for i in index_ar]
+        print(properties)
 
         t = RouteCache.objects.all().values()
 
