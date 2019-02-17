@@ -130,8 +130,8 @@ export default class Map extends Component {
                 </Segment>
                 {property &&
                     <Menu pointing secondary>
-                        <Menu.Item name='home' active={activeInfo === 'home'}
-                                   onClick={() => this.setState({activeInfo: 'home'})}/>
+                        <Menu.Item name='summary' active={activeInfo === 'summary'}
+                                   onClick={() => this.setState({activeInfo: 'summary'})}/>
                         <Menu.Item name='Crime' active={activeInfo === 'crime'}
                                    onClick={() => this.setState({activeInfo: 'crime'})}/>
                         <Menu.Item name='Health services' active={activeInfo === 'health'}
@@ -140,6 +140,8 @@ export default class Map extends Component {
                                    onClick={() => this.setState({activeInfo: 'restaurants'})}/>
                         <Menu.Item name='Sports facilities' active={activeInfo === 'sports'}
                                    onClick={() => this.setState({activeInfo: 'sports'})}/>
+                        <Menu.Item name='Demographics' active={activeInfo === 'demographics'}
+                                   onClick={() => this.setState({activeInfo: 'demographics'})}/>
                     </Menu>
                 }
 
