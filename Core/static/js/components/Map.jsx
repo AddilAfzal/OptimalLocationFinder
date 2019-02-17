@@ -7,6 +7,7 @@ import ControlInfo from "./map/ControlInfo";
 import Crime from "./information/Crime";
 import HealthServices from "./information/HealthServices";
 import Demographics from "./information/Demographics";
+import Restaurants from "./information/Restaurants";
 
 export default class Map extends Component {
     constructor(props) {
@@ -94,7 +95,7 @@ export default class Map extends Component {
                     InfoSegment =  HealthServices;
                     break;
                 case 'restaurants':
-                    // InfoSegment = (props) => "Test";
+                    InfoSegment = Restaurants;
                     break;
             }
         }

@@ -43,3 +43,19 @@ def import_demographics_data(csv_path="Core/data/ethnic_group_data.csv"):
                 )
 
             i += 1
+
+
+def update_postcodes(csv_path="Core/data/Postcodes___Local_Authorities_only_v01.csv"):
+    with open(csv_path) as csvreader:
+        reader = csv.reader(csvreader, delimiter=',', quotechar='"',)
+        i = 0
+        for row in reader:
+            if not i is 0:
+                if i % 1000 == 0:
+                    print(i)
+                    print(row)
+
+                row = [item.strip() for item in row]
+                Postcode.objects.filter(postal_code=row[2]).update(local_authority_name=row[6], local_authority_code=[row[5]])
+
+            i += 1
