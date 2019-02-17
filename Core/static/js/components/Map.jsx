@@ -1,11 +1,12 @@
 import React, {Component, Fragment} from "react";
-import {Button, Header, Message, Segment} from "semantic-ui-react";
+import {Button, Header, Menu, Message, Segment} from "semantic-ui-react";
 import {Marker, TileLayer, Map as LeafletMap, Polyline} from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import Property from "./map/Property";
 import ControlInfo from "./map/ControlInfo";
 import Crime from "./information/Crime";
 import HealthServices from "./information/HealthServices";
+import Demographics from "./information/Demographics";
 
 export default class Map extends Component {
     constructor(props) {
@@ -27,6 +28,8 @@ export default class Map extends Component {
             polylinePositions: [],
 
             property: null,
+
+            activeInfo: 'home',
 
         };
     }
@@ -76,7 +79,26 @@ export default class Map extends Component {
     markerCluster = React.createRef();
 
     render() {
-        const {mapCenterPosition, markers, count, mapMaxBounds, property, polylinePositions} = this.state;
+        const {mapCenterPosition, markers, count, mapMaxBounds, property, polylinePositions, activeInfo} = this.state;
+        let InfoSegment = (props) => "Test";
+
+        if(property) {
+            switch(activeInfo){
+                case 'home':
+                    // InfoSegment =  (props) => "Test";
+                    break;
+                case 'crime':
+                    InfoSegment =  Crime;
+                    break;
+                case 'health':
+                    InfoSegment =  HealthServices;
+                    break;
+                case 'restaurants':
+                    // InfoSegment = (props) => "Test";
+                    break;
+            }
+        }
+
         return (
             <Fragment>
                 <Button onClick={this.handleEditFilters}>Edit filters</Button>
@@ -106,9 +128,23 @@ export default class Map extends Component {
                         <ControlInfo property={property}/>
                     </LeafletMap>
                 </Segment>
-                <Property property={property}/>
-                <HealthServices property={property}/>
-                <Crime property={property}/>
+                {property &&
+                    <Menu pointing secondary>
+                        <Menu.Item name='home' active={activeInfo === 'home'}
+                                   onClick={() => this.setState({activeInfo: 'home'})}/>
+                        <Menu.Item name='Crime' active={activeInfo === 'crime'}
+                                   onClick={() => this.setState({activeInfo: 'crime'})}/>
+                        <Menu.Item name='Health services' active={activeInfo === 'health'}
+                                   onClick={() => this.setState({activeInfo: 'health'})}/>
+                        <Menu.Item name='Restaurants' active={activeInfo === 'restaurants'}
+                                   onClick={() => this.setState({activeInfo: 'restaurants'})}/>
+                        <Menu.Item name='Sports facilities' active={activeInfo === 'sports'}
+                                   onClick={() => this.setState({activeInfo: 'sports'})}/>
+                    </Menu>
+                }
+
+                {/*<Property property={property}/>*/}
+                <InfoSegment property={property}/>
             </Fragment>
         )
     }

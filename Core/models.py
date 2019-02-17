@@ -25,3 +25,7 @@ class Postcode(models.Model):
 
     def __str__(self):
         return self.postal_code
+
+#
+# class Demographic(models.Model):
+#

@@ -15,6 +15,10 @@ export default class Crime extends Component {
         }
     }
 
+    componentDidMount() {
+        this.fetchData();
+    }
+
     componentWillReceiveProps(nextProps, nextContext) {
         if(nextProps.property !== this.state.property) {
             this.setState({property: nextProps.property, loading: true}, this.fetchData);
@@ -45,14 +49,9 @@ export default class Crime extends Component {
         const {property} = this.props;
         const {data, loading, chartData} = this.state;
 
-        if(data) {
-            return (
-                <Fragment>
-                    <Header as='h3' attached='top'>
-                        Crime Statistics
-                    </Header>
-                    <Segment attached loading={loading} style={{height: 400, paddingBottom: 40}}>
-                        <h4>Types of crime committed in the last 30 days.</h4>
+        const body = data && (
+            <Fragment>
+                 <h4>Types of crime committed in the last 30 days.</h4>
                         <ResponsiveContainer>
                             <BarChart data={chartData}
                                       margin={{top: 5, right: 30, left: 20, bottom: 5}}>
@@ -64,11 +63,17 @@ export default class Crime extends Component {
                                 <Bar dataKey="value" fill="#8884d8"/>
                             </BarChart>
                         </ResponsiveContainer>
+            </Fragment>
+        );
+            return (
+                <Fragment>
+                    <Header as='h3' attached='top'>
+                        Crime Statistics
+                    </Header>
+                    <Segment attached loading={loading} style={{height: 400, paddingBottom: 40}}>
+                        {body}
                     </Segment>
                 </Fragment>
             )
-        } else {
-            return ""
-        }
     }
 }
