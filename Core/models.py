@@ -35,3 +35,6 @@ class Demographic(models.Model):
     ethnic_group = models.CharField(max_length=60)
     population_2018 = models.IntegerField()
     population_2019 = models.IntegerField()
+
+    def __str__(self):
+        return "%s - %s - %s" % (self.borough, self.ethnic_group, self.age)

@@ -2,6 +2,9 @@ import json
 import urllib.request
 from math import radians, cos, sin, sqrt, atan2
 
+import requests
+
+
 def postcode_lookup(postcodes):
     obj = { 'postcodes': postcodes}
     url = "http://api.postcodes.io/postcodes"
@@ -17,6 +20,15 @@ def postcode_lookup(postcodes):
     resp_data = json.loads(response.read())
 
     return resp_data['result']
+
+
+def coordinates_to_postcode(lat, lon):
+    url = "http://api.postcodes.io/postcodes?lon=%s&lat=%s" % (lon, lat)
+
+    req = requests.get(url)
+    data = req.json()
+
+    return data['result'][0]['postcode']
 
 
 A = 6378.137
