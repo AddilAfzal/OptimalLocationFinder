@@ -30,11 +30,12 @@ class Postcode(models.Model):
 
 
 class Demographic(models.Model):
-    borough = models.CharField(max_length=50)
+    local_authority_name = models.CharField(max_length=50)
+    local_authority_code = models.CharField(max_length=50)
     age = models.IntegerField(null=True) # null represents the total count
     ethnic_group = models.CharField(max_length=60)
     population_2018 = models.IntegerField()
     population_2019 = models.IntegerField()
 
     def __str__(self):
-        return "%s - %s - %s" % (self.borough, self.ethnic_group, self.age)
+        return "%s - %s - %s" % (self.local_authority_name, self.ethnic_group, self.age)

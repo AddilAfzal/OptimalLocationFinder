@@ -97,6 +97,9 @@ export default class Map extends Component {
                 case 'restaurants':
                     InfoSegment = Restaurants;
                     break;
+                case 'demographics':
+                    InfoSegment = Demographics;
+                    break;
             }
         }
 
