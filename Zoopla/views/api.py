@@ -11,7 +11,7 @@ from Schools.methods import filter_properties_for_schools, filter_properties_by_
 from Zoopla.filters import BasicPropertyFilter, RoomFilter, PriceFilter, AreaFilter
 from Zoopla.methods import get_price_histogram
 from Zoopla.models import Property
-from Zoopla.serializers import PropertySerializer, RoomsSerializer
+from Zoopla.serializers import PropertySerializer, PropertyInformationSerializer
 from django.db import connection
 
 
@@ -66,13 +66,10 @@ def property_api(request):
 
 def get_property(request, listing_id):
     p = get_object_or_404(Property, listing_id=listing_id)
-    rooms_serialized = RoomsSerializer(p).data
+    rooms_serialized = PropertyInformationSerializer(p).data
 
     response = json.dumps(
-        {
-            'rooms': rooms_serialized,
-
-        }
+        rooms_serialized
     )
 
     return HttpResponse(response, content_type="json")

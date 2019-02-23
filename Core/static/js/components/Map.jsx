@@ -8,6 +8,7 @@ import Crime from "./information/Crime";
 import HealthServices from "./information/HealthServices";
 import Demographics from "./information/Demographics";
 import Restaurants from "./information/Restaurants";
+import Summary from "./information/Summary";
 
 export default class Map extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ export default class Map extends Component {
 
             property: null,
 
-            activeInfo: 'home',
+            activeInfo: 'summary',
 
         };
     }
@@ -81,13 +82,14 @@ export default class Map extends Component {
 
     render() {
         const {mapCenterPosition, markers, count, mapMaxBounds, property, polylinePositions, activeInfo} = this.state;
-        let InfoSegment = (props) => "Test";
+        let InfoSegment = (props) => "";
 
         if(property) {
             switch(activeInfo){
-                case 'home':
-                    // InfoSegment =  (props) => "Test";
+                case 'summary':
+                    InfoSegment = Summary;
                     break;
+                    // InfoSegment =  (props) => "Test";
                 case 'crime':
                     InfoSegment =  Crime;
                     break;

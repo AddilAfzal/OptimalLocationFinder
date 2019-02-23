@@ -3,12 +3,6 @@ from rest_framework import serializers
 from Zoopla.models import Property, PropertyImage, RentalPrice
 
 
-class RoomsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Property
-        fields = ('num_bathrooms', 'num_bedrooms', 'num_recepts')
-
-
 class PropertyImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyImage
@@ -31,3 +25,10 @@ class PropertySerializer(serializers.ModelSerializer):
         fields = ('listing_id', 'longitude', 'latitude', 'street_name', 'post_town',
                   'outcode', 'price', 'listing_status', 'details_url', 'thumbnail_url', 'propertyimage_set',
                   'rentalprice_set', 'route_data')
+
+
+class PropertyInformationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Property
+        fields = ('short_description', 'num_bathrooms', 'num_bedrooms', 'num_recepts', 'first_published',
+                  'last_published')

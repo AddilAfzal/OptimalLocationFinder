@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Zoopla',
     'HereMaps',
     'CQC',
+    'ActivePlaces',
     'rest_framework',
     'django_filters',
     'debug_toolbar',

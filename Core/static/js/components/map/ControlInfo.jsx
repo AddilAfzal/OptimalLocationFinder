@@ -29,9 +29,9 @@ export default class ControlInfo extends Component {
         if (property) {
             const description = (
                 <Fragment>
-                    <span><i className="fas fa-bed"/> Bedrooms {property.rooms.num_bedrooms} </span>
-                    <span><i className="fas fa-toilet"/> Bathrooms {property.rooms.num_bathrooms} </span>
-                    <span><i className="fas fa-couch"/> Receptions {property.rooms.num_recepts} </span>
+                    <span><i className="fas fa-bed"/> Bedrooms {property.num_bedrooms} </span>
+                    <span><i className="fas fa-toilet"/> Bathrooms {property.num_bathrooms} </span>
+                    <span><i className="fas fa-couch"/> Receptions {property.num_recepts} </span>
                 </Fragment>);
 
             return (
