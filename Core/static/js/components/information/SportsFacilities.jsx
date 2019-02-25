@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {Header, Image, Segment, Table} from "semantic-ui-react";
 import {Card} from "semantic-ui-react/dist/commonjs/views/Card";
+import {startCase} from "lodash";
 
 function titleCase(str) {
   return str.toLowerCase().split(' ').map(function(word) {
@@ -11,6 +12,18 @@ function titleCase(str) {
 const Activity = ({activity}) => {
     return (
         <div>{activity['name']}</div>
+    )
+};
+
+const Facility = ({facility}) => {
+    return (
+        <div>{facility['facilityType']}</div>
+    )
+};
+
+const Accessibility = ({text, condition}) => {
+    return (
+        <div>{startCase(text)} {condition}</div>
     )
 };
 
@@ -25,6 +38,14 @@ const ActivePlace = ({data}) => {
             </Table.Cell>
             <Table.Cell>
                 {data.activities.map(x => <Activity activity={x}/>)}
+            </Table.Cell>
+            <Table.Cell>
+                {data.facility_set.map(x => <Facility facility={x}/>)}
+            </Table.Cell>
+            <Table.Cell>
+                {(Object.keys(data.disability)
+                    .filter(x => !['id', 'notes'].includes(x) && data.disability[x] )
+                    .map(x => <Accessibility text={x} condition={data.disability[x]}/>))}
             </Table.Cell>
             <Table.Cell>
                 {(data.distance).toFixed(2)} KM
@@ -76,6 +97,8 @@ export default class SportsFacilities extends Component {
                         <Table.Row>
                             <Table.HeaderCell singleLine>Location</Table.HeaderCell>
                             <Table.HeaderCell>Activities</Table.HeaderCell>
+                            <Table.HeaderCell>Facilities</Table.HeaderCell>
+                            <Table.HeaderCell>Disabled Accessibility</Table.HeaderCell>
                             <Table.HeaderCell>Distance</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
