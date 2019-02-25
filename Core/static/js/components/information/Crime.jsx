@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {Card, Header, Segment} from "semantic-ui-react";
-import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {Bar, BarChart, CartesianGrid, LabelList, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {startCase} from "lodash";
 
 
 export default class Crime extends Component {
@@ -40,7 +41,7 @@ export default class Crime extends Component {
             return acc
         }, {});
 
-        const chartData = Object.keys(p).map(k => ({category: k, value: p[k]}) );
+        const chartData = Object.keys(p).map(k => ({category: startCase(k), value: p[k]}) );
 
         this.setState({data, chartData, loading: false});
     };
@@ -53,14 +54,16 @@ export default class Crime extends Component {
             <Fragment>
                  <h4>Types of crime committed in the last 30 days.</h4>
                         <ResponsiveContainer>
-                            <BarChart data={chartData}
-                                      margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+                            <BarChart data={chartData} layout="vertical"
+                                      margin={{top: 5, right: 30, left: 30, bottom: 5}}>
                                 <CartesianGrid strokeDasharray="3 3"/>
-                                <XAxis dataKey="category"/>
-                                <YAxis/>
+                                <XAxis type="number"/>
+                                <YAxis type="category" dataKey="category" width={135}/>
                                 <Tooltip/>
                                 <Legend/>
-                                <Bar dataKey="value" fill="#8884d8"/>
+                                <Bar dataKey="value" fill="#8884d8" name="# occurrences">
+                                    {/*<LabelList dataKey="category" position="right" />*/}
+                                </Bar>
                             </BarChart>
                         </ResponsiveContainer>
             </Fragment>
@@ -70,7 +73,7 @@ export default class Crime extends Component {
                     <Header as='h3' attached='top'>
                         Crime Statistics
                     </Header>
-                    <Segment attached loading={loading} style={{height: 400, paddingBottom: 40}}>
+                    <Segment attached loading={loading} style={{height: 500, paddingBottom: 40}}>
                         {body}
                     </Segment>
                 </Fragment>
