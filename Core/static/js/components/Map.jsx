@@ -9,6 +9,7 @@ import HealthServices from "./information/HealthServices";
 import Demographics from "./information/Demographics";
 import Restaurants from "./information/Restaurants";
 import Summary from "./information/Summary";
+import SportsFacilities from "./information/SportsFacilities";
 
 export default class Map extends Component {
     constructor(props) {
@@ -101,6 +102,9 @@ export default class Map extends Component {
                     break;
                 case 'demographics':
                     InfoSegment = Demographics;
+                    break;
+                case 'sports':
+                    InfoSegment = SportsFacilities;
                     break;
             }
         }

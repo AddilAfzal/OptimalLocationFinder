@@ -9,7 +9,7 @@ from Core.methods import get_closest_locations
 
 def get_active_places(request, latitude, longitude):
     latitude, longitude = float(latitude), float(longitude)
-    knn = 5
+    knn = 6
 
     active_places = ActivePlace.objects\
         .exclude(nursery=True)\
@@ -22,7 +22,11 @@ def get_active_places(request, latitude, longitude):
     index_list = list(locations[1][0])
 
     nearest_locations = [active_places[int(x)]['active_place_id'] for x in index_list]
-    locations_with_associations = ActivePlace.objects.filter(pk__in=nearest_locations)
+    locations_with_associations = ActivePlace.objects.filter(pk__in=nearest_locations)\
+        .prefetch_related('activities', 'facility_set', 'facility_set__openingtimes_set', 'disability')
+
+    for (loc, dist) in zip(locations_with_associations, locations[0][0]):
+        loc.distance = dist
 
     response_data = json.dumps(ActivePlaceSerializer(locations_with_associations, many=True).data)
 
