@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from "react";
-import {Card, Header, Segment} from "semantic-ui-react";
+import {Card, Header, Message, Segment} from "semantic-ui-react";
 import {Bar, BarChart, CartesianGrid, LabelList, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {startCase} from "lodash";
 
@@ -76,6 +76,9 @@ export default class Crime extends Component {
                     <Segment attached loading={loading} style={{height: 500, paddingBottom: 40}}>
                         {body}
                     </Segment>
+                    <Message warning attached='bottom'>
+                        The data shown is based on crimes that have occurred within a 1 KM radius from the selected location.
+                    </Message>
                 </Fragment>
             )
     }
