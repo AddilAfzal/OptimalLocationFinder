@@ -1,4 +1,4 @@
-"""LocationFinder URL Configuration
+"""LocationFinder URL ConfigurationCQC
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -28,6 +28,7 @@ urlpatterns = [
     path('', include('Zoopla.urls', namespace="Zoopla")),
     path('', include('HereMaps.urls', namespace="HereMaps")),
     path('', include('CQC.urls', namespace="CQC")),
+    path('', include('ActivePlaces.urls', namespace="ActivePlaces")),
 ]
 
 if settings.DEBUG:

@@ -1,6 +1,6 @@
 import json
 from django.http import HttpResponse
-from CQC.methods import get_closest_locations
+from Core.methods import get_closest_location
 from CQC.models import CQCLocation
 from CQC.serializers import CQCLocationSerializer
 
@@ -12,9 +12,9 @@ def get_closest_health_services(request, latitude, longitude):
     gps = CQCLocation.objects.filter(location_type__icontains="GP").values()
     hospital = CQCLocation.objects.filter(location_type__icontains="hospital").values()
 
-    distance_den, dentist_index = get_closest_locations(latitude, longitude, dentists)
-    distance_gp, gp_index = get_closest_locations(latitude, longitude, gps)
-    distance_hos, hospital_index = get_closest_locations(latitude, longitude, hospital)
+    distance_den, dentist_index = get_closest_location(latitude, longitude, dentists)
+    distance_gp, gp_index = get_closest_location(latitude, longitude, gps)
+    distance_hos, hospital_index = get_closest_location(latitude, longitude, hospital)
 
     response = json.dumps(
         {
