@@ -24,6 +24,7 @@ export default class ListingTypeFilter extends BaseFilter {
         }
     }
 
+    static filter_name = "Listing type filter";
     static description = "Type of listing...";
 
     getCollapsedText = () => {

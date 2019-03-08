@@ -41,6 +41,7 @@ export default class PropertyTypeFilter extends BaseFilter {
         // this.setState({propertyTypes: ['Flat']});
     }
 
+    static filter_name = "Property type filter";
     static description = "Type of property...";
 
 

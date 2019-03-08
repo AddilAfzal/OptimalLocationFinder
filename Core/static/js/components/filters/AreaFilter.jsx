@@ -35,6 +35,7 @@ export default class AreaFilter extends BaseFilter {
     //
     // }
 
+    static filter_name = "Area filter";
     static description = "Filter the list of homes to be located within a specific area.";
 
     componentDidMount() {

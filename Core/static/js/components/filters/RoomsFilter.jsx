@@ -25,6 +25,7 @@ export default class RoomsFilter extends BaseFilter {
         this.state.receptions = {min: 1, max: 1};
     }
 
+    static filter_name = "Rooms filter";
     static description = "Select the number of each type of room needed.";
 
     componentDidMount() {

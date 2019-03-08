@@ -30,6 +30,7 @@ export default class CommuteFilter extends BaseFilter {
         };
     }
 
+    static filter_name = "Commute filter";
     static description = "Filter for homes that match your ideal commute time.";
 
     getData = () => {

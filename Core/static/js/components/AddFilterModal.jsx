@@ -38,7 +38,7 @@ export default class AddFilterModal extends Component {
         let table_body = this.state.filterMethods.map((cls, i) => {
             return (<tr key={i}>
                 <td>
-                    {cls.name}
+                    {cls.filter_name}
                 </td>
                 <td>
                     {cls.description}

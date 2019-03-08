@@ -35,6 +35,7 @@ export default class SchoolFilter extends BaseFilter {
         }
     }
 
+    static filter_name = "School filter";
     static description = "Distance from nearest school meeting specific requirements.";
 
     getCollapsedText = () => {
