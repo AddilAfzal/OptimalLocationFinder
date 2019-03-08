@@ -23,6 +23,16 @@ export default class SchoolFilter extends BaseFilter {
     componentDidMount() {
         super.componentDidMount();
 
+        if(this.props.data.school && this.props.data.school.school) {
+            const school = this.props.data.school.school;
+
+            this.setState({
+                ...this.state,
+                ...school
+            });
+
+            this.save();
+        }
     }
 
     static description = "Distance from nearest school meeting specific requirements.";
@@ -67,18 +77,21 @@ export default class SchoolFilter extends BaseFilter {
                         <Grid.Column width={2}>
                             <Checkbox
                                 label={<label>Primary </label>}
+                                checked={is_primary}
                                 onChange={() => this.setState({is_primary: !is_primary})}
                             />
                         </Grid.Column>
                         <Grid.Column width={2}>
                             <Checkbox
                                 label={<label>Secondary </label>}
+                                checked={is_secondary}
                                 onChange={() => this.setState({is_secondary: !is_secondary})}
                             />
                         </Grid.Column>
                         <Grid.Column width={2}>
                             <Checkbox
                                 label={<label>Post 16 </label>}
+                                checked={is_post16}
                                 onChange={() => this.setState({is_post16: !is_post16})}
                             />
                         </Grid.Column>

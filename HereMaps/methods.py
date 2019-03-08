@@ -3,10 +3,12 @@ import re
 import pytz
 from django.utils import timezone
 
+from tornado import ioloop, httpclient
 import requests
 
 from HereMaps.models import RouteCache
 from LocationFinder.settings import HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE
+
 
 start = [(51.523252, -0.370472),(51.523252, -0.310472)]
 des = [(51.527678,-0.103682)]

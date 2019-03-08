@@ -12,6 +12,7 @@ import CommuteFilter from "./filters/CommuteFilter";
 import PropertyTypeFilter from "./filters/PropertyTypeFilter";
 import PriceFilter from "./filters/PriceFilter";
 import AddFilterModal from "./AddFilterModal";
+import SchoolFilter from "./filters/SchoolFilter";
 
 export default class Filters extends Component {
     constructor(props) {
@@ -67,6 +68,9 @@ export default class Filters extends Component {
                     continue;
                 case 'commute':
                     this.createFilterComponent(CommuteFilter);
+                    continue
+                case 'school':
+                    this.createFilterComponent(SchoolFilter);
             }
         }
     };
