@@ -11,6 +11,10 @@ import Restaurants from "./information/Restaurants";
 import Summary from "./information/Summary";
 import SportsFacilities from "./information/SportsFacilities";
 import Commute from "./information/Commute";
+import { divIcon } from 'leaflet';
+import { renderToStaticMarkup } from 'react-dom/server'
+
+
 
 export default class Map extends Component {
     constructor(props) {
@@ -35,13 +39,24 @@ export default class Map extends Component {
 
             activeInfo: 'summary',
 
+            mapContents: null,
         };
     }
 
+
+    customMarkerIcon = () => divIcon({
+        html: renderToStaticMarkup(
+            <span className="fa-stack fa-1x">
+                    <i className="fas fa-home fa-stack-1x" style={{color: '#55855b', marginTop: 0, fontSize: "2em"}}/>
+            </span>
+        )
+    });
+
     componentDidMount() {
+
         const markers = this.state.properties.map((elem) =>
             <Marker key={elem.listing_id} position={[elem.latitude, elem.longitude]} draggable={false}
-                    onClick={() => this.markerOnClick(elem)}>
+                    onClick={() => this.markerOnClick(elem)} icon={this.customMarkerIcon()}>
                 {/*<Popup>*/}
                     {/*{elem.propertyimage_set.map(x => <Image src={x.url}/>)}*/}
                 {/*</Popup>*/}
@@ -79,11 +94,23 @@ export default class Map extends Component {
         this.props.history.push('/', {data});
     };
 
+    displayInformationContents = (contents, property) => {
+        const propertyMarker =
+            <Marker key={property.listing_id} position={[property.latitude, property.longitude]}
+                    draggable={false} icon={this.customMarkerIcon()}/>;
+
+        this.setState({mapContents: [
+                ...contents,
+                propertyMarker
+            ]});
+    };
+
     leafletMap = React.createRef();
     markerCluster = React.createRef();
 
     render() {
-        const {mapCenterPosition, markers, count, mapMaxBounds, property, polylinePositions, activeInfo} = this.state;
+        const {mapCenterPosition, markers, count,
+            mapMaxBounds, property, polylinePositions, activeInfo, mapContents} = this.state;
         let InfoSegment = (props) => "";
 
         if(property) {
@@ -113,6 +140,12 @@ export default class Map extends Component {
             }
         }
 
+        const contents = mapContents ? mapContents :
+            <MarkerClusterGroup ref={this.markerCluster}>
+                {markers}
+                <Polyline positions={polylinePositions}/>
+            </MarkerClusterGroup>;
+
         return (
             <Fragment>
                 <Button onClick={this.handleEditFilters}>Edit filters</Button>
@@ -135,10 +168,7 @@ export default class Map extends Component {
                         <TileLayer
                             url="https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
                         />
-                        <MarkerClusterGroup ref={this.markerCluster}>
-                            {markers}
-                            <Polyline positions={polylinePositions}/>
-                        </MarkerClusterGroup>
+                        {contents}
                         <ControlInfo property={property}/>
                     </LeafletMap>
                 </Segment>
@@ -162,7 +192,8 @@ export default class Map extends Component {
                 }
 
                 {/*<Property property={property}/>*/}
-                <InfoSegment property={property}/>
+                <InfoSegment property={property}
+                             updateMapContents={this.displayInformationContents}/>
             </Fragment>
         )
     }

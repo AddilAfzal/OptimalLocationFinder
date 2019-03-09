@@ -2,6 +2,9 @@ import React, {Component, Fragment} from "react";
 import {Card, Header, Message, Segment} from "semantic-ui-react";
 import {Bar, BarChart, CartesianGrid, LabelList, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {startCase} from "lodash";
+import {Marker} from "react-leaflet";
+import {renderToStaticMarkup} from "react-dom/server";
+import {divIcon} from "leaflet";
 
 
 export default class Crime extends Component {
@@ -26,6 +29,28 @@ export default class Crime extends Component {
         }
     }
 
+    updateMap = () => {
+        const {data} = this.state;
+        const {property} = this.props;
+
+        const markerRendered = renderToStaticMarkup(
+            <span className="fa-stack fa-1x">
+                    <i className="fas fa-home fa-stack-1x" style={{color: '#55855b', marginTop: 0, fontSize: "2em"}}/>
+            </span>
+        );
+
+        const customMarkerIcon = divIcon({
+            html: markerRendered,
+        });
+
+        const locations = data.map(item =>
+            <Marker key={item.id} position={[item.location.latitude, item.location.longitude]}
+                    draggable={false}/>
+                    );
+        this.props.updateMapContents(locations, property);
+
+    };
+
     fetchData = async () => {
         const {latitude, longitude} = this.props.property;
         const data =
@@ -43,7 +68,7 @@ export default class Crime extends Component {
 
         const chartData = Object.keys(p).map(k => ({category: startCase(k), value: p[k]}) );
 
-        this.setState({data, chartData, loading: false});
+        this.setState({data, chartData, loading: false}, this.updateMap);
     };
 
     render() {
