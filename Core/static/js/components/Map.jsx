@@ -13,6 +13,7 @@ import SportsFacilities from "./information/SportsFacilities";
 import Commute from "./information/Commute";
 import { divIcon } from 'leaflet';
 import { renderToStaticMarkup } from 'react-dom/server'
+import ControlBackButton from "./map/ControlBackButton";
 
 export default class Map extends Component {
     constructor(props) {
@@ -42,16 +43,7 @@ export default class Map extends Component {
     }
 
 
-    customMarkerIcon = (size="2em") => divIcon({
-        html: renderToStaticMarkup(
-            <span className="fa-stack fa-1x">
-                    <i className="fas fa-home fa-stack-1x" style={{color: '#55855b', marginTop: 0, fontSize: size}}/>
-            </span>
-        )
-    });
-
     componentDidMount() {
-
         const markers = this.state.properties.map((elem) =>
             <Marker key={elem.listing_id} position={[elem.latitude, elem.longitude]} draggable={false}
                     onClick={() => this.markerOnClick(elem)} icon={this.customMarkerIcon()}>
@@ -67,11 +59,19 @@ export default class Map extends Component {
     }
 
     setBounds = async () => {
-        let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
         let mapMaxBounds = this.leafletMap.current.leafletElement.getBounds();
         this.setState({mapMaxBounds});
+        let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
         this.leafletMap.current.leafletElement.fitBounds(markerClusterBounds)
     };
+
+    customMarkerIcon = (size="2em") => divIcon({
+        html: renderToStaticMarkup(
+            <span className="fa-stack fa-1x">
+                    <i className="fas fa-home fa-stack-1x" style={{color: '#55855b', marginTop: 0, fontSize: size}}/>
+            </span>
+        )
+    });
 
     markerOnClick = async (property) => {
         let data = await fetch('/api/properties/' + property.listing_id).then(x => x.json());
@@ -99,13 +99,19 @@ export default class Map extends Component {
 
         this.setState({
             mapContents: [
-                ...contents,
+                <MarkerClusterGroup>{contents}</MarkerClusterGroup>,
                 propertyMarker
             ]
         }, () => {
             this.leafletMap.current.leafletElement.fitBounds(this.customContentsLayer.current.leafletElement.getBounds());
         });
 
+    };
+
+    resetMap = async () => {
+        await this.setState({mapContents: null, property: null});
+        let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
+        this.leafletMap.current.leafletElement.fitBounds(markerClusterBounds);
     };
 
     leafletMap = React.createRef();
@@ -174,6 +180,7 @@ export default class Map extends Component {
                         />
                         {contents}
                         <ControlInfo property={property}/>
+                        <ControlBackButton property={property} action={this.resetMap}/>
                     </LeafletMap>
                 </Segment>
                 {property &&
