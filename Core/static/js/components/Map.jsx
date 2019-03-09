@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {Button, Header, Menu, Message, Segment} from "semantic-ui-react";
-import {Marker, TileLayer, Map as LeafletMap, Polyline} from "react-leaflet";
+import {Marker, TileLayer, Map as LeafletMap, Polyline, FeatureGroup} from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import Property from "./map/Property";
 import ControlInfo from "./map/ControlInfo";
@@ -13,8 +13,6 @@ import SportsFacilities from "./information/SportsFacilities";
 import Commute from "./information/Commute";
 import { divIcon } from 'leaflet';
 import { renderToStaticMarkup } from 'react-dom/server'
-
-
 
 export default class Map extends Component {
     constructor(props) {
@@ -44,10 +42,10 @@ export default class Map extends Component {
     }
 
 
-    customMarkerIcon = () => divIcon({
+    customMarkerIcon = (size="2em") => divIcon({
         html: renderToStaticMarkup(
             <span className="fa-stack fa-1x">
-                    <i className="fas fa-home fa-stack-1x" style={{color: '#55855b', marginTop: 0, fontSize: "2em"}}/>
+                    <i className="fas fa-home fa-stack-1x" style={{color: '#55855b', marginTop: 0, fontSize: size}}/>
             </span>
         )
     });
@@ -97,16 +95,22 @@ export default class Map extends Component {
     displayInformationContents = (contents, property) => {
         const propertyMarker =
             <Marker key={property.listing_id} position={[property.latitude, property.longitude]}
-                    draggable={false} icon={this.customMarkerIcon()}/>;
+                    draggable={false} icon={this.customMarkerIcon("2.5em")}/>;
 
-        this.setState({mapContents: [
+        this.setState({
+            mapContents: [
                 ...contents,
                 propertyMarker
-            ]});
+            ]
+        }, () => {
+            this.leafletMap.current.leafletElement.fitBounds(this.customContentsLayer.current.leafletElement.getBounds());
+        });
+
     };
 
     leafletMap = React.createRef();
     markerCluster = React.createRef();
+    customContentsLayer = React.createRef();
 
     render() {
         const {mapCenterPosition, markers, count,
@@ -140,7 +144,7 @@ export default class Map extends Component {
             }
         }
 
-        const contents = mapContents ? mapContents :
+        const contents = mapContents ? <FeatureGroup ref={this.customContentsLayer}>{mapContents}</FeatureGroup> :
             <MarkerClusterGroup ref={this.markerCluster}>
                 {markers}
                 <Polyline positions={polylinePositions}/>
