@@ -10,6 +10,7 @@ import Demographics from "./information/Demographics";
 import Restaurants from "./information/Restaurants";
 import Summary from "./information/Summary";
 import SportsFacilities from "./information/SportsFacilities";
+import Commute from "./information/Commute";
 
 export default class Map extends Component {
     constructor(props) {
@@ -106,6 +107,9 @@ export default class Map extends Component {
                 case 'sports':
                     InfoSegment = SportsFacilities;
                     break;
+                case 'commute':
+                    InfoSegment = Commute;
+                    break;
             }
         }
 
@@ -152,6 +156,8 @@ export default class Map extends Component {
                                    onClick={() => this.setState({activeInfo: 'sports'})}/>
                         <Menu.Item name='Demographics' active={activeInfo === 'demographics'}
                                    onClick={() => this.setState({activeInfo: 'demographics'})}/>
+                        <Menu.Item name='Commute' active={activeInfo === 'commute'}
+                                   onClick={() => this.setState({activeInfo: 'commute'})}/>
                     </Menu>
                 }
 
