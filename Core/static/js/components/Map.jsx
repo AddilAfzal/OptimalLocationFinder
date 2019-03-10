@@ -99,6 +99,9 @@ export default class Map extends Component {
             property: {...property, ...data},
             polylinePositions,
         });
+
+        console.log(this.leafletMap.current.leafletElement)
+        this.leafletMap.current.leafletElement.panTo([property.latitude, property.longitude]);
     };
 
     handleEditFilters = () => {
