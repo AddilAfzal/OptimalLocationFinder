@@ -28,6 +28,7 @@ export default class Map extends Component {
             mapZoom: 10,
             mapBounds: null,
             mapMaxBounds: null,
+            mapHeight: this.getMapHeight(),
 
             markers: [],
             markerClusterBounds: null,
@@ -56,9 +57,22 @@ export default class Map extends Component {
             </Marker>
         );
         this.setState({markers}, this.setBounds);
+        window.addEventListener("resize", this.resizeMap);
     }
 
-    setBounds = async () => {
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.resizeMap);
+    }
+
+    resizeMap = () => {
+        this.setState({mapHeight: this.getMapHeight()})
+    };
+
+    getMapHeight() {
+        return (window.innerHeight > 400 ? window.innerHeight - 110 : 400);
+    }
+
+    setBounds = () => {
         let mapMaxBounds = this.leafletMap.current.leafletElement.getBounds();
         this.setState({mapMaxBounds});
         let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
@@ -120,7 +134,7 @@ export default class Map extends Component {
 
     render() {
         const {mapCenterPosition, markers, count,
-            mapMaxBounds, property, polylinePositions, activeInfo, mapContents} = this.state;
+            mapMaxBounds, property, polylinePositions, activeInfo, mapContents, mapHeight} = this.state;
         let InfoSegment = (props) => "";
 
         if(property) {
@@ -172,9 +186,9 @@ export default class Map extends Component {
                         center={mapCenterPosition}
                         zoom={8}
                         minZoom={10}
-                        maxZoom={16}
+                        maxZoom={17}
                         maxBounds={mapMaxBounds}
-                        style={{minHeight: 768, border: "1px solid #ddd", padding: 26, marginTop: 16}}>
+                        style={{height: mapHeight, border: "1px solid #ddd", padding: 26, marginTop: 10}}>
                         <TileLayer
                             url="https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
                         />
