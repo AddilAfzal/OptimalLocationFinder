@@ -55,7 +55,7 @@ export default class CommuteFilter extends BaseFilter {
         if (commute) {
             console.log(commute)
             this.state.mapMarkers = commute.commute.map(x =>
-                <Marker key={Math.random()} ref={React.createRef()} draggable={true} {...x}/>);
+                <Marker key={Math.random()} ref={React.createRef()} draggable={false} {...x}/>);
             this.save();
         }
     }
@@ -116,9 +116,7 @@ export default class CommuteFilter extends BaseFilter {
                     <TileLayer
                         url="https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
                     />
-                    <MarkerClusterGroup ref={this.markerCluster}>
-                        {mapMarkers}
-                    </MarkerClusterGroup>
+                    {mapMarkers}
                 </Map>
                 <br/>
                 <ControlSearch markers={mapMarkers} addMarker={this.addMarker}/>

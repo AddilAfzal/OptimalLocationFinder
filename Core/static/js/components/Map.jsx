@@ -33,7 +33,7 @@ export default class Map extends Component {
             markers: [],
             markerClusterBounds: null,
 
-            polylinePositions: [],
+            polylines: [],
 
             property: null,
 
@@ -89,15 +89,16 @@ export default class Map extends Component {
 
     markerOnClick = async (property) => {
         let data = await fetch('/api/properties/' + property.listing_id).then(x => x.json());
-        let polylinePositions = [];
-        if(property.route_data) {
-            polylinePositions =
-                property.route_data[0].response.route[0].leg[0].maneuver
-                    .map(x => [x.position.latitude, x.position.longitude])
+        let polylines = [];
+        if (property.route_data) {
+            polylines = property.route_data.map((route) => {
+                return route.response.route[0].leg[0].maneuver
+                        .map(x => [x.position.latitude, x.position.longitude]);
+            });
         }
         await this.setState({
             property: {...property, ...data},
-            polylinePositions,
+            polylines,
         });
 
         console.log(this.leafletMap.current.leafletElement)
@@ -137,7 +138,7 @@ export default class Map extends Component {
 
     render() {
         const {mapCenterPosition, markers, count, data,
-            mapMaxBounds, property, polylinePositions, activeInfo, mapContents, mapHeight} = this.state;
+            mapMaxBounds, property, polylines, activeInfo, mapContents, mapHeight} = this.state;
         let InfoSegment = (props) => "";
 
         if(property) {
@@ -166,11 +167,12 @@ export default class Map extends Component {
                     break;
             }
         }
-
+        const colourPallete = ["#26547C", "#03AA8C", "FFD166", "EF476F"];
         const contents = mapContents ? <FeatureGroup ref={this.customContentsLayer}>{mapContents}</FeatureGroup> :
             <MarkerClusterGroup ref={this.markerCluster}>
                 {markers}
-                <Polyline positions={polylinePositions}/>
+                {polylines.map((polylinePositions, index) =>
+                    <Polyline color={colourPallete[index % colourPallete.length]} positions={polylinePositions}/>)}
             </MarkerClusterGroup>;
 
         return (
