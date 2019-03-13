@@ -136,7 +136,7 @@ export default class Map extends Component {
     customContentsLayer = React.createRef();
 
     render() {
-        const {mapCenterPosition, markers, count,
+        const {mapCenterPosition, markers, count, data,
             mapMaxBounds, property, polylinePositions, activeInfo, mapContents, mapHeight} = this.state;
         let InfoSegment = (props) => "";
 
@@ -214,7 +214,7 @@ export default class Map extends Component {
                                    onClick={() => this.setState({activeInfo: 'sports'})}/>
                         <Menu.Item name='Demographics' active={activeInfo === 'demographics'}
                                    onClick={() => this.setState({activeInfo: 'demographics'})}/>
-                        <Menu.Item name='Commute' active={activeInfo === 'commute'}
+                        <Menu.Item disabled={!data.commute} name='Commute' active={activeInfo === 'commute'}
                                    onClick={() => this.setState({activeInfo: 'commute'})}/>
                     </Menu>
                 }

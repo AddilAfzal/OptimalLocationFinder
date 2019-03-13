@@ -12,7 +12,7 @@ export default class Commute extends Component {
             property: props.property,
         }
     }
-
+re
     componentDidMount() {
         this.fetchData();
     }

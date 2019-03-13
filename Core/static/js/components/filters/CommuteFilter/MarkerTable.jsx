@@ -15,7 +15,7 @@ export default class MarkerTable extends Component {
     }
 
     render() {
-        const {markers, edit, updateMarker} = this.props;
+        const {markers, edit, updateMarker, removeMarker} = this.props;
         console.log(markers)
         const rows = markers.map((m, i) =>
             <tr key={m.props.href}>
@@ -35,7 +35,7 @@ export default class MarkerTable extends Component {
                             onChange={(e, v) => updateMarker(m.key, {...m.props, time: v.value} )}/> :
                     `${m.props.time} Minutes`}
                 </td>
-                {edit && <td><Button>Remove</Button></td>}
+                {edit && <td><Button onClick={() => removeMarker(m.key)}>Remove</Button></td>}
             </tr>);
 
         return (

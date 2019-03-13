@@ -86,6 +86,10 @@ export default class CommuteFilter extends BaseFilter {
         this.setState( {mapMarkers: [...this.state.mapMarkers.filter(x => x.key !== key), marker]});
     };
 
+    removeMarker = (key) => {
+        this.setState( {mapMarkers: [...this.state.mapMarkers.filter(x => x.key !== key)]});
+    };
+
     isValid() {
         return true;
     }
@@ -99,7 +103,8 @@ export default class CommuteFilter extends BaseFilter {
         return (
             <Fragment>
                 <h3>Commute</h3>
-                <MarkerTable markers={mapMarkers} edit={true} updateMarker={this.updateMarker}/>
+                <MarkerTable markers={mapMarkers} edit={true}
+                             updateMarker={this.updateMarker} removeMarker={this.removeMarker}/>
                 <Divider/>
                 <Map ref={this.mapRef}
                      maxZoom={16}
