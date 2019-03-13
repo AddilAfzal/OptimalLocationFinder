@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from "react";
-import {Header, Image, Segment, Table} from "semantic-ui-react";
+import {Button, Divider, Header, Image, Segment, Table} from "semantic-ui-react";
 
 
 export default class Commute extends Component {
@@ -7,38 +7,39 @@ export default class Commute extends Component {
         super(props);
 
         this.state = {
-            data: null,
-            loading: true,
+            loading: false,
             property: props.property,
         }
-    }
-re
-    componentDidMount() {
-        this.fetchData();
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
         if(nextProps.property !== this.state.property) {
-            this.setState({property: nextProps.property, loading: true}, this.fetchData);
+            this.setState({property: nextProps.property, loading: false}, this.fetchData);
         }
     }
 
-    fetchData = async () => {
-        // const {latitude, longitude} = this.props.property;
-        // const data =
-        //     await fetch(`/api/get_closest_health_services/${latitude}/${longitude}/`)
-        //         .then(x => x.json());
-        //
-        // this.setState({data, loading: false});
-    };
-
     render() {
-        const {property} = this.props;
-        const {data, loading} = this.state;
+        const {property, data} = this.props;
+        const {loading} = this.state;
+        const locations = property.route_data.map((item, index) => {
+
+            return (
+                <Segment>
+                    <Header as='h3'>{data.commute.commute[index].text}</Header>
+                    <div dangerouslySetInnerHTML={{__html: item.response.route[0].summary.text}}/>
+                    <Divider/>
+                    <Button primary={true}>Show route steps</Button>
+                    <Divider/>
+                    {item.response.route[0].leg[0].maneuver.map((x) => <p dangerouslySetInnerHTML={{__html: x.instruction}}/>)}
+                </Segment>
+            )
+        });
+
+        console.log(property.route_data);
+
         const body = data && (
             <Fragment>
-                <h4>Information about your commute/s</h4>
-
+                {locations}
             </Fragment>
         );
         return (

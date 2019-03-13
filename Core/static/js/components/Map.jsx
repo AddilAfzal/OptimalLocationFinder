@@ -73,10 +73,14 @@ export default class Map extends Component {
     }
 
     setBounds = () => {
-        let mapMaxBounds = this.leafletMap.current.leafletElement.getBounds();
-        this.setState({mapMaxBounds});
-        let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
-        this.leafletMap.current.leafletElement.fitBounds(markerClusterBounds)
+        const {properties} = this.state;
+
+        if(properties) {
+            let mapMaxBounds = this.leafletMap.current.leafletElement.getBounds();
+            this.setState({mapMaxBounds});
+            let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
+            this.leafletMap.current.leafletElement.fitBounds(markerClusterBounds)
+        }
     };
 
     customMarkerIcon = (size="2em") => divIcon({
@@ -95,13 +99,13 @@ export default class Map extends Component {
                 return route.response.route[0].leg[0].maneuver
                         .map(x => [x.position.latitude, x.position.longitude]);
             });
+            // polylines = [];
         }
         await this.setState({
             property: {...property, ...data},
             polylines,
         });
 
-        console.log(this.leafletMap.current.leafletElement)
         this.leafletMap.current.leafletElement.panTo([property.latitude, property.longitude]);
     };
 
@@ -127,7 +131,7 @@ export default class Map extends Component {
     };
 
     resetMap = async () => {
-        await this.setState({mapContents: null, property: null});
+        await this.setState({mapContents: null, property: null, polylines: []});
         let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
         this.leafletMap.current.leafletElement.fitBounds(markerClusterBounds);
     };
@@ -171,8 +175,6 @@ export default class Map extends Component {
         const contents = mapContents ? <FeatureGroup ref={this.customContentsLayer}>{mapContents}</FeatureGroup> :
             <MarkerClusterGroup ref={this.markerCluster}>
                 {markers}
-                {polylines.map((polylinePositions, index) =>
-                    <Polyline color={colourPallete[index % colourPallete.length]} positions={polylinePositions}/>)}
             </MarkerClusterGroup>;
 
         return (
@@ -198,6 +200,9 @@ export default class Map extends Component {
                             url="https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
                         />
                         {contents}
+                        {polylines.map((polylinePositions, index) =>
+                            <Polyline
+                                color={colourPallete[index % colourPallete.length]} positions={polylinePositions}/>)}
                         <ControlInfo property={property}/>
                         <ControlBackButton property={property} action={this.resetMap}/>
                     </LeafletMap>
@@ -223,7 +228,7 @@ export default class Map extends Component {
 
                 {/*<Property property={property}/>*/}
                 <InfoSegment property={property}
-                             updateMapContents={this.displayInformationContents}/>
+                             updateMapContents={this.displayInformationContents} data={data}/>
             </Fragment>
         )
     }

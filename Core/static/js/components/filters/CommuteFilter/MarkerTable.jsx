@@ -16,7 +16,6 @@ export default class MarkerTable extends Component {
 
     render() {
         const {markers, edit, updateMarker, removeMarker} = this.props;
-        console.log(markers)
         const rows = markers.map((m, i) =>
             <tr key={m.props.href}>
                 <td>{i+1}</td>
