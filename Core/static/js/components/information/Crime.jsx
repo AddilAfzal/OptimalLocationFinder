@@ -33,22 +33,11 @@ export default class Crime extends Component {
         const {data} = this.state;
         const {property} = this.props;
 
-        const markerRendered = renderToStaticMarkup(
-            <span className="fa-stack fa-1x">
-                    <i className="fas fa-home fa-stack-1x" style={{color: '#55855b', marginTop: 0, fontSize: "2em"}}/>
-            </span>
-        );
-
-        const customMarkerIcon = divIcon({
-            html: markerRendered,
-        });
-
         const locations = data.map(item =>
             <Marker key={item.id} position={[item.location.latitude, item.location.longitude]}
                     draggable={false}/>
                     );
         this.props.updateMapContents(locations, property);
-
     };
 
     fetchData = async () => {

@@ -1,5 +1,8 @@
 import React, {Component, Fragment} from "react";
 import {Header, Image, Segment, Table} from "semantic-ui-react";
+import {renderToStaticMarkup} from "react-dom/server";
+import {divIcon} from "leaflet";
+import {Marker} from "react-leaflet";
 
 
 export default class HealthServices extends Component {
@@ -30,7 +33,21 @@ export default class HealthServices extends Component {
             await fetch(`/api/get_closest_health_services/${latitude}/${longitude}/`)
                 .then(x => x.json());
 
-        this.setState({data, loading: false});
+        this.setState({data, loading: false}, this.updateMap);
+    };
+
+    updateMap = () => {
+        const {data} = this.state;
+        const {property} = this.props;
+
+        console.log(data)
+        const markers = Object.entries(data).map(([key, value]) => {
+            return <Marker key={value.cqc_id} position={[value.lat, value.lng]}
+                    draggable={false}/>
+        });
+
+        this.props.updateMapContents(markers, property);
+
     };
 
     render() {

@@ -75,7 +75,7 @@ export default class Map extends Component {
     setBounds = () => {
         const {properties} = this.state;
 
-        if(properties) {
+        if(properties.length > 0) {
             let mapMaxBounds = this.leafletMap.current.leafletElement.getBounds();
             this.setState({mapMaxBounds});
             let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
@@ -226,7 +226,6 @@ export default class Map extends Component {
                     </Menu>
                 }
 
-                {/*<Property property={property}/>*/}
                 <InfoSegment property={property}
                              updateMapContents={this.displayInformationContents} data={data}/>
             </Fragment>
