@@ -2,6 +2,7 @@ import React, {Component, Fragment} from "react";
 import {Header, Image, Segment, Table} from "semantic-ui-react";
 import {Card} from "semantic-ui-react/dist/commonjs/views/Card";
 import {startCase} from "lodash";
+import {Marker, Tooltip} from "react-leaflet";
 
 function titleCase(str) {
   return str.toLowerCase().split(' ').map(function(word) {
@@ -62,7 +63,6 @@ export default class SportsFacilities extends Component {
             data: null,
             loading: true,
             property: props.property,
-            chartData: null,
         }
     }
 
@@ -82,8 +82,28 @@ export default class SportsFacilities extends Component {
             await fetch(`/api/get_closest_active_places/${latitude}/${longitude}/`)
                 .then(x => x.json());
 
-        this.setState({data, loading: false});
+        this.setState({data, loading: false}, this.updateMap);
     };
+
+    updateMap = () => {
+        const {data} = this.state;
+        const {property} = this.props;
+
+        console.log("data", data);
+        const markers = data.map((value) => {
+            console.log(value)
+            return <Marker key={value.active_place_id} position={[value.lat, value.lng]}
+                    draggable={false}>
+                <Tooltip style={{height: 100, width: 100}}>
+                    {value.name}
+                </Tooltip>
+            </Marker>
+        });
+
+        this.props.updateMapContents(markers, property);
+
+    };
+
 
     render() {
         const {property} = this.props;
@@ -91,7 +111,7 @@ export default class SportsFacilities extends Component {
 
 
         const body = data && (
-            <Fragment loading={true}>
+            <Fragment>
                 <Table basic='very' celled >
                     <Table.Header fullWidth>
                         <Table.Row>

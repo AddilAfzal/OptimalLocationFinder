@@ -1,9 +1,9 @@
 import React, {Component, Fragment} from "react";
 import {Card, Header, Image, Rating, Segment} from "semantic-ui-react";
+import {Marker, Popup, Tooltip} from "react-leaflet";
 
 
 const Restaurant = (props) => {
-    console.log(props)
     return (
         <Card key={props.R.res_id}>
             <Image url={props.url} src={props.thumb ? props.thumb :
@@ -56,7 +56,36 @@ export default class Restaurants extends Component {
                 })
                 .then(x => x.json());
 
-        this.setState({data, loading: false});
+        this.setState({data, loading: false}, this.updateMap);
+    };
+
+
+    updateMap = () => {
+        const {data} = this.state;
+        const {property} = this.props;
+
+        console.log(data.restaurants);
+        const markers = data.restaurants.map((r) => {
+            console.log(r.restaurant);
+            const l = r.restaurant;
+            return <Marker key={l.id} position={[l.location.latitude, l.location.longitude]}
+                           draggable={false}>
+                {/*<Popup>*/}
+                    {/*Test123*/}
+                {/*</Popup>*/}
+                <Tooltip style={{height: 100, width: 100}}>
+                    {l.name}
+                </Tooltip>
+            </Marker>
+        });
+
+        // const markers = Object.entries(data).map(([key, value]) => {
+        //     return <Marker key={value.cqc_id} position={[value.lat, value.lng]}
+        //             draggable={false}/>
+        // });
+
+        this.props.updateMapContents(markers, property);
+
     };
 
     render() {

@@ -193,7 +193,7 @@ export default class Map extends Component {
                         center={mapCenterPosition}
                         zoom={8}
                         minZoom={10}
-                        maxZoom={17}
+                        maxZoom={18}
                         maxBounds={mapMaxBounds}
                         style={{height: mapHeight, border: "1px solid #ddd", padding: 26, marginTop: 10}}>
                         <TileLayer

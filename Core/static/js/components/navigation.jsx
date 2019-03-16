@@ -15,7 +15,7 @@ export default class navigation extends Component {
 
     render() {
         return (
-            <Menu inverted top>
+            <Menu inverted>
                 <Container>
                     <Menu.Item as='a' header>
                         <Image size='mini' src='' style={{marginRight: '1.5em'}}/>

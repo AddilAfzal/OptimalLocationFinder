@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react";
 import {Card, Header, Message, Segment} from "semantic-ui-react";
 import {Bar, BarChart, CartesianGrid, LabelList, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {startCase} from "lodash";
-import {Marker} from "react-leaflet";
+import {Marker, Tooltip as LeafletTooltip} from "react-leaflet";
 import {renderToStaticMarkup} from "react-dom/server";
 import {divIcon} from "leaflet";
 
@@ -35,7 +35,12 @@ export default class Crime extends Component {
 
         const locations = data.map(item =>
             <Marker key={item.id} position={[item.location.latitude, item.location.longitude]}
-                    draggable={false}/>
+                    draggable={false}>
+                <LeafletTooltip>
+                    {startCase(item.category)}
+                </LeafletTooltip>
+
+            </Marker>
                     );
         this.props.updateMapContents(locations, property);
     };
