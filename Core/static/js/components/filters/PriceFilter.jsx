@@ -161,13 +161,15 @@ export default class PriceFilter extends BaseFilter {
                 <div style={{height: 100}}>
                     <ResponsiveContainer>
                         <AreaChart
+                            hover={false}
+                            label={false}
                             data={chartData}
                             // margin={{top: 20, right: 20, bottom: 20, left: 20,}}
                         >
                             {/*<XAxis dataKey="price"/>*/}
                             {/*<YAxis dataKey="value"/>*/}
                             <Area dataKey="value" label="Price" stroke="#838d92" fill="#abe2fb"/>
-                            <Tooltip/>
+                            {/*<Tooltip/>*/}
                         </AreaChart>
                     </ResponsiveContainer>
                 </div>}
