@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from "react";
-import {Card, Header, Segment} from "semantic-ui-react";
+import {Button, Card, Divider, Header, Segment} from "semantic-ui-react";
 import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 
 
@@ -13,9 +13,9 @@ export default class Summary extends Component {
         }
     }
 
-    // componentDidMount() {
-    //     this.fetchData();
-    // }
+    componentDidMount() {
+        this.props.updateMapContents(null, null);
+    }
     //
     // async fetchData() {
     //     const {property} = this.props;
@@ -31,6 +31,8 @@ export default class Summary extends Component {
 
         const body = (
             <Fragment>
+                <Button onClick={() => window.open(property.details_url,'_blank')} secondary>View on Zoopla</Button>
+                <Divider/>
                 <div dangerouslySetInnerHTML={{__html: property.short_description}}/>
                 <h4>Address</h4>
                 {property.street_name}, {property.outcode}

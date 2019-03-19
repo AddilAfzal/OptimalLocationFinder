@@ -14,12 +14,16 @@ export default class ControlBackButton extends Component {
         }
     }
 
-    render() {
-        const {property, action} = this.props;
+    performAction = async () => {
+        await this.props.action();
+    };
 
-        if (property) {
+    render() {
+        const {property, mapContents} = this.props;
+
+        if (property && mapContents) {
             return <Control position="topright">
-                    <Button onClick={action}>Back</Button>
+                    <Button onClick={this.performAction} secondary>Back</Button>
                 </Control>
         } else {
             return ""

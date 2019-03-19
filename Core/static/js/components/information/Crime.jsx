@@ -29,7 +29,7 @@ export default class Crime extends Component {
         }
     }
 
-    updateMap = () => {
+    updateMap = async () => {
         const {data} = this.state;
         const {property} = this.props;
 
@@ -43,16 +43,18 @@ export default class Crime extends Component {
             </Marker>
                     );
         this.props.updateMapContents(locations, property);
+        this.props.toggleMapLoader(false);
     };
 
     fetchData = async () => {
+        this.props.toggleMapLoader(true);
         const {latitude, longitude} = this.props.property;
         const data =
             await fetch(`https://data.police.uk/api/crimes-street/all-crime?lat=${latitude}&lng=${longitude}`)
                 .then(x => x.json())
 
         const p = data.reduce((acc, value) => {
-            if(acc.hasOwnProperty(value.category)) {
+            if (acc.hasOwnProperty(value.category)) {
                 acc[value.category] += 1;
             } else {
                 acc[value.category] = 1;
@@ -60,7 +62,7 @@ export default class Crime extends Component {
             return acc
         }, {});
 
-        const chartData = Object.keys(p).map(k => ({category: startCase(k), value: p[k]}) );
+        const chartData = Object.keys(p).map(k => ({category: startCase(k), value: p[k]}));
 
         this.setState({data, chartData, loading: false}, this.updateMap);
     };

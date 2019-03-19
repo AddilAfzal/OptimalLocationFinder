@@ -29,6 +29,7 @@ export default class Map extends Component {
             mapBounds: null,
             mapMaxBounds: null,
             mapHeight: this.getMapHeight(),
+            mapLoading: false,
 
             markers: [],
             markerClusterBounds: null,
@@ -115,26 +116,32 @@ export default class Map extends Component {
     };
 
     displayInformationContents = (contents, property) => {
-        const propertyMarker =
-            <Marker key={property.listing_id} position={[property.latitude, property.longitude]}
-                    draggable={false} icon={this.customMarkerIcon("2.5em")}/>;
+        if(contents) {
+            const propertyMarker =
+                <Marker key={property.listing_id} position={[property.latitude, property.longitude]}
+                        draggable={false} icon={this.customMarkerIcon("2.5em")}/>;
 
-        this.setState({
-            mapContents: [
-                <MarkerClusterGroup>{contents}</MarkerClusterGroup>,
-                propertyMarker
-            ]
-        }, () => {
-            this.leafletMap.current.leafletElement.fitBounds(this.customContentsLayer.current.leafletElement.getBounds());
-        });
+            this.setState({
+                mapContents: [
+                    <MarkerClusterGroup>{contents}</MarkerClusterGroup>,
+                    propertyMarker
+                ]
+            }, () => {
+                this.leafletMap.current.leafletElement.fitBounds(this.customContentsLayer.current.leafletElement.getBounds());
+            });
+        } else {
+            this.setState({mapContents: null});
+        }
 
     };
 
     resetMap = async () => {
         await this.setState({mapContents: null, property: null, polylines: []});
-        let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
-        this.leafletMap.current.leafletElement.fitBounds(markerClusterBounds);
+        // let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
+        // this.leafletMap.current.leafletElement.fitBounds(markerClusterBounds);
     };
+
+    toggleMapLoader = (mapLoading) => this.setState({mapLoading});
 
     leafletMap = React.createRef();
     markerCluster = React.createRef();
@@ -142,7 +149,7 @@ export default class Map extends Component {
 
     render() {
         const {mapCenterPosition, markers, count, data,
-            mapMaxBounds, property, polylines, activeInfo, mapContents, mapHeight} = this.state;
+            mapMaxBounds, property, polylines, activeInfo, mapContents, mapHeight, mapLoading} = this.state;
         let InfoSegment = (props) => "";
 
         if(property) {
@@ -187,7 +194,7 @@ export default class Map extends Component {
                     content='Click on a cluster to zoom in.'
                     success
                 />
-                <Segment attached>
+                <Segment attached loading={mapLoading}>
                     <LeafletMap
                         ref={this.leafletMap}
                         center={mapCenterPosition}
@@ -195,7 +202,7 @@ export default class Map extends Component {
                         minZoom={10}
                         maxZoom={18}
                         maxBounds={mapMaxBounds}
-                        style={{height: mapHeight, border: "1px solid #ddd", padding: 26, marginTop: 10}}>
+                        style={{height: mapHeight, border: "1px solid #ddd", padding: 26, marginTop: 10, zIndex: 10}}>
                         <TileLayer
                             url="https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
                         />
@@ -204,7 +211,8 @@ export default class Map extends Component {
                             <Polyline
                                 color={colourPallete[index % colourPallete.length]} positions={polylinePositions}/>)}
                         <ControlInfo property={property}/>
-                        <ControlBackButton property={property} action={this.resetMap}/>
+                        <ControlBackButton property={property} action={this.resetMap} mapContents={mapContents}
+                                           toggleMapLoader={this.toggleMapLoader} />
                     </LeafletMap>
                 </Segment>
                 {property &&
@@ -226,8 +234,8 @@ export default class Map extends Component {
                     </Menu>
                 }
 
-                <InfoSegment property={property}
-                             updateMapContents={this.displayInformationContents} data={data}/>
+                <InfoSegment property={property} updateMapContents={this.displayInformationContents} data={data}
+                             toggleMapLoader={this.toggleMapLoader}/>
             </Fragment>
         )
     }
