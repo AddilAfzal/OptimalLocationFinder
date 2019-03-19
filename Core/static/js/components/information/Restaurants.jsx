@@ -44,7 +44,9 @@ export default class Restaurants extends Component {
     }
 
     fetchData = async () => {
+        this.props.toggleMapLoader(true);
         const {latitude, longitude} = this.props.property;
+
         const data =
             await fetch(`https://developers.zomato.com/api/v2.1/search?` +
                 `lat=${latitude}&lon=${longitude}&` +
@@ -64,7 +66,6 @@ export default class Restaurants extends Component {
         const {data} = this.state;
         const {property} = this.props;
 
-        console.log(data.restaurants);
         const markers = data.restaurants.map((r) => {
             console.log(r.restaurant);
             const l = r.restaurant;
@@ -79,13 +80,8 @@ export default class Restaurants extends Component {
             </Marker>
         });
 
-        // const markers = Object.entries(data).map(([key, value]) => {
-        //     return <Marker key={value.cqc_id} position={[value.lat, value.lng]}
-        //             draggable={false}/>
-        // });
-
         this.props.updateMapContents(markers, property);
-
+        this.props.toggleMapLoader(false);
     };
 
     render() {

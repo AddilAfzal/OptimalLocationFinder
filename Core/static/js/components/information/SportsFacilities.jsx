@@ -77,6 +77,7 @@ export default class SportsFacilities extends Component {
     }
 
     fetchData = async () => {
+        this.props.toggleMapLoader(true);
         const {latitude, longitude} = this.props.property;
         const data =
             await fetch(`/api/get_closest_active_places/${latitude}/${longitude}/`)
@@ -101,7 +102,7 @@ export default class SportsFacilities extends Component {
         });
 
         this.props.updateMapContents(markers, property);
-
+        this.props.toggleMapLoader(false);
     };
 
 

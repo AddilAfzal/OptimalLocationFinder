@@ -2,7 +2,8 @@ import React, {Component, Fragment} from "react";
 import {Header, Image, Segment, Table} from "semantic-ui-react";
 import {renderToStaticMarkup} from "react-dom/server";
 import {divIcon} from "leaflet";
-import {Marker} from "react-leaflet";
+import {Marker, Tooltip as LeafletTooltip} from "react-leaflet";
+import {startCase} from "lodash";
 
 
 export default class HealthServices extends Component {
@@ -28,6 +29,8 @@ export default class HealthServices extends Component {
     }
 
     fetchData = async () => {
+        this.props.toggleMapLoader(true);
+
         const {latitude, longitude} = this.props.property;
         const data =
             await fetch(`/api/get_closest_health_services/${latitude}/${longitude}/`)
@@ -43,11 +46,15 @@ export default class HealthServices extends Component {
         console.log(data)
         const markers = Object.entries(data).map(([key, value]) => {
             return <Marker key={value.cqc_id} position={[value.lat, value.lng]}
-                    draggable={false}/>
+                           draggable={false}>
+                <LeafletTooltip>
+                    {startCase(value.name)}
+                </LeafletTooltip>
+            </Marker>
         });
 
         this.props.updateMapContents(markers, property);
-
+        this.props.toggleMapLoader(false);
     };
 
     render() {

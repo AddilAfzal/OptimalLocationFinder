@@ -39,7 +39,6 @@ export default class Crime extends Component {
                 <LeafletTooltip>
                     {startCase(item.category)}
                 </LeafletTooltip>
-
             </Marker>
                     );
         this.props.updateMapContents(locations, property);
