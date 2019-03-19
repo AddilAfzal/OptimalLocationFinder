@@ -12,7 +12,7 @@ function titleCase(str) {
 
 const Activity = ({activity}) => {
     return (
-        <div>{activity['name']}</div>
+        <div>{titleCase(activity['name'])}</div>
     )
 };
 

@@ -95,7 +95,7 @@ export default class Map extends Component {
     markerOnClick = async (property) => {
         let data = await fetch('/api/properties/' + property.listing_id).then(x => x.json());
         let polylines = [];
-        if (property.route_data) {
+        if (property.route_data && this.state.activeInfo === 'commute') {
             polylines = property.route_data.map((route) => {
                 return route.response.route[0].leg[0].maneuver
                         .map(x => [x.position.latitude, x.position.longitude]);
@@ -115,24 +115,35 @@ export default class Map extends Component {
         this.props.history.push('/', {data});
     };
 
-    displayInformationContents = (contents, property) => {
-        if(contents) {
-            const propertyMarker =
-                <Marker key={property.listing_id} position={[property.latitude, property.longitude]}
-                        draggable={false} icon={this.customMarkerIcon("2.5em")}/>;
-
-            this.setState({
-                mapContents: [
-                    <MarkerClusterGroup>{contents}</MarkerClusterGroup>,
-                    propertyMarker
-                ]
-            }, () => {
+    updateMapBounds = () =>
                 this.leafletMap.current.leafletElement.fitBounds(this.customContentsLayer.current.leafletElement.getBounds());
-            });
+
+    displayInformationContents = (contents, property=null) => {
+        const {markers} = this.state;
+        if(contents) {
+
+            if(property) {
+                const propertyMarker =
+                    <Marker key={property.listing_id} position={[property.latitude, property.longitude]}
+                            draggable={false} icon={this.customMarkerIcon("2.5em")}/>;
+
+                this.setState({
+                    mapContents: [
+                        <MarkerClusterGroup>{contents}</MarkerClusterGroup>,
+                        propertyMarker
+                    ]
+                }, this.updateMapBounds);
+            } else {
+                this.setState({
+                    mapContents: [
+                        <MarkerClusterGroup>{markers}</MarkerClusterGroup>,
+                        contents
+                    ]
+                }, this.updateMapBounds);
+            }
         } else {
             this.setState({mapContents: null});
         }
-
     };
 
     resetMap = async () => {
@@ -207,7 +218,7 @@ export default class Map extends Component {
                             url="https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
                         />
                         {contents}
-                        {polylines.map((polylinePositions, index) =>
+                        {activeInfo === 'commute' && polylines.map((polylinePositions, index) =>
                             <Polyline
                                 color={colourPallete[index % colourPallete.length]} positions={polylinePositions}/>)}
                         <ControlInfo property={property}/>
