@@ -34,7 +34,7 @@ const ActivePlace = ({data}) => {
             <Table.Cell>
                 <h5>{titleCase(data.name)}</h5>
                 {data.contact.email && [data.contact.email, <br/>]}
-                {data.contact.website && [data.contact.website, <br/>]}
+                {data.contact.website && [<a href={data.contact.website} target="_blank">{data.contact.website}</a>, <br/>]}
                 {data.contact.telephone && [data.contact.telephone, <br/>]}
             </Table.Cell>
             <Table.Cell>

@@ -83,7 +83,7 @@ def filter_properties_by_commute(data, qs):
         commute_points = [geodetic2ecef(x['position'][0], x['position'][1]) for x in data['commute']]
 
         tree = KDTree(numpy.array(ecef_properties))
-        distance_ar, index_ar = tree.query(commute_points, k=100)
+        distance_ar, index_ar = tree.query(commute_points, k=300)
         # print(index_ar)
         index_ar = list((map(int, index_ar[0].tolist() )))
         properties = [qs[i] for i in index_ar]
@@ -105,8 +105,8 @@ def filter_properties_by_commute(data, qs):
                 ])
 
             with ThreadPoolExecutor(max_workers=50) as pool:
-                properties = list(pool.map(get_route_data, route_requests))
-                print(properties)
+                properties = list(filter(None, list(pool.map(get_route_data, route_requests))))
+
         return properties
 
     return qs
