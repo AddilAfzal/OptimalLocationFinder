@@ -1,4 +1,5 @@
 import json
+from concurrent.futures import ThreadPoolExecutor
 
 from Core.methods import geodetic2ecef, euclidean_distance
 from HereMaps.methods import get_route
@@ -88,39 +89,50 @@ def filter_properties_by_commute(data, qs):
         properties = [qs[i] for i in index_ar]
         print(properties)
 
-        t = RouteCache.objects.all().values()
-
         for l in data['commute']:
-            filtered_properties = []
 
             text = l['text']
             position = l['position']
             required_commute_time = l['time'] * 60
 
+            route_requests = []
+
             for p in properties:
-                query = t.filter(start_latitude=p.latitude, start_longitude=p.longitude,
-                                                  des_latitude=position[0], des_longitude=position[1])
+                route_requests.append([
+                    p,
+                    position,
+                    required_commute_time,
+                ])
 
-                if query:   # If the query returns at least one item
-                    cached_object = query.first()
-                    if cached_object and cached_object['commute_time'] <= required_commute_time:   # If the commute time is within the defined max.
-                        route = json.loads(cached_object['data'])
-                    else:
-                        continue
-                else:
-                    route, expected_commute_time = get_route([p.latitude, p.longitude], position)
-                    if not expected_commute_time <= required_commute_time:
-                        continue
-
-                if hasattr(p, 'route_data'):
-                    p.route_data.append(route)
-                else:
-                    p.route_data = [route]
-
-                filtered_properties.append(p)
-
-            properties = filtered_properties
-
+            with ThreadPoolExecutor(max_workers=50) as pool:
+                properties = list(pool.map(get_route_data, route_requests))
+                print(properties)
         return properties
 
     return qs
+
+
+def get_route_data(data):
+    location, position, required_commute_time = data
+    t = RouteCache.objects.all().values()
+    query = t.filter(start_latitude=location.latitude, start_longitude=location.longitude,
+                     des_latitude=position[0], des_longitude=position[1])
+
+    if query:  # If the query returns at least one item
+        cached_object = query.first()
+        if cached_object and cached_object[
+            'commute_time'] <= required_commute_time:  # If the commute time is within the defined max.
+            route = json.loads(cached_object['data'])
+        else:
+            return None
+    else:
+        route, expected_commute_time = get_route([location.latitude, location.longitude], position)
+        if not expected_commute_time <= required_commute_time:
+            return None
+
+    if hasattr(location, 'route_data'):
+        location.route_data.append(route)
+    else:
+        location.route_data = [route]
+
+    return location

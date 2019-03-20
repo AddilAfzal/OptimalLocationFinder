@@ -30,6 +30,7 @@ export default class Map extends Component {
             mapMaxBounds: null,
             mapHeight: this.getMapHeight(),
             mapLoading: false,
+            mapContents: null,
 
             markers: [],
             markerClusterBounds: null,
@@ -40,7 +41,6 @@ export default class Map extends Component {
 
             activeInfo: 'summary',
 
-            mapContents: null,
         };
     }
 
@@ -100,7 +100,6 @@ export default class Map extends Component {
                 return route.response.route[0].leg[0].maneuver
                         .map(x => [x.position.latitude, x.position.longitude]);
             });
-            // polylines = [];
         }
         await this.setState({
             property: {...property, ...data},

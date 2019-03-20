@@ -3,7 +3,6 @@ import re
 import pytz
 from django.utils import timezone
 
-from tornado import ioloop, httpclient
 import requests
 
 from HereMaps.models import RouteCache
