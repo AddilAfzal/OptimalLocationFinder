@@ -1,10 +1,16 @@
+import json
 import re
+from concurrent.futures import ThreadPoolExecutor
 
+import numpy
 import pytz
+from django.db.models import Q
 from django.utils import timezone
 
 import requests
+from scipy.spatial import KDTree
 
+from Core.methods import geodetic2ecef
 from HereMaps.models import RouteCache
 from LocationFinder.settings import HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE
 
@@ -131,3 +137,102 @@ def get_route(a, b, mode="publicTransport"):
                                   data=r.text,
                                   commute_time=commute_time)
         return j, commute_time
+
+
+def filter_properties_by_commute(data, qs):
+
+    if 'commute' in data:
+        # properties = random.sample(list(qs), 100)
+        # properties = qs[:300]
+
+        property_coordinates = qs.values('latitude', 'longitude')
+        print("ECEF")
+        ecef_properties = [geodetic2ecef(x['latitude'], x['longitude']) for x in property_coordinates]
+        print("Commute points")
+        commute_points = [geodetic2ecef(x['position'][0], x['position'][1]) for x in data['commute']]
+
+        print("Tree")
+        tree = KDTree(numpy.array(ecef_properties))
+        distance_ar, index_ar = tree.query(commute_points, k=300)
+        # print(index_ar)
+        print("Extracting points to list")
+        index_ar = list((map(int, index_ar[0].tolist() )))
+        print("Index to properties")
+        numpy_qs = numpy.array(qs)
+        properties = [numpy_qs[i] for i in index_ar]
+
+        for l in data['commute']:
+            properties_filtered = []
+            properties_left = properties
+
+            text = l['text']
+            position = l['position']
+            required_commute_time = l['time'] * 60
+
+            route_requests = []
+
+            conditions = Q()
+
+            # Accumulate conditions
+            print("Accumulating")
+            for p in properties:
+                conditions |= (Q(start_latitude=p.latitude, start_longitude=p.longitude,
+                                 des_latitude=position[0], des_longitude=position[1]))
+
+            cache_query = RouteCache.objects.filter(conditions).values()
+            for route_cache in cache_query:
+                p = list(filter(lambda p: p.latitude == route_cache['start_latitude'] and
+                                 p.longitude == route_cache['start_longitude'], properties_left))
+
+                if p:
+                    p = p[0]
+                    properties_left.remove(p)
+
+                    if route_cache['commute_time'] <= required_commute_time:
+                        data = json.loads(route_cache['data'])
+                        if hasattr(p, 'route_data'):
+                            p.route_data.append(data)
+                        else:
+                            p.route_data = [data]
+
+                        properties_filtered.append(p)
+
+            for p in properties_left:
+                route_requests.append([
+                    p,
+                    position,
+                    required_commute_time,
+                ])
+
+            with ThreadPoolExecutor(max_workers=50) as pool:
+                properties = list(filter(None, list(pool.map(get_route_data, route_requests))))
+                properties += properties_filtered
+
+        return properties
+
+    return qs
+
+
+def get_route_data(data):
+    location, position, required_commute_time = data
+    query = RouteCache.objects.filter(start_latitude=location.latitude, start_longitude=location.longitude,
+                     des_latitude=position[0], des_longitude=position[1]).values()
+
+    # if query:  # If the query returns at least one item
+    #     cached_object = query.first()
+    #     if cached_object and cached_object[
+    #         'commute_time'] <= required_commute_time:  # If the commute time is within the defined max.
+    #         route = json.loads(cached_object['data'])
+    #     else:
+    #         return None
+    # else:
+    route, expected_commute_time = get_route([location.latitude, location.longitude], position)
+    if not expected_commute_time <= required_commute_time:
+        return None
+
+    if hasattr(location, 'route_data'):
+        location.route_data.append(route)
+    else:
+        location.route_data = [route]
+
+    return location

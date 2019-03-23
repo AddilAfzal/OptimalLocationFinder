@@ -8,7 +8,7 @@ class ReverseGeoCodeCache(models.Model):
 
 
 class RouteCache(models.Model):
-    start_latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    start_latitude = models.DecimalField(max_digits=9, decimal_places=6,)
     start_longitude = models.DecimalField(max_digits=9, decimal_places=6)
     des_latitude = models.DecimalField(max_digits=9, decimal_places=6)
     des_longitude = models.DecimalField(max_digits=9, decimal_places=6)
