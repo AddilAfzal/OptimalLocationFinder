@@ -188,7 +188,7 @@ export default class Map extends Component {
                     break;
             }
         }
-        const colourPallete = ["#26547C", "#03AA8C", "FFD166", "EF476F"];
+        const colourPallete = ["#26547C", "#03AA8C", "#EF476F", "#FFD166",];
         const contents = mapContents ? <FeatureGroup ref={this.customContentsLayer}>{mapContents}</FeatureGroup> :
             <MarkerClusterGroup ref={this.markerCluster}>
                 {markers}
