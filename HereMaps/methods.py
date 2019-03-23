@@ -1,6 +1,7 @@
 import json
 import re
 from concurrent.futures import ThreadPoolExecutor
+from json import JSONDecodeError
 
 import numpy
 import pytz
@@ -126,17 +127,22 @@ def get_route(a, b, mode="publicTransport"):
                          '&waypoint1=geo!%s'
                          '&departure=now'
                          '&mode=fastest;publicTransport'
-                         '&combineChange=true' % (
+                         '&traffic:disabled' % (
                              HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE, "%s,%s" % (a[0], a[1]), "%s,%s" % (b[0], b[1])))
         print(api_url)
         r = requests.get(api_url)
-        j = r.json()
-        commute_time = j['response']["route"][0]['summary']['baseTime']
-        RouteCache.objects.create(start_latitude=a[0], start_longitude=a[1],
-                                  des_latitude=b[0], des_longitude=b[1],
-                                  data=r.text,
-                                  commute_time=commute_time)
-        return j, commute_time
+        print("Performing query")
+        try:
+            j = r.json()
+            commute_time = j['response']["route"][0]['summary']['baseTime']
+            RouteCache.objects.create(start_latitude=a[0], start_longitude=a[1],
+                                      des_latitude=b[0], des_longitude=b[1],
+                                      data=r.text,
+                                      commute_time=commute_time)
+            return j, commute_time
+        except Exception as e:
+            print(e)
+            return None, None
 
 
 def filter_properties_by_commute(data, qs):
@@ -227,12 +233,12 @@ def get_route_data(data):
     #         return None
     # else:
     route, expected_commute_time = get_route([location.latitude, location.longitude], position)
-    if not expected_commute_time <= required_commute_time:
-        return None
+    if expected_commute_time:
+        if expected_commute_time <= required_commute_time:
 
-    if hasattr(location, 'route_data'):
-        location.route_data.append(route)
-    else:
-        location.route_data = [route]
+            if hasattr(location, 'route_data'):
+                location.route_data.append(route)
+            else:
+                location.route_data = [route]
 
-    return location
+            return location

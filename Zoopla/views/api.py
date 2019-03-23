@@ -36,7 +36,7 @@ from tornado.httpclient import AsyncHTTPClient
 
 @csrf_exempt
 def property_api(request):
-    queryset = Property.objects.all()
+    queryset = Property.objects.filter(latitude__isnull=False, longitude__isnull=False)
         #.prefetch_related('propertyimage_set', 'rentalprice_set')
 
     if request.method == 'POST':
@@ -101,48 +101,3 @@ def rental_price_histogram(request):
     response = json.dumps(list(data))
 
     return HttpResponse(response, content_type="json")
-
-
-# http_client = AsyncHTTPClient()
-# http_client.fetch_impl()
-
-from concurrent.futures import ThreadPoolExecutor
-
-
-def get_url(url):
-    return requests.get(url)
-
-
-def get_multiple_routes(size=500):
-    properties = Property.objects.all()[:size]
-    urls = []
-    for p in properties:
-
-        api_url = ('https://route.api.here.com/routing/7.2/calculateroute.json'
-                         '?app_id=%s'
-                         '&app_code=%s'
-                         '&waypoint0=geo!%s'
-                         '&waypoint1=geo!%s'
-                         '&departure=now'
-                         '&mode=fastest;publicTransport'
-                         '&combineChange=true' % (
-                             HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE, "%s,%s" % (p.latitude, p.longitude), "%s,%s" % (51.500729,-0.124625)))
-
-
-        # commute_time = j['response']["route"][0]['summary']['baseTime']
-        # RouteCache.objects.create(start_latitude=property.latitude, start_longitude=property.longitude,
-        #                           des_latitude=51.500729, des_longitude=-0.124625,
-        #                           data=r.text,
-        #                           commute_time=commute_time)
-
-        # resp = http_client.fetch(api_url)
-        print(p)
-        urls.append(api_url)
-
-    # with ThreadPoolExecutor(max_workers=50) as pool:
-    #     resp = list(pool.map(get_url, urls))
-    #
-    #     return resp
-
-# def handle_response(data):
-#     print(data)
