@@ -18,11 +18,10 @@ export default class navigation extends Component {
             <Menu inverted>
                 <Container>
                     <Menu.Item as='a' header>
-                        <Image size='mini' src='' style={{marginRight: '1.5em'}}/>
                         Optimal Location Finder
                     </Menu.Item>
-                    <Menu.Item as='a'>Home</Menu.Item>
-                    <Menu.Item as='a'>Explore data</Menu.Item>
+                    {/*<Menu.Item as='a'>Home</Menu.Item>*/}
+                    {/*<Menu.Item as='a'>Explore data</Menu.Item>*/}
 
                     {/*<Dropdown item simple text='Dropdown'>*/}
                         {/*<Dropdown.Menu>*/}

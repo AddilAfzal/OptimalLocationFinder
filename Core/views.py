@@ -6,5 +6,5 @@ def index(request):
     return render(request, 'index.html')
 
 
-def properties_map(request):
-    return render(request, 'map.html')
+def explore_area(request):
+    return render(request, 'explore.html')

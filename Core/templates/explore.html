@@ -1,0 +1,50 @@
+{% load render_bundle from webpack_loader %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+          integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+          crossorigin=""/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/react-leaflet-markercluster/dist/styles.min.css" />
+
+    <style>
+        .leaflet-div-icon {
+            border: 0;
+            background: none;
+            margin-top: -5px;
+            margin-left: -5px;
+        }
+
+        .line:before {
+            content: "";
+            display: inline-block;
+            background: url("/static/img/underground-roundel-thumbnail.jpg") no-repeat;
+            background-size: 22px 17px;
+            width: 41px;
+            height: 32px;
+            margin: -30px -13px -19px 3px;
+        }
+
+        .length:before {
+            content: "";
+            display: inline-block;
+            background: url("/static/img/walk.svg") no-repeat;
+            background-size: 22px 17px;
+            width: 40px;
+            height: 32px;
+            margin: 0px -19px -18px -2px;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <title>Explore - Optimal Location Finder</title>
+</head>
+
+<body>
+<div id="react"></div>
+{% render_bundle 'ExplorePage' %}
+{% csrf_token %}
+</body>
+</html>

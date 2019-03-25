@@ -1,15 +1,10 @@
 import React, {Component, Fragment} from 'react'
 import {
-    Container,
-    Dropdown,
     Header,
-    Image,
-    Menu,
 } from 'semantic-ui-react'
 import Footer from './../components/footer'
 import Navigation from './../components/navigation'
 import Map from "../components/Map";
-import Filters from "../components/Filters";
 
 
 export default class MapContainer extends Component {
@@ -31,10 +26,7 @@ export default class MapContainer extends Component {
                 <Navigation/>
                 <div className={"ui container"}>
                     <div className="row" style={{marginTop: 80}} >
-                        <div className="twelve wide column">
-                            <Header as='h1'>Map</Header>
-                            <Map getData={this.getData}/>
-                        </div>
+                        Test
                     </div>
                 </div>
 

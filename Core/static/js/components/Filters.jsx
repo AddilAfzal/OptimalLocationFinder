@@ -140,11 +140,18 @@ export default class Filters extends Component {
             <div>
                 <Fragment>
                     <br/>
+                    <Header>
+                        Filter for locations
+                    </Header>
+                    <p>
+                        Please define your criteria by providing information for the fields below.
+                    </p>
                     <br/>
+
                     <hr/>
                     {updatedFilters}
                     <p>
-                        Please select at least one filter to apply.
+                        You may select additional optional filters to refine your search.
                     </p>
 
                     {/*{ (filters.length >= 3 && lock === false) &&*/}

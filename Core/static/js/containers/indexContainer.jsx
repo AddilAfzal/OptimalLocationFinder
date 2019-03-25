@@ -18,9 +18,11 @@ export default class indexContainer extends Component {
         super();
 
         this.state = {
-            step: null,
+
         }
     }
+
+    routeRef = React.createRef();
 
     render() {
         return (
@@ -30,10 +32,25 @@ export default class indexContainer extends Component {
                     <br/>
                     <Header as='h1'>Welcome</Header>
                     <p>Optimal location finder (OLF) is a tool to help you find the best place to live depending on a
-                        set of unique
-                        requirements.</p>
+                        set of unique requirements.<br/> You can search for properties or explore an area.</p>
                     <br/>
-                    <Router>
+
+                    <Menu pointing secondary>
+                        <Menu.Item
+                            name='Search'
+                            active
+                        />
+                        <Menu.Item
+                            name='Explore'
+                        />
+                        <Menu.Menu position='right'>
+                            <Menu.Item
+                                name='About'
+                            />
+                        </Menu.Menu>
+                    </Menu>
+
+                    <Router ref={this.routeRef}>
                         <div>
                             <Route path="/" exact component={Filters}/>
                             <Route path="/results/" component={Map}/>

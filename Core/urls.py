@@ -8,7 +8,6 @@ app_name = 'core'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('map/', views.properties_map, name='map'),
+    path('explore/', views.explore_area, name='explore'),
     path('api/get_demographics/<str:lat>/<str:lon>/', api.get_demographics),
-
 ]
