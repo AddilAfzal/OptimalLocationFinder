@@ -10,6 +10,7 @@ import Summary from "./information/Summary";
 import SportsFacilities from "./information/SportsFacilities";
 import { divIcon } from 'leaflet';
 import { renderToStaticMarkup } from 'react-dom/server'
+import Schools from "./information/Schools";
 
 export default class LocationsMap extends Component {
     constructor(props) {
@@ -155,6 +156,9 @@ export default class LocationsMap extends Component {
             case 'sports':
                 InfoSegment = SportsFacilities;
                 break;
+            case 'schools':
+                InfoSegment = Schools;
+                break;
         }
 
         const colourPallete = ["#26547C", "#03AA8C", "#EF476F", "#FFD166",];
@@ -202,6 +206,8 @@ export default class LocationsMap extends Component {
                                onClick={() => this.setState({activeInfo: 'sports'})}/>
                     <Menu.Item name='Demographics' active={activeInfo === 'demographics'}
                                onClick={() => this.setState({activeInfo: 'demographics'})}/>
+                    <Menu.Item name='Schools' active={activeInfo === 'schools'}
+                               onClick={() => this.setState({activeInfo: 'schools'})}/>
                 </Menu>
 
                 <InfoSegment property={selectedLocation} updateMapContents={this.displayInformationContents} data={{test: 'none'}}

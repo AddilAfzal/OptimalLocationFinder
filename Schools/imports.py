@@ -1,8 +1,9 @@
 import csv
+from datetime import datetime
 
 from Core.methods import postcode_lookup
 from Core.models import Postcode
-from Schools.models import School
+from Schools.models import School, OfstedInspection
 
 
 def import_schools(csv_path="Schools/data/england_spine.csv"):
@@ -105,5 +106,27 @@ def update_postcodes():
 
 
 def import_ofsted_data(csv_path="Schools/data/england_ofsted-schools.csv"):
-    pass
+    with open(csv_path) as csvreader:
+        reader = csv.reader(csvreader, delimiter=',', quotechar='"', )
+        i = 0
+        for row in reader:
+            i += 1
+            if i == 1:
+                continue
 
+            print(row)
+            urn = int(row[0])
+            inspection_date = datetime.strptime(row[3], '%d/%m/%Y')
+            publication_date = datetime.strptime(row[4], '%d/%m/%Y')
+            rating = row[5]
+
+            school = School.objects.filter(urn=urn).first()
+
+            if school:
+                OfstedInspection.objects.create(school=school,
+                                                inspection_date=inspection_date,
+                                                publication_date=publication_date,
+                                                overall_effectiveness=rating)
+                print(i)
+            else:
+                print("Skipped")
