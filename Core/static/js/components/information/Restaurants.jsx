@@ -1,27 +1,26 @@
 import React, {Component, Fragment} from "react";
-import {Card, Header, Image, Rating, Segment} from "semantic-ui-react";
+import {Button, Card, Header, Image, Label, Rating, Segment, Table} from "semantic-ui-react";
 import {Marker, Popup, Tooltip} from "react-leaflet";
 
 
-const Restaurant = (props) => {
-    return (
-        <Card key={props.R.res_id}>
-            <Image url={props.url} src={props.thumb ? props.thumb :
-                "https://www.albagaskets.com/media/placeholder.php?colour=d1e7f7&opacity=0.2&width=290&height=200"}/>
-            <Card.Content>
-                <Card.Header> <a target="_blank" href={props.url}>{props.name}</a></Card.Header>
-                <Card.Meta>
-                    <span className='date'>{props.cuisines}</span>
-                </Card.Meta>
-                {/*<Card.Description>Matthew is a musician living in Nashville.</Card.Description>*/}
-            </Card.Content>
-            <Card.Content extra>
-                <Rating defaultRating={Math.round(props.user_rating.aggregate_rating)} maxRating={5} 
-                        title={props.user_rating.aggregate_rating} disabled/>
-            </Card.Content>
-        </Card>
-    )
-};
+// const Restaurant = (props) => {
+//     return (
+//         <Card key={props.R.res_id}>
+//             <Image url={props.url} src={props.thumb ? props.thumb :
+//                 "https://www.albagaskets.com/media/placeholder.php?colour=d1e7f7&opacity=0.2&width=290&height=200"}/>
+//             <Card.Content>
+//                 <Card.Header> <a target="_blank" href={props.url}>{props.name}</a></Card.Header>
+//                 <Card.Meta>
+//                     <span className='date'>{props.cuisines}</span>
+//                 </Card.Meta>
+//                 {/*<Card.Description>Matthew is a musician living in Nashville.</Card.Description>*/}
+//             </Card.Content>
+//             <Card.Content extra>
+//
+//             </Card.Content>
+//         </Card>
+//     )
+// };
 
 export default class Restaurants extends Component {
     constructor(props) {
@@ -90,8 +89,34 @@ export default class Restaurants extends Component {
 
         let rs = [];
 
-        if(data) {
-          rs =   data.restaurants.slice(0,8).map((x) => <Restaurant {...x.restaurant}/>)
+        // if(data) {
+        //   rs =  data.restaurants.slice(0,8).map((x) => <Restaurant {...x.restaurant}/>)
+        // }
+
+        let body = [];
+        if (data) {
+            body = data.restaurants.slice(0, 15).map((x) => {
+                const restaurant = x.restaurant;
+                return <Table.Row>
+                    <Table.Cell>
+                        {restaurant.name}
+                    </Table.Cell>
+                    <Table.Cell>
+                        <Label style={{background: '#' + restaurant.user_rating.rating_color}}>{restaurant.user_rating.rating_text}</Label><br/>
+                        <Rating defaultRating={Math.round(restaurant.user_rating.aggregate_rating)} maxRating={5}
+                                title={restaurant.user_rating.aggregate_rating} disabled/>
+                    </Table.Cell>
+                    <Table.Cell>
+                        {restaurant.cuisines}
+                    </Table.Cell>
+                    <Table.Cell>
+                        <Button size="tiny" href={restaurant.menu_url} target="_blank">View</Button>
+                    </Table.Cell>
+                    <Table.Cell>
+                        {restaurant.location.address}
+                    </Table.Cell>
+                </Table.Row>
+            });
         }
 
         return (
@@ -101,9 +126,20 @@ export default class Restaurants extends Component {
                 </Header>
                 <Segment attached loading={loading} style={{ paddingBottom: 40}}>
                     <h4>Places to eat near by.</h4>
-                      <Card.Group itemsPerRow={4}>
-                        {rs}
-                      </Card.Group>
+                    <Table>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>Name</Table.HeaderCell>
+                                <Table.HeaderCell>Rating</Table.HeaderCell>
+                                <Table.HeaderCell>Cuisines</Table.HeaderCell>
+                                <Table.HeaderCell>Menu</Table.HeaderCell>
+                                <Table.HeaderCell>Address</Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            {body}
+                        </Table.Body>
+                    </Table>
                 </Segment>
             </Fragment>
         )
