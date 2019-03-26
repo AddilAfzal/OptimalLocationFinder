@@ -4,26 +4,12 @@ import {
     Bar,
     BarChart,
     CartesianGrid,
-    Cell,
     Label,
-    Pie,
-    PieChart,
     ResponsiveContainer,
     Tooltip,
     XAxis,
     YAxis
 } from "recharts";
-
-function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-}
-
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 export default class Demographics extends Component {
     constructor(props) {
@@ -52,10 +38,8 @@ export default class Demographics extends Component {
             await fetch(`/api/get_demographics/${latitude}/${longitude}/`)
                 .then(x => x.json())
 
-        console.log(data)
         const chartData = data.map(k => ({name: k.ethnic_group, value: k.total}) );
 
-        console.log(chartData)
         this.setState({data, chartData, loading: false});
     };
 
@@ -90,7 +74,6 @@ export default class Demographics extends Component {
                     Demographics
                 </Header>
                 <Segment attached loading={loading} style={{paddingBottom: 40}}>
-                    {/*<h4>Types of crime committed in the last 30 days.</h4>*/}
                     <Header a="h4">Ethnic backgrounds</Header>
                     <p>By borough</p>
                     {body}
