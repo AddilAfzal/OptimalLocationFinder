@@ -14,6 +14,7 @@ import Commute from "./information/Commute";
 import { divIcon } from 'leaflet';
 import { renderToStaticMarkup } from 'react-dom/server'
 import ControlBackButton from "./map/ControlBackButton";
+import Schools from "./information/Schools";
 
 export default class PropertiesMap extends Component {
     constructor(props) {
@@ -186,6 +187,9 @@ export default class PropertiesMap extends Component {
                 case 'commute':
                     InfoSegment = Commute;
                     break;
+                case 'schools':
+                    InfoSegment = Schools;
+                    break;
             }
         }
         const colourPallete = ["#26547C", "#03AA8C", "#EF476F", "#FFD166",];
@@ -239,6 +243,8 @@ export default class PropertiesMap extends Component {
                                    onClick={() => this.setState({activeInfo: 'sports'})}/>
                         <Menu.Item name='Demographics' active={activeInfo === 'demographics'}
                                    onClick={() => this.setState({activeInfo: 'demographics'})}/>
+                        <Menu.Item name='Schools' active={activeInfo === 'schools'}
+                                   onClick={() => this.setState({activeInfo: 'schools'})}/>
                         <Menu.Item disabled={!data.commute} name='Commute' active={activeInfo === 'commute'}
                                    onClick={() => this.setState({activeInfo: 'commute'})}/>
                     </Menu>
