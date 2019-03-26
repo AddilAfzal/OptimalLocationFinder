@@ -38,10 +38,8 @@ export default class LocationsMap extends Component {
 
             polylines: [],
 
-            activeInfo: 'crime',
+            activeInfo: '',
         };
-
-        console.log(this.state)
     }
 
 
@@ -133,15 +131,15 @@ export default class LocationsMap extends Component {
     customContentsLayer = React.createRef();
 
     render() {
-        const {mapCenterPosition, data, selectedLocation, mapMaxBounds, mapZoom,
+        const {mapCenterPosition, selectedLocation, mapMaxBounds, mapZoom,
             polylines, activeInfo, mapContents, marker, mapHeight, mapLoading} = this.state;
 
         let InfoSegment = (props) => "";
 
         switch (activeInfo) {
-            case 'summary':
-                InfoSegment = Summary;
-                break;
+            // case 'summary':
+            //     InfoSegment = Summary;
+            //     break;
             case 'crime':
                 InfoSegment = Crime;
                 break;
@@ -192,8 +190,8 @@ export default class LocationsMap extends Component {
                     </LeafletMap>
                 </Segment>
                 <Menu pointing secondary>
-                    <Menu.Item name='summary' active={activeInfo === 'summary'}
-                               onClick={() => this.setState({activeInfo: 'summary'})}/>
+                    {/*<Menu.Item name='summary' active={activeInfo === 'summary'}*/}
+                               {/*onClick={() => this.setState({activeInfo: 'summary'})}/>*/}
                     <Menu.Item name='Crime' active={activeInfo === 'crime'}
                                onClick={() => this.setState({activeInfo: 'crime'})}/>
                     <Menu.Item name='Health services' active={activeInfo === 'health'}

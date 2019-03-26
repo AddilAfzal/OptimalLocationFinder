@@ -1,6 +1,18 @@
 import React, {Component, Fragment} from "react";
 import {Header, Segment} from "semantic-ui-react";
-import {Cell, Pie, PieChart, Tooltip} from "recharts";
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    Cell,
+    Label,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis
+} from "recharts";
 
 function getRandomColor() {
   var letters = '0123456789ABCDEF';
@@ -52,26 +64,35 @@ export default class Demographics extends Component {
         const {chartData, loading} = this.state;
 
         const body = chartData && (
-            <PieChart width={400} height={320}>
-                <Pie dataKey="value" isAnimationActive={false} data={chartData} cx={180} cy={140}
-                     outerRadius={140} fill="#8884d8"
-                     innerRadius={100}
-                     label={({name, value}) => name}>
-                    {
-                        chartData.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]}/>)
-                    }
-                </Pie>
-                <Tooltip/>
-            </PieChart>
+            <ResponsiveContainer width="100%" height={500}>
+                <BarChart layout="vertical" data={chartData} margin={{left: 20, bottom: 20}}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <Bar dataKey="value"
+                         isAnimationActive={false}
+                         data={chartData}
+                         fill="#8884d8"
+                         barSize="30"
+                         label="name"/>
+                    <Tooltip formatter={(value) => new Intl.NumberFormat('en').format(value)}/>
+                    <XAxis type="number" >
+                        <Label value="Population"  position='outside' offset={40} dy={20}/>
+                    </XAxis>
+                    <YAxis dataKey="name"  type="category"  width={135} >
+                        <Label value="Ethnic background"  angle={270} position='left' style={{ textAnchor: 'middle' }}/>
+                    </YAxis>
+                </BarChart>
+            </ResponsiveContainer>
         );
 
         return (
             <Fragment>
                 <Header as='h3' attached='top'>
-                    Location
+                    Demographics
                 </Header>
                 <Segment attached loading={loading} style={{paddingBottom: 40}}>
                     {/*<h4>Types of crime committed in the last 30 days.</h4>*/}
+                    <Header a="h4">Ethnic backgrounds</Header>
+                    <p>By borough</p>
                     {body}
                 </Segment>
 
