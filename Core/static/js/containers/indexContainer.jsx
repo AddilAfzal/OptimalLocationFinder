@@ -10,6 +10,7 @@ import {Route, BrowserRouter as Router, Link} from "react-router-dom";
 import Explore from "../components/Explore";
 import CustomMenu from "../components/Menu";
 import LocationMap from "../components/LocationMap";
+import About from "../components/About";
 
 
 export default class indexContainer extends Component {
@@ -56,7 +57,7 @@ export default class indexContainer extends Component {
                             <Route path="/results/" exact component={PropertiesMap}/>
                             <Route path="/explore/" exact component={Explore}/>
                             <Route path="/explore/location/" exact component={LocationMap}/>
-                            <Route path="/about/" component={Explore}/>
+                            <Route path="/about/" component={About}/>
                         </div>
                     </Router>
                 </div>

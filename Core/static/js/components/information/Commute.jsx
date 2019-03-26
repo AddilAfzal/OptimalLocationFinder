@@ -90,14 +90,14 @@ export default class Commute extends Component {
             </Fragment>
         );
         return (
-            <Fragment>
+            <div className="commute">
                 <Header as='h3' attached='top'>
                     Commute
                 </Header>
                 <Segment attached loading={loading} style={{paddingBottom: 40}}>
                     {body}
                 </Segment>
-            </Fragment>
+            </div>
         )
     }
 }

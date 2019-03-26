@@ -30,6 +30,8 @@ export default class CustomMenu extends Component {
                 <Menu.Menu position='right'>
                     <Menu.Item
                         name='About'
+                        active={pagePath === '/about/'}
+                        onClick={() => changePage('/about/')}
                     />
                 </Menu.Menu>
             </Menu>
