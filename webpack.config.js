@@ -9,7 +9,6 @@ module.exports = {
     mode: 'development',
     entry: {
         'IndexPage': ['@babel/polyfill', './Core/static/js/IndexPage'],
-        'ExplorePage': ['@babel/polyfill', './Core/static/js/ExplorePage'],
     },
     output: {
         filename: "[name]-[hash].js",

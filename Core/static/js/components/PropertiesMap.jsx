@@ -15,7 +15,7 @@ import { divIcon } from 'leaflet';
 import { renderToStaticMarkup } from 'react-dom/server'
 import ControlBackButton from "./map/ControlBackButton";
 
-export default class Map extends Component {
+export default class PropertiesMap extends Component {
     constructor(props) {
         super(props);
 

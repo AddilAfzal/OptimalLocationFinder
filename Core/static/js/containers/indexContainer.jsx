@@ -1,16 +1,15 @@
 import React, {Component, Fragment} from 'react'
 import {
-    Container,
-    Dropdown,
     Header,
-    Image,
-    Menu,
 } from 'semantic-ui-react'
 import Footer from './../components/footer'
 import Navigation from './../components/navigation'
 import Filters from "../components/Filters";
-import Map from "../components/Map";
+import PropertiesMap from "../components/PropertiesMap";
 import {Route, BrowserRouter as Router, Link} from "react-router-dom";
+import Explore from "../components/Explore";
+import CustomMenu from "../components/Menu";
+import LocationMap from "../components/LocationMap";
 
 
 export default class indexContainer extends Component {
@@ -18,13 +17,27 @@ export default class indexContainer extends Component {
         super();
 
         this.state = {
-
+            pagePath: '/',
         }
     }
 
     routeRef = React.createRef();
 
+    componentDidMount() {
+        const pagePath = this.routeRef.current.history.location.pathname;
+        console.log(pagePath)
+        console.log(this.routeRef.current)
+        this.setState({pagePath});
+    }
+
+    changePage = (pagePath) => {
+        const {history} = this.routeRef.current;
+        history.push(pagePath);
+        this.setState({pagePath});
+    };
+
     render() {
+        const {pagePath} = this.state;
         return (
             <div>
                 <Navigation/>
@@ -35,25 +48,15 @@ export default class indexContainer extends Component {
                         set of unique requirements.<br/> You can search for properties or explore an area.</p>
                     <br/>
 
-                    <Menu pointing secondary>
-                        <Menu.Item
-                            name='Search'
-                            active
-                        />
-                        <Menu.Item
-                            name='Explore'
-                        />
-                        <Menu.Menu position='right'>
-                            <Menu.Item
-                                name='About'
-                            />
-                        </Menu.Menu>
-                    </Menu>
+                    <CustomMenu pagePath={pagePath} changePage={this.changePage}/>
 
                     <Router ref={this.routeRef}>
                         <div>
                             <Route path="/" exact component={Filters}/>
-                            <Route path="/results/" component={Map}/>
+                            <Route path="/results/" exact component={PropertiesMap}/>
+                            <Route path="/explore/" exact component={Explore}/>
+                            <Route path="/explore/location/" exact component={LocationMap}/>
+                            <Route path="/about/" component={Explore}/>
                         </div>
                     </Router>
                 </div>
