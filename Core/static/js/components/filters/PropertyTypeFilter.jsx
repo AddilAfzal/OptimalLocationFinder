@@ -6,30 +6,29 @@ import {
 import {Segment} from 'semantic-ui-react'
 import BaseFilter from "./BaseFilter";
 
+const options = [
+  { key: 'flat', text: 'Flat', value: 'Flat' },
+  { key: 'terraced_house', text: 'Terraced house', value: 'Terraced house' },
+  { key: 'semi-detached_house', text: 'Semi-detached house', value: 'Semi-detached house' },
+  { key: 'detached_house', text: 'Detached house', value: 'Detached house' },
+  { key: 'studio', text: 'Studio', value: 'Studio' },
+  { key: 'maisonette', text: 'Maisonette', value: 'Maisonette' },
+  { key: 'bungalow', text: 'Bungalow', value: 'Bungalow' },
+  { key: 'cottage', text: 'Cottage', value: 'Cottage' },
+  { key: 'land', text: 'Land', value: 'Land' },
+
+];
 
 export default class PropertyTypeFilter extends BaseFilter {
     constructor(props) {
         super(props);
 
         this.state.canRemove = false;
-        this.state.propertyTypes = [];
-        this.state.options = [];
+        this.state.propertyTypes = options.map(x => x.value);
     }
 
     componentDidMount() {
         super.componentDidMount();
-        const options = [
-          { key: 'flat', text: 'Flat', value: 'Flat' },
-          { key: 'terraced_house', text: 'Terraced house', value: 'Terraced house' },
-          { key: 'semi-detached_house', text: 'Semi-detached house', value: 'Semi-detached house' },
-          { key: 'detached_house', text: 'Detached house', value: 'Detached house' },
-          { key: 'studio', text: 'Studio', value: 'Studio' },
-          { key: 'maisonette', text: 'Maisonette', value: 'Maisonette' },
-          { key: 'bungalow', text: 'Bungalow', value: 'Bungalow' },
-          { key: 'cottage', text: 'Cottage', value: 'Cottage' },
-          { key: 'land', text: 'Land', value: 'Land' },
-
-        ];
 
         this.setState({options});
 
@@ -63,7 +62,7 @@ export default class PropertyTypeFilter extends BaseFilter {
     };
 
     renderBody() {
-        const {propertyTypes, options} = this.state;
+        const {propertyTypes} = this.state;
 
         return (
             <Fragment>

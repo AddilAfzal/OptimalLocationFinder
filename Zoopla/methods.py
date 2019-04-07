@@ -98,141 +98,17 @@ def search_properties(area, listing_status, radius=1, min_price=None, max_price=
     else:
         return query.first()
 
-london_postcode_districts = [
-    # 'UB',
-    # 'CR',
-    # 'EN',
-    # 'EC',
-    # 'BR',
-    # 'DA',
-    # 'KT',
-    # 'TW',
-    # 'TN',
-    # 'WD',
-    # 'RM',
-    # 'HA', # Re-do everything above
-    # 'SM',
-    #
-    # 'E1',
-    # 'E2',
-    # 'E3',
-    # 'E4',
-    # 'E5',
-    # 'E6',
-    # 'E7',
-    # 'E8',
-    # 'E9',
-    # 'E10',
-    # 'E11',
-    # 'E12',
-    # 'E13',
-    # 'E14',
-    # 'E15',
-    # 'E16',
-    # 'E17',
-    # 'E18',
-    #
-    # 'N1',
-    # 'N2',
-    # 'N3',
-    # 'N4',
-    # 'N5',
-    # 'N6',
-    # 'N7',
-    # 'N8',
-    # 'N9',
-    # 'N10',
-    # 'N11',
-    # 'N12',
-    # 'N13',
-    # 'N14',
-    # 'N15',
-    # 'N16',
-    # 'N17',
-    # 'N18',
-    # 'N19',
-    # 'N20',
-    # 'N21',
-    # 'N22',
 
-    # 'W1',
-    # 'W2',
-    # 'W3',
-    # 'W4',
-    # 'W5',
-    # 'W6',
-    # 'W7',
-    # 'W8',
-    # 'W9',
-    # 'W10',
-    # 'W11',
-    # 'W12',
-    # 'W13',
-    # 'W14',
-
-    # 'NW1',
-    # 'NW2',
-    # 'NW3',
-    # 'NW4',
-    # 'NW5',
-    # 'NW6',
-    # 'NW7',
-    # 'NW8',
-    # 'NW9',
-    # 'NW10',
-    # 'NW11',
-    #
-    # 'SW1',
-    # 'SW2',
-    # 'SW3',
-    # 'SW4',
-    # 'SW5',
-    # 'SW6',
-    # 'SW7',
-    # 'SW8',
-    # 'SW9',
-    # 'SW10',
-    # 'SW11',
-    # 'SW12',
-    # 'SW13',
-    # 'SW14',
-    # 'SW15',
-    # 'SW16',
-    # 'SW17',
-    # 'SW18',
-    # 'SW19',
-    # 'SW20',
-    #
-    # 'SE1',
-    # 'SE2',
-    # 'SE3',
-    # 'SE4',
-    # 'SE5',
-    # 'SE6',
-    # 'SE7',
-    # 'SE8',
-    # 'SE9',
-    # 'SE10',
-    # 'SE11',
-    # 'SE12',
-    # 'SE13',
-    # 'SE14',
-    # 'SE15',
-    # 'SE16',
-    # 'SE17',
-    # 'SE18',
-    # 'SE19',
-    # 'SE20',
-    # 'SE21',
-    # 'SE22',
-    # 'SE23',
-    # 'SE24',
-    # 'SE25',
-    # 'SE26',
-    # 'SE27',
-    # 'SE28',
-
-]
+london_postcode_districts = ['UB', 'CR', 'EN', 'EC', 'BR', 'DA', 'KT', 'TW', 'TN', 'WD', 'RM', 'HA', 'SM', 'E1', 'E2',
+                             'E3', 'E4', 'E5', 'E6', 'E7', 'E8', 'E9', 'E10', 'E11', 'E12', 'E13', 'E14', 'E15', 'E16',
+                             'E17', 'E18', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6', 'N7', 'N8', 'N9', 'N10', 'N11', 'N12',
+                             'N13', 'N14', 'N15', 'N16', 'N17', 'N18', 'N19', 'N20', 'N21', 'N22', 'W1', 'W2', 'W3',
+                             'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10', 'W11', 'W12', 'W13', 'W14', 'NW1', 'NW2', 'NW3',
+                             'NW4', 'NW5', 'NW6', 'NW7', 'NW8', 'NW9', 'NW10', 'NW11', 'SW1', 'SW2', 'SW3', 'SW4',
+                             'SW5', 'SW6', 'SW7', 'SW8', 'SW9', 'SW10', 'SW11', 'SW12', 'SW13', 'SW14', 'SW15', 'SW16',
+                             'SW17', 'SW18', 'SW19', 'SW20', 'SE1', 'SE2', 'SE3', 'SE4', 'SE5', 'SE6', 'SE7', 'SE8',
+                             'SE9', 'SE10', 'SE11', 'SE12', 'SE13', 'SE14', 'SE15', 'SE16', 'SE17', 'SE18', 'SE19',
+                             'SE20', 'SE21', 'SE22', 'SE23', 'SE24', 'SE25', 'SE26', 'SE27', 'SE28', ]
 
 
 def results_counter():
@@ -259,14 +135,18 @@ def data_grabber():
 
     api_keys = ['89uuaawpyfug8cfhykvgzdbu', 'wkq3yqmcsj45kfmpat4mwepr']
 
+    # Boolean to control when to stop the loop - Will change to true once the hourly API call limit has been reached
     limitted = False
+
     try:
         for postcode in london_postcode_districts:
             while True:
+                # Form the new page URL and fetch the data.
                 page_url = base_page_url + ("&page_number=%s&area=%s" % (page, postcode))
                 r = requests.get(page_url)
                 print(page_url)
 
+                # If a response code other than 200 is returned, there was an error
                 if not r.status_code == 200:
                     print("Over rate...")
                     print(page_url)
@@ -382,11 +262,13 @@ def data_grabber():
                             #print(p_dict)
                             break
 
+                    # Increment the page number if successful
                     print("Page %s complete" % page)
                     page += 1
                 except KeyError:
                     break
-
+            
+            # Reset the page counter to one and start query the next postcode.
             page = 1
             if limitted:
                 break
@@ -394,10 +276,6 @@ def data_grabber():
     except Exception as e:
         print(e)
 
-
-def data_scrapper():
-    import re
-    location_regex = r'/<img data-src="https:\/\/maps\.google\.com\/maps\/api\/staticmap\?.*center&#x3D;((?:[-]*[0-9]|\.)*[0-9]*),[-]*((?:[0-9]|\.)*[0-9]*)/gm'
 
 
 def price_range_frequency():

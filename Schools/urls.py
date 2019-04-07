@@ -8,5 +8,4 @@ app_name = "schools"
 
 urlpatterns = [
     path('api/get_closest_schools/<str:latitude>/<str:longitude>/', get_closest_schools),
-    url(r'^api/schools/', SchoolViewSet.as_view({'get':'list'}), name="api_properties")
 ]

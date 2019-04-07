@@ -16,10 +16,7 @@ def import_data(data_path="Core/data/Active Places Open Data_2019_02_15.sites.js
             continue
 
         # Create equipment and disability model
-
-        print(item)
         equipment = Equipment.objects.create(**item['data']['equipment'])
-
         disability = Disability.objects.create(**item['data']['disability']['equipped'],
                                                access=item['data']['disability']['access'])
 
@@ -29,8 +26,6 @@ def import_data(data_path="Core/data/Active Places Open Data_2019_02_15.sites.js
 
             for q in Contacts._meta.concrete_fields:
                 tmp[q.name] = c[q.name]
-
-            # print(tmp)
 
             contact = Contacts.objects.create(**tmp)
             break
@@ -58,7 +53,7 @@ def import_data(data_path="Core/data/Active Places Open Data_2019_02_15.sites.js
                 except KeyError as e:
                     # print(e)
                     continue
-        # print(tmp2)
+
         place = ActivePlace.objects.create(**tmp2)
         place.contact = contact
         place.save()
@@ -69,13 +64,10 @@ def import_data(data_path="Core/data/Active Places Open Data_2019_02_15.sites.js
 
         for f in item['data']['facilities']:
             tmp3 = {}
-            # print(f)
+
             for q in Facility._meta.concrete_fields:
 
-                if q.name == 'active_place':
-                    value = place
-                else:
-                    value = f[q.name]
+                value = place if q.name == 'active_place' else f[q.name]
 
                 if value is not None:
                     tmp3[q.name] = value
@@ -96,7 +88,5 @@ def import_data(data_path="Core/data/Active Places Open Data_2019_02_15.sites.js
                     if value is not None:
                         tmp4[q.name] = value
 
-                # print(o)
                 OpeningTimes.objects.create(**tmp4)
-        # break
 

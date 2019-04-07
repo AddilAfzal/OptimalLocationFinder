@@ -32,8 +32,8 @@ class Property(TimeStampedModel):
     num_bedrooms = models.IntegerField()
     num_floors = models.IntegerField()
     num_recepts	= models.IntegerField()
-    listing_status = models.CharField(max_length=10) # TODO: to choice
-    status = models.CharField(max_length=10) # TODO: to choice
+    listing_status = models.CharField(max_length=10)
+    status = models.CharField(max_length=10)
     price = models.FloatField()
     first_published = models.DateTimeField()
     last_published = models.DateTimeField()
@@ -42,7 +42,6 @@ class Property(TimeStampedModel):
     county = models.CharField(max_length=30, null=True)
     description = models.TextField(null=True)
     details_url = models.URLField(null=True)
-    # floor_area = models.CharField()
     furnished_state = models.CharField(max_length=100)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
@@ -58,7 +57,7 @@ class RentalPrice(models.Model):
     accurate = models.CharField(max_length=30, null=True)
     per_month = models.FloatField()
     per_week = models.FloatField()
-    shared_occupancy = models.CharField(max_length=30) # TODO: Change once values have been established
+    shared_occupancy = models.CharField(max_length=30)
     zoopla_property = models.ForeignKey(Property, on_delete=models.CASCADE, null=True)
 
 

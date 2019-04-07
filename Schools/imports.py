@@ -64,9 +64,7 @@ def update_postcodes():
             yield l[i:i + n]
 
     schools = School.objects.all()
-
     postcodes = list(School.objects.all().values_list('postcode', flat=True).distinct())
-
     chunked_postcodes = chunks(postcodes, 100)
 
     i = 0

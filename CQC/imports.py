@@ -82,8 +82,6 @@ def update_ratings(csv_path="CQC/data/ratings February 2019.csv"):
         reader = csv.reader(csvreader, delimiter=',', quotechar='"', )
         i = 0
 
-        last_location = None
-
         for row in reader:
             i += 1
             if i < 2:
@@ -99,11 +97,6 @@ def update_ratings(csv_path="CQC/data/ratings February 2019.csv"):
             last_rating = row[7]
 
             try:
-                # if last_location and last_location.cqc_id == cqc_id:
-                #     l = last_location
-                # else:
-                #     l = CQCLocation.objects.get(cqc_id=cqc_id)
-
                 if row[5] == 'Overall' and row[6] == 'Overall':
                     l = CQCLocation.objects.get(cqc_id=cqc_id)
 
