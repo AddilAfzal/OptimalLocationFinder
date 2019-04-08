@@ -20,9 +20,9 @@ export default class RoomsFilter extends BaseFilter {
     constructor(props) {
         super(props);
 
-        this.state.bedrooms = {min: 3, max: 4};
-        this.state.bathrooms = {min: 1, max: 2};
-        this.state.receptions = {min: 1, max: 1};
+        this.state.bedrooms = {min: 0, max: 0};
+        this.state.bathrooms = {min: 0, max: 0};
+        this.state.receptions = {min: 0, max: 0};
     }
 
     static filter_name = "Rooms filter";
@@ -76,7 +76,7 @@ export default class RoomsFilter extends BaseFilter {
                 <Header style={{marginTop: 0}} size='small'><i className="fas fa-bed"/> How many bedrooms do you
                     need?</Header>
                 <Range
-                    defaultValue={bedrooms.min ? [bedrooms.min, bedrooms.max] : [1, 10]}
+                    defaultValue={bedrooms.min === 0 && bedrooms.max === 0 ? [1,10] : [bedrooms.min, bedrooms.max]}
                     step={1}
                     min={1}
                     max={10}
@@ -89,7 +89,7 @@ export default class RoomsFilter extends BaseFilter {
                 <Header style={{marginTop: 0}} size='small'><i className="fas fa-toilet"/> How many bathrooms do
                     you need?</Header>
                 <Range
-                    defaultValue={bathrooms.min ? [bathrooms.min, bathrooms.max] : [1, 10]}
+                    defaultValue={bathrooms.min === 0 && bathrooms.max === 0 ? [1,10] : [bathrooms.min, bathrooms.max]}
                     step={1}
                     min={1}
                     max={10}
@@ -102,7 +102,7 @@ export default class RoomsFilter extends BaseFilter {
                 <Header style={{marginTop: 0}} size='small'><i className="fas fa-couch"/> How many reception
                     areas do you need?</Header>
                 <Range
-                    defaultValue={receptions.min ? [receptions.min, receptions.max] : [1, 5]}
+                    defaultValue={receptions.min === 0 && receptions.max === 0 ? [1,10] : [receptions.min, receptions.max]}
                     step={1}
                     min={1}
                     max={10}
