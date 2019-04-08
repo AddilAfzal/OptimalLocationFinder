@@ -23,9 +23,9 @@ export default class MarkerTable extends Component {
                 <td>{m.props.position}</td>
                 <td>
                     <Button.Group>
-                        <Button compact disabled={!edit} active ><i className="fas fa-subway"/></Button>
-                        <Button compact disabled={!edit}><i className="fas fa-bus"/></Button>
-                        <Button compact disabled={!edit}><i className="fas fa-walking"/></Button>
+                        <Button compact disabled={!edit} active title="Public transport" ><i className="fas fa-subway"/></Button>
+                        {/*<Button compact disabled={!edit}><i className="fas fa-bus"/></Button>*/}
+                        {/*<Button compact disabled={!edit}><i className="fas fa-walking"/></Button>*/}
                     </Button.Group>
                 </td>
                 <td>{ edit ?
