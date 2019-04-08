@@ -221,17 +221,7 @@ def filter_properties_by_commute(data, qs):
 
 def get_route_data(data):
     location, position, required_commute_time = data
-    query = RouteCache.objects.filter(start_latitude=location.latitude, start_longitude=location.longitude,
-                     des_latitude=position[0], des_longitude=position[1]).values()
 
-    # if query:  # If the query returns at least one item
-    #     cached_object = query.first()
-    #     if cached_object and cached_object[
-    #         'commute_time'] <= required_commute_time:  # If the commute time is within the defined max.
-    #         route = json.loads(cached_object['data'])
-    #     else:
-    #         return None
-    # else:
     route, expected_commute_time = get_route([location.latitude, location.longitude], position)
     if expected_commute_time:
         if expected_commute_time <= required_commute_time:
