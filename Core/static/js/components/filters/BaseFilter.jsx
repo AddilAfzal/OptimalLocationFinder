@@ -28,6 +28,7 @@ export default class BaseFilter extends Component {
 
     removeFilter = () => {
         this.props.removeFilter(this);
+        this.props.disableLock();
     };
 
     isValid = () => {
@@ -97,9 +98,15 @@ export default class BaseFilter extends Component {
 
     renderSave() {
         return (
-            <div style={{textAlign: 'right'}}>
-                <Button onClick={this.save} primary disabled={!this.isValid()}>Done</Button>
-            </div>
+            <Fragment>
+                { this.state.canRemove && <div style={{float: 'left', display: 'inline'}}>
+                    <Button onClick={this.removeFilter} color="red">Remove</Button>
+                </div> }
+                <div style={{textAlign: 'right', display: 'block'}}>
+                    <Button onClick={this.save} primary disabled={!this.isValid()}>Done</Button>
+                </div>
+
+            </Fragment>
         )
     }
 }

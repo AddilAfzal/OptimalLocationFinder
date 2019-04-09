@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {
-    Button, Container, Header, Form, Label, Modal, Image
+    Button, Container, Header, Form, Label, Modal, Image, Transition
 } from 'semantic-ui-react'
 
 import {Divider, Segment} from 'semantic-ui-react'
@@ -150,13 +150,16 @@ export default class Filters extends Component {
 
                     <hr/>
                     {updatedFilters}
-                    <p>
-                        You may select additional optional filters to refine your search.
-                    </p>
 
-                    {/*{ (filters.length >= 3 && lock === false) &&*/}
-                    <AddFilterModal {...propMethods} {...propVars}/>
-                    {/*}*/}
+                    {(filters.length > 2 && !lock) &&
+                        <Fragment>
+                            <p>
+                                You may select additional optional filters to refine your search.
+                            </p>
+
+                            <AddFilterModal {...propMethods} {...propVars}/>
+                        </Fragment> }
+
 
                     <div style={{textAlign: 'right'}}>
                         <Button size={'large'} primary disabled={(filters.length < 3 || lock === true)}
