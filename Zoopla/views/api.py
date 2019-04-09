@@ -36,8 +36,14 @@ from tornado.httpclient import AsyncHTTPClient
 
 @csrf_exempt
 def property_api(request):
+    """
+    The main API definition.
+    This method calls a series of filters. Each filter decides whether it should be performed or not
+    depending on the contents of the request (data).
+    :return:
+    """
+
     queryset = Property.objects.filter(latitude__isnull=False, longitude__isnull=False)
-        #.prefetch_related('propertyimage_set', 'rentalprice_set')
 
     if request.method == 'POST':
         start = time.time()
@@ -58,7 +64,7 @@ def property_api(request):
 
         print("Serializing")
         serialized_data = BasicPropertySerializer(qs, many=True).data
-        # print("data", qs)
+
         print("Dumping")
         response = json.dumps(
             {

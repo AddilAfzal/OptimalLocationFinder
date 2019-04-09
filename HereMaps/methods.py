@@ -146,7 +146,12 @@ def get_route(a, b, mode="publicTransport"):
 
 
 def filter_properties_by_commute(data, qs):
-
+    """
+    Take the queryset of locations and return those that meet the commute time requirements.
+    :param data:
+    :param qs:
+    :return:
+    """
     if 'commute' in data:
         # properties = random.sample(list(qs), 100)
         # properties = qs[:300]
@@ -220,6 +225,12 @@ def filter_properties_by_commute(data, qs):
 
 
 def get_route_data(data):
+    """
+    Given a property (location), call the HereMaps API to retrieve an estimated commute to a point (position).
+    If the time falls below the threshold (required_commute_time) then append the route data to the location and return.
+    :param data:
+    :return:
+    """
     location, position, required_commute_time = data
 
     route, expected_commute_time = get_route([location.latitude, location.longitude], position)

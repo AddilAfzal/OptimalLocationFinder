@@ -90,9 +90,9 @@ export default class CommuteFilter extends BaseFilter {
         this.setState( {mapMarkers: [...this.state.mapMarkers.filter(x => x.key !== key)]});
     };
 
-    isValid() {
-        return true;
-    }
+    isValid = () => {
+        return this.state.mapMarkers.length > 0;
+    };
 
     mapRef = React.createRef();
     markerCluster = React.createRef();
