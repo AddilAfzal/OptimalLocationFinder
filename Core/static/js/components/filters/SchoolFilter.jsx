@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {
-    Button, Header, Form, Dropdown, List, Checkbox, Grid, Divider
+    Header, Form, List, Checkbox, Grid, Divider
 } from 'semantic-ui-react'
 
 import {Segment} from 'semantic-ui-react'
@@ -40,11 +40,9 @@ export default class SchoolFilter extends BaseFilter {
 
     getCollapsedText = () => {
         // let {propertyTypes} = this.state;
-        return (
-            <Fragment>
-                <h3>School</h3>
-            </Fragment>
-        )
+        const {is_primary, is_secondary, is_post16} = this.state;
+
+        return this.renderBody()
     };
 
     getData = () => {
@@ -67,7 +65,7 @@ export default class SchoolFilter extends BaseFilter {
     handleChangeAdmissionType = (_, {value}) => this.setState({selective: value});
 
     renderBody() {
-        const {is_primary, is_secondary, is_post16, gender, selective} = this.state;
+        const {is_primary, is_secondary, is_post16, gender, selective, collapse} = this.state;
 
         return (
             <Fragment>
@@ -80,6 +78,7 @@ export default class SchoolFilter extends BaseFilter {
                                 label={<label>Primary </label>}
                                 checked={is_primary}
                                 onChange={() => this.setState({is_primary: !is_primary})}
+                                disabled={collapse}
                             />
                         </Grid.Column>
                         <Grid.Column width={2}>
@@ -87,6 +86,7 @@ export default class SchoolFilter extends BaseFilter {
                                 label={<label>Secondary </label>}
                                 checked={is_secondary}
                                 onChange={() => this.setState({is_secondary: !is_secondary})}
+                                disabled={collapse}
                             />
                         </Grid.Column>
                         <Grid.Column width={2}>
@@ -94,6 +94,7 @@ export default class SchoolFilter extends BaseFilter {
                                 label={<label>Post 16 </label>}
                                 checked={is_post16}
                                 onChange={() => this.setState({is_post16: !is_post16})}
+                                disabled={collapse}
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -111,6 +112,7 @@ export default class SchoolFilter extends BaseFilter {
                                     value='M'
                                     checked={gender === 'M'}
                                     onChange={() => this.setState({gender: 'M'})}
+                                    disabled={collapse}
                                 />
                             </Form.Field>
                             <Form.Field>
@@ -121,6 +123,7 @@ export default class SchoolFilter extends BaseFilter {
                                     value='that'
                                     onChange={() => this.setState({gender: null})}
                                     checked={gender === 'B' | gender === 'G' | gender === null}
+                                    disabled={collapse}
                                     // onChange={this.handleChange}
                                 />
                             </Form.Field>
@@ -136,6 +139,7 @@ export default class SchoolFilter extends BaseFilter {
                                         checked={gender === 'B'}
                                         label={<label>Boys </label>}
                                         onChange={() => this.setState({gender: 'B'})}
+                                        disabled={collapse}
                                     />
                                 </Grid.Column>
                                 <Grid.Column width={4}>
@@ -143,6 +147,7 @@ export default class SchoolFilter extends BaseFilter {
                                         checked={gender === 'G'}
                                         label={<label>Girls</label>}
                                         onChange={() => this.setState({gender: 'G'})}
+                                        disabled={collapse}
                                     />
                                 </Grid.Column>
                             </Grid.Row>
@@ -161,6 +166,7 @@ export default class SchoolFilter extends BaseFilter {
                             value='any'
                             checked={selective === 'any'}
                             onChange={this.handleChangeAdmissionType}
+                            disabled={collapse}
                         />
                     </Form.Field>
                     <Form.Field>
@@ -171,6 +177,7 @@ export default class SchoolFilter extends BaseFilter {
                             value={false}
                             checked={selective === false}
                             onChange={this.handleChangeAdmissionType}
+                            disabled={collapse}
                         />
                     </Form.Field>
                     <Form.Field>
@@ -181,6 +188,7 @@ export default class SchoolFilter extends BaseFilter {
                             value={true}
                             checked={selective === true}
                             onChange={this.handleChangeAdmissionType}
+                            disabled={collapse}
                         />
                     </Form.Field>
                 </Form>
@@ -189,6 +197,7 @@ export default class SchoolFilter extends BaseFilter {
     }
 
     isValid = () => {
-        return true;
+        const {is_primary, is_secondary, is_post16} = this.state;
+        return is_post16 | is_secondary | is_primary;
     };
 }
