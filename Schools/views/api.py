@@ -1,9 +1,6 @@
 import json
 
 from django.http import HttpResponse
-
-from ActivePlaces.models import ActivePlace
-from ActivePlaces.serializers import ActivePlaceSerializer
 from Core.methods import get_closest_locations
 from Schools.models import School
 from Schools.serializers import SchoolSerializer
