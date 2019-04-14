@@ -129,11 +129,15 @@ def results_counter():
 
 
 def data_grabber():
+    """
+    Method to extract data from the Zoopla API
+    :return:
+    """
     base_page_url = "https://api.zoopla.co.uk/api/v1/property_listings?api_key=89uuaawpyfug8cfhykvgzdbu&page_size=100&order_by=age&ordering=ascending"
 
     page = 9
 
-    api_keys = ['89uuaawpyfug8cfhykvgzdbu', 'wkq3yqmcsj45kfmpat4mwepr']
+    api_keys = ['*']
 
     # Boolean to control when to stop the loop - Will change to true once the hourly API call limit has been reached
     limitted = False
@@ -277,34 +281,36 @@ def data_grabber():
         print(e)
 
 
-
-def price_range_frequency():
-    p = Property.objects.filter(listing_status="sale").exclude(price=0).order_by('price')
-    values = []
-
-    for a in p:
-        values.append({
-
-        })
-
-
 def get_price_histogram(listing_status="sale"):
+    """
+    Generate a histogram of prices.
+    :param listing_status:
+    :return:
+    """
     if listing_status == 'sale':
+        # Fetch all the prices
         prices = Property.objects.filter(listing_status="sale") \
             .exclude(price=0) \
             .values_list('price') \
             .order_by('price')
+
+        # Perform histogram calculations. Produce between 0 and 1.5 million, in increments of 50,000
         q = numpy.histogram(prices, bins=numpy.arange(0, 1500000, 50000))
 
     else:
+        # Fetch all the prices
         prices = Property.objects.filter(listing_status="rent")\
             .exclude(price=0)\
             .values_list('rentalprice__per_month')\
             .order_by('price')
+
+        # Perform histogram calculations. Produce between 0 and 4,500, in increments of 100
         q = numpy.histogram(prices, bins=numpy.arange(0, 4500, 100))
 
 
     tmp = []
+
+    # Restructure the output.
     for (r, v) in zip(map(int, q[1]), map(int,q[0])):
         tmp.append({'price': r, 'value': v})
 
