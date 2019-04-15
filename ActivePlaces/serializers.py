@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from ActivePlaces.models import ActivePlace, Facility, Disability, OpeningTimes, Activity, Contacts
 
+# This file contains definitions for model serializers.
+# A serializer converts a model instance into a format suitable for encoding to JSON.
+
 
 class OpeningTimesSerializer(serializers.ModelSerializer):
     class Meta:
