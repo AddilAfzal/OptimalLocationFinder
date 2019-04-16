@@ -3,6 +3,9 @@ from Schools.filters import SchoolFilter
 from Schools.models import School
 import numpy
 from scipy.spatial import KDTree
+
+
+# This code was replaced by the method below, as this was slow.
 #
 # def get_distance(lat1, lon1, lat2, lon2):
 #     R = 6373.0

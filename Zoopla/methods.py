@@ -133,20 +133,28 @@ def data_grabber():
     Method to extract data from the Zoopla API
     :return:
     """
-    base_page_url = "https://api.zoopla.co.uk/api/v1/property_listings?api_key=89uuaawpyfug8cfhykvgzdbu&page_size=100&order_by=age&ordering=ascending"
+    test_mode = True
 
-    page = 9
+    api_key = 'TO PASTE KEY HERE' # To replace by user
 
-    api_keys = ['*']
+    if test_mode:
+        # Will limit the system to the defined area
+        sub_areas = ["Clerkenwell", "marylebone"]
+    else:
+        sub_areas = london_postcode_districts
+
+    base_page_url = "https://api.zoopla.co.uk/api/v1/property_listings?api_key=%s&page_size=100&order_by=age&ordering=ascending" % (api_key)
+
+    page = 1
 
     # Boolean to control when to stop the loop - Will change to true once the hourly API call limit has been reached
     limitted = False
 
     try:
-        for postcode in london_postcode_districts:
+        for sub_area in sub_areas:
             while True:
                 # Form the new page URL and fetch the data.
-                page_url = base_page_url + ("&page_number=%s&area=%s" % (page, postcode))
+                page_url = base_page_url + ("&page_number=%s&area=%s" % (page, sub_area))
                 r = requests.get(page_url)
                 print(page_url)
 
@@ -154,7 +162,7 @@ def data_grabber():
                 if not r.status_code == 200:
                     print("Over rate...")
                     print(page_url)
-                    print('Postcode: %s  I: %s' % (postcode, page) )
+                    print('Postcode: %s  I: %s' % (sub_area, page) )
                     limitted = True
                     break
                     # raise Exception('Postcode: %s  I: %s' % (postcode, page) )
