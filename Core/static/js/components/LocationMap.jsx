@@ -1,12 +1,11 @@
 import React, {Component, Fragment} from "react";
-import {Button, Header, Menu, Message, Segment} from "semantic-ui-react";
+import {Button, Menu, Message, Segment} from "semantic-ui-react";
 import {Marker, TileLayer, Map as LeafletMap, Polyline, FeatureGroup} from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import Crime from "./information/Crime";
 import HealthServices from "./information/HealthServices";
 import Demographics from "./information/Demographics";
 import Restaurants from "./information/Restaurants";
-import Summary from "./information/Summary";
 import SportsFacilities from "./information/SportsFacilities";
 import { divIcon } from 'leaflet';
 import { renderToStaticMarkup } from 'react-dom/server'
@@ -67,15 +66,6 @@ export default class LocationsMap extends Component {
         return (window.innerHeight > 400 ? window.innerHeight - 110 : 400);
     }
 
-    setBounds = () => {
-        // const {position} = this.state.selectedLocation;
-
-        // let mapMaxBounds = this.leafletMap.current.leafletElement.getBounds();
-        // this.setState({mapMaxBounds});
-        // let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
-        // this.leafletMap.current.leafletElement.fitBounds(markerClusterBounds)
-    };
-
     customMarkerIcon = (size="2em") => divIcon({
         html: renderToStaticMarkup(
             <span className="fa-stack fa-1x">
@@ -121,8 +111,6 @@ export default class LocationsMap extends Component {
 
     resetMap = async () => {
         await this.setState({mapContents: null, polylines: []});
-        // let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
-        // this.leafletMap.current.leafletElement.fitBounds(markerClusterBounds);
     };
 
     toggleMapLoader = (mapLoading) => this.setState({mapLoading});
@@ -138,9 +126,6 @@ export default class LocationsMap extends Component {
         let InfoSegment = (props) => "";
 
         switch (activeInfo) {
-            // case 'summary':
-            //     InfoSegment = Summary;
-            //     break;
             case 'crime':
                 InfoSegment = Crime;
                 break;

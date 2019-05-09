@@ -58,11 +58,7 @@ def search_input(request, search):
     Call the here maps API to return auto complete sugggestions for user input.
     :return:
     """
-    # r = requests.get(
-    #     'http://autocomplete.geocoder.api.here.com/6.2/suggest.json'
-    #     '?app_id=%s'
-    #     '&app_code=%s'
-    #     '&query=%s' % (HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE, search))
+
     r = requests.get(
         'https://places.cit.api.here.com/places/v1/autosuggest'
         '?at=51.49,-0.14'

@@ -2,7 +2,6 @@ import React, {Component, Fragment} from "react";
 import {Button, Header, Menu, Message, Segment} from "semantic-ui-react";
 import {Marker, TileLayer, Map as LeafletMap, Polyline, FeatureGroup} from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-markercluster';
-import Property from "./map/Property";
 import ControlInfo from "./map/ControlInfo";
 import Crime from "./information/Crime";
 import HealthServices from "./information/HealthServices";
@@ -44,7 +43,6 @@ export default class PropertiesMap extends Component {
 
         };
     }
-
 
     componentDidMount() {
         const markers = this.state.properties.map((elem) =>
@@ -148,8 +146,6 @@ export default class PropertiesMap extends Component {
 
     resetMap = async () => {
         await this.setState({mapContents: null, property: null, polylines: []});
-        // let markerClusterBounds = this.markerCluster.current.leafletElement.getBounds();
-        // this.leafletMap.current.leafletElement.fitBounds(markerClusterBounds);
     };
 
     toggleMapLoader = (mapLoading) => this.setState({mapLoading});
@@ -168,7 +164,6 @@ export default class PropertiesMap extends Component {
                 case 'summary':
                     InfoSegment = Summary;
                     break;
-                    // InfoSegment =  (props) => "Test";
                 case 'crime':
                     InfoSegment =  Crime;
                     break;

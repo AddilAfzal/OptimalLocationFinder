@@ -28,13 +28,6 @@ export default class AreaFilter extends BaseFilter {
 
     }
 
-    // componentWillMount() {
-    //     fetch("/static/json/greaterlondon.json")
-    //         .then(response => response.json())
-    //         .then(response => this.setState({londonBoundary: response.features}));
-    //
-    // }
-
     static filter_name = "Area filter";
     static description = "Filter the list of homes to be located within a specific area.";
 
@@ -80,8 +73,6 @@ export default class AreaFilter extends BaseFilter {
 
     mapOnClick = (e) => {
         this.setState({markerPosition: e.latlng, markerShow: true});
-        console.log(this.mapRef)
-        console.log(e)
     };
 
     mapOnDrag = (e) => {

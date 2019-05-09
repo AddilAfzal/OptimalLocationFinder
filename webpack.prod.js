@@ -18,7 +18,7 @@ module.exports = {
     },
 
     output: {
-        path: path.resolve('./react/static/bundles'),
+        path: path.resolve('./Core/static/bundles'),
         filename: "[name]-[hash].js",
     },
 

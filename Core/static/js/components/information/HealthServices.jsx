@@ -1,7 +1,5 @@
 import React, {Component, Fragment} from "react";
 import {Header, Image, Segment, Table} from "semantic-ui-react";
-import {renderToStaticMarkup} from "react-dom/server";
-import {divIcon} from "leaflet";
 import {Marker, Tooltip as LeafletTooltip} from "react-leaflet";
 import {startCase} from "lodash";
 
@@ -58,7 +56,6 @@ export default class HealthServices extends Component {
     };
 
     render() {
-        const {property} = this.props;
         const {data, loading} = this.state;
         const body = data && (
             <Fragment>

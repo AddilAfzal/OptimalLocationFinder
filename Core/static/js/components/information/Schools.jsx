@@ -1,10 +1,7 @@
 import React, {Component, Fragment} from "react";
-import {Card, Header, Message, Segment, Table} from "semantic-ui-react";
-import {Bar, BarChart, CartesianGrid, LabelList, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {Header, Segment, Table} from "semantic-ui-react";
 import {startCase} from "lodash";
 import {Marker, Tooltip as LeafletTooltip} from "react-leaflet";
-import {renderToStaticMarkup} from "react-dom/server";
-import {divIcon} from "leaflet";
 
 
 export default class Crime extends Component {

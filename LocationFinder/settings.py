@@ -159,11 +159,11 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
 
-HERE_MAPS_APP_ID = "vtHijdI94WzWFph3OASO"
-HERE_MAPS_APP_CODE = "3ViBdfQh00uW03S2gnk5CQ"
-ZOOPLA_API_KEY = "4zd7kgvjktq4p464btnk9g58"
-ZOMATO_API_KEY = "d87c028817211b8d2b6df3e125b81d94"
-AIR_VISUAL_KEY = "nhN9sHa7mrBn8i6sW"
+HERE_MAPS_APP_ID = os.environ.get("HERE_MAPS_APP_ID")
+HERE_MAPS_APP_CODE = os.environ.get("HERE_MAPS_APP_CODE")
+ZOOPLA_API_KEY = os.environ.get("ZOOPLA_API_KEY")
+ZOMATO_API_KEY = os.environ.get("ZOMATO_API_KEY")
+AIR_VISUAL_KEY = os.environ.get("AIR_VISUAL_KEY")
 
 INTERNAL_IPS = ['127.0.0.1']
 

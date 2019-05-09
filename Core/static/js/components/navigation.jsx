@@ -1,8 +1,6 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import {
   Container,
-  Dropdown,
-  Image,
   Menu,
 } from 'semantic-ui-react'
 
@@ -20,26 +18,6 @@ export default class navigation extends Component {
                     <Menu.Item as='a' header>
                         Optimal Location Finder
                     </Menu.Item>
-                    {/*<Menu.Item as='a'>Home</Menu.Item>*/}
-                    {/*<Menu.Item as='a'>Explore data</Menu.Item>*/}
-
-                    {/*<Dropdown item simple text='Dropdown'>*/}
-                        {/*<Dropdown.Menu>*/}
-                            {/*<Dropdown.Item>List Item</Dropdown.Item>*/}
-                            {/*<Dropdown.Item>List Item</Dropdown.Item>*/}
-                            {/*<Dropdown.Divider/>*/}
-                            {/*<Dropdown.Header>Header Item</Dropdown.Header>*/}
-                            {/*<Dropdown.Item>*/}
-                                {/*<i className='dropdown icon'/>*/}
-                                {/*<span className='text'>Submenu</span>*/}
-                                {/*<Dropdown.Menu>*/}
-                                    {/*<Dropdown.Item>List Item</Dropdown.Item>*/}
-                                    {/*<Dropdown.Item>List Item</Dropdown.Item>*/}
-                                {/*</Dropdown.Menu>*/}
-                            {/*</Dropdown.Item>*/}
-                            {/*<Dropdown.Item>List Item</Dropdown.Item>*/}
-                        {/*</Dropdown.Menu>*/}
-                    {/*</Dropdown>*/}
                 </Container>
             </Menu>
         )

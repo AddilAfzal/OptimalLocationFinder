@@ -1,8 +1,6 @@
-import React, {Component, Fragment} from "react";
+import React, {Fragment} from "react";
 import {
-    Container, Header,
-
-    Menu, Table,
+    Header, Table,
 } from 'semantic-ui-react'
 
 const usage_source = [

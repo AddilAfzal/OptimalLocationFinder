@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from "react";
-import {Button, Card, Divider, Header, Segment} from "semantic-ui-react";
-import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {Button, Divider, Header, Segment} from "semantic-ui-react";
 
 
 export default class Summary extends Component {
@@ -16,14 +15,6 @@ export default class Summary extends Component {
     componentDidMount() {
         this.props.updateMapContents(null, null);
     }
-    //
-    // async fetchData() {
-    //     const {property} = this.props;
-    //     const data = await fetch("http://api.postcodes.io/postcodes?" +
-    //         `lon=${property.longitude}` +
-    //         `&lat=${property.latitude}`).then(a => a.json());
-    //     this.setState({data: data['result'][0]});
-    // }
 
     render() {
         const {property} = this.props;

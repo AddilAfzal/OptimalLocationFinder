@@ -1,26 +1,7 @@
 import React, {Component, Fragment} from "react";
-import {Button, Card, Header, Image, Label, Rating, Segment, Table} from "semantic-ui-react";
-import {Marker, Popup, Tooltip} from "react-leaflet";
+import {Button, Header, Label, Rating, Segment, Table} from "semantic-ui-react";
+import {Marker, Tooltip} from "react-leaflet";
 
-
-// const Restaurant = (props) => {
-//     return (
-//         <Card key={props.R.res_id}>
-//             <Image url={props.url} src={props.thumb ? props.thumb :
-//                 "https://www.albagaskets.com/media/placeholder.php?colour=d1e7f7&opacity=0.2&width=290&height=200"}/>
-//             <Card.Content>
-//                 <Card.Header> <a target="_blank" href={props.url}>{props.name}</a></Card.Header>
-//                 <Card.Meta>
-//                     <span className='date'>{props.cuisines}</span>
-//                 </Card.Meta>
-//                 {/*<Card.Description>Matthew is a musician living in Nashville.</Card.Description>*/}
-//             </Card.Content>
-//             <Card.Content extra>
-//
-//             </Card.Content>
-//         </Card>
-//     )
-// };
 
 export default class Restaurants extends Component {
     constructor(props) {
@@ -84,14 +65,7 @@ export default class Restaurants extends Component {
     };
 
     render() {
-        const {property} = this.props;
         const {data, loading} = this.state;
-
-        let rs = [];
-
-        // if(data) {
-        //   rs =  data.restaurants.slice(0,8).map((x) => <Restaurant {...x.restaurant}/>)
-        // }
 
         let body = [];
         if (data) {

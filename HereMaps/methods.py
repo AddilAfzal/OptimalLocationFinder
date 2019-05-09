@@ -15,9 +15,6 @@ from Core.methods import geodetic2ecef
 from HereMaps.models import RouteCache
 from LocationFinder.settings import HERE_MAPS_APP_ID, HERE_MAPS_APP_CODE
 
-# For testing purposes
-start = [(51.523252, -0.370472),(51.523252, -0.310472)]
-des = [(51.527678,-0.103682)]
 
 # This method was never finished.
 def get_routes(start_geo, des_geo, mode="car"):

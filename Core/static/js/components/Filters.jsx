@@ -1,10 +1,8 @@
 import React, {Component, Fragment} from "react";
 import {
-    Button, Container, Header, Form, Label, Modal, Image, Transition
+    Button, Header,
 } from 'semantic-ui-react'
 
-import {Divider, Segment} from 'semantic-ui-react'
-import Slider, {Range} from 'rc-slider';
 import ListingTypeFilter from "./filters/ListingTypeFilter";
 import AreaFilter from "./filters/AreaFilter";
 import RoomsFilter from "./filters/RoomsFilter";
@@ -17,7 +15,6 @@ import SchoolFilter from "./filters/SchoolFilter";
 export default class Filters extends Component {
     constructor(props) {
         super(props);
-        console.log(props)
 
         this.state = {
             data: {},
@@ -30,7 +27,6 @@ export default class Filters extends Component {
 
     componentDidMount() {
         this.loadFilters();
-        // this.onSubmit();
     };
 
     loadFilters = async () => {

@@ -14,26 +14,10 @@ export default class Property extends Component {
                 <Fragment>
                     <br/>
                     <Button onClick={() => window.open(property.details_url)}>Zoopla</Button>
-
-                    {/*<Header as='h3' attached='top'>*/}
-                        {/*Property*/}
-                    {/*</Header>*/}
-                    {/*<Segment attached>*/}
-                        {/*<h5> {property.street_name}, {property.outcode}</h5>*/}
-                        {/*<Button onClick={() => window.open(property.details_url)}>Zoopla</Button>*/}
-                        {/*{property.propertyimage_set.map(x => <Image src={x.url}/>)}*/}
-                    {/*</Segment>*/}
-
                 </Fragment>
             )
         } else {
             return "";
         }
-        // else {
-        //     return (
-        //         <Fragment>
-        //             Click on a property to see more information about it here.
-        //         </Fragment>)
-        // }
     }
 }

@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react'
 import SearchBox from "./explore/SearchBox";
-import {Button, Card, Divider, Header, Search} from "semantic-ui-react";
+import {Button, Card, Header} from "semantic-ui-react";
 
 const Location = ({text, vicinity, onRemove}) => {
     return (

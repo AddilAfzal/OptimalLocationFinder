@@ -3,9 +3,6 @@ import {Card, Header, Message, Segment} from "semantic-ui-react";
 import {Bar, BarChart, CartesianGrid, LabelList, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {startCase} from "lodash";
 import {Marker, Tooltip as LeafletTooltip} from "react-leaflet";
-import {renderToStaticMarkup} from "react-dom/server";
-import {divIcon} from "leaflet";
-
 
 export default class Crime extends Component {
     constructor(props) {
