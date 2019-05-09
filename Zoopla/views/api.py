@@ -16,8 +16,6 @@ from Zoopla.methods import get_price_histogram
 from Zoopla.models import Property
 from Zoopla.serializers import BasicPropertySerializer, PropertyInformationSerializer
 from django.db import connection
-from tornado import ioloop
-from tornado.httpclient import AsyncHTTPClient
 
 
 # class PropertiesList(generics.ListAPIView):
