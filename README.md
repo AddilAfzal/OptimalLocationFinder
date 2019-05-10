@@ -27,7 +27,7 @@ to a property.
 | Crime statistics | Data.Police.UK API | https://data.police.uk/docs/ |
 | School/College locations | GOV.UK | https://www.compare-school-performance.service.gov.uk/ | |
 | Ofsted School ratings | GOV.UK | https://www.gov.uk/government/statistical-data-sets/monthly-management-information-ofsteds-school-inspections-outcomes |
-| Properties | Zoopla API | https://www.compare-school-performance.service.gov.uk/ |
+| Properties | Zoopla API | https://developer.zoopla.co.uk/ |
 
 ## Demo
 http://project.addilafzal.com
