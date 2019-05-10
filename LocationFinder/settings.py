@@ -87,11 +87,11 @@ WSGI_APPLICATION = 'LocationFinder.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'Project',
+        'NAME': os.getenv('OLF_DB_NAME', "Project"),
         'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'projectUser',
-        'PASSWORD': '12345678',
-        'HOST': '127.0.0.1',
+        'USER': os.getenv('OLF_DB_USER', "projectUser"),
+        'PASSWORD': os.getenv('OLF_DB_PASSWORD', "12345678"),
+        'HOST': os.getenv('OLF_DB_HOST', "127.0.0.1"),
         'PORT': '5432',
     }
 }
