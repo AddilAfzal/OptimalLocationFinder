@@ -30,4 +30,9 @@ to a property.
 | Properties | Zoopla API | https://developer.zoopla.co.uk/ |
 
 ## Demo
-http://project.addilafzal.com
+Not available
+
+## Report
+[Optimal Location Finder.pdf](Optimal%20Location%20Finder%20-%20Addil%20Afzal.pdf)
+
+
